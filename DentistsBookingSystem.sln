@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32421.90
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DentistBookingBlazor", "DentistBookingBlazor\DentistBookingBlazor.csproj", "{D0544EE5-604E-45CE-BD80-8766E92D3288}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DentistsBooking.Api", "DentistsBooking.Api\DentistsBooking.Api.csproj", "{B961F56D-61F4-47B4-ABB8-7CFC517134D3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D0544EE5-604E-45CE-BD80-8766E92D3288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0544EE5-604E-45CE-BD80-8766E92D3288}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0544EE5-604E-45CE-BD80-8766E92D3288}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0544EE5-604E-45CE-BD80-8766E92D3288}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B961F56D-61F4-47B4-ABB8-7CFC517134D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B961F56D-61F4-47B4-ABB8-7CFC517134D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B961F56D-61F4-47B4-ABB8-7CFC517134D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B961F56D-61F4-47B4-ABB8-7CFC517134D3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C484C5B-3684-48A3-A24F-85A211AAC2C3}
+	EndGlobalSection
+EndGlobal
