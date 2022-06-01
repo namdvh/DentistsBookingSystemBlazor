@@ -1,6 +1,10 @@
+using Constant;
+using DentistBooking.Data.DataContext;
+using DentistBooking.Data.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +20,7 @@ namespace DentistsBooking.Api
 {
     public class Startup
     {
+        private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,6 +31,14 @@ namespace DentistsBooking.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            //Add Dbcontext
+            services.AddDbContext<DentistDBContext>(options => options.
+            UseSqlServer(Configuration.GetConnectionString(ConnectionString.MainConnectionString)));
+
+
+            services.AddIdentity<User, Role>().AddEntityFrameworkStores<DentistDBContext>().AddDefaultTokenProviders();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
