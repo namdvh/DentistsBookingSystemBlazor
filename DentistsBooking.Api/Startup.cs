@@ -1,6 +1,13 @@
 using Constant;
+using DentistBooking.Application.System.Bookings;
+using DentistBooking.Application.System.Clinics;
+using DentistBooking.Application.System.Dentists;
+using DentistBooking.Application.System.Users;
 using DentistBooking.Data.DataContext;
 using DentistBooking.Data.Entities;
+using DentistBooking.ViewModels.System.Dentists;
+using DentistBooking.ViewModels.System.Users;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -40,6 +47,18 @@ namespace DentistsBooking.Api
 
 
             services.AddIdentity<User, Role>().AddEntityFrameworkStores<DentistDBContext>().AddDefaultTokenProviders();
+            //Declare DI
+            services.AddScoped<UserManager<User>, UserManager<User>>();
+            services.AddScoped<SignInManager<User>, SignInManager<User>>();
+            services.AddScoped<RoleManager<Role>, RoleManager<Role>>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IDentistService, DentistService>();
+            services.AddScoped<IClinicService, ClinicService>();
+            services.AddScoped<IBookingService, BookingService>();
+            services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
+            services.AddScoped<IValidator<AddDentistRequest>, AddDentistRequestValidator>();
+            services.AddScoped<IClinicService, ClinicService>();
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

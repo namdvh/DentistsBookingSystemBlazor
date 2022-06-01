@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DentistsBooking.Api", "Dent
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DentistBooking.Data", "DentistBooking.Data\DentistBooking.Data.csproj", "{0B04C18B-D667-4914-8955-72C620FE7172}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingDentist.Constant", "Constant\BookingDentist.Constant.csproj", "{EEBF34C2-2B56-4B9B-9394-78CCE04BC34F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingDentist.Constant", "Constant\BookingDentist.Constant.csproj", "{EEBF34C2-2B56-4B9B-9394-78CCE04BC34F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DentistBooking.Application", "DentistBooking.Application\DentistBooking.Application.csproj", "{7F505CA5-FE56-40B7-9358-6C79A8FF674D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DentistBooking.ViewModels", "DentistBooking.ViewModels\DentistBooking.ViewModels.csproj", "{6E6B6DBB-9FE2-444E-A374-E53B7DFB9B7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{EEBF34C2-2B56-4B9B-9394-78CCE04BC34F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEBF34C2-2B56-4B9B-9394-78CCE04BC34F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEBF34C2-2B56-4B9B-9394-78CCE04BC34F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F505CA5-FE56-40B7-9358-6C79A8FF674D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F505CA5-FE56-40B7-9358-6C79A8FF674D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F505CA5-FE56-40B7-9358-6C79A8FF674D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F505CA5-FE56-40B7-9358-6C79A8FF674D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E6B6DBB-9FE2-444E-A374-E53B7DFB9B7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E6B6DBB-9FE2-444E-A374-E53B7DFB9B7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E6B6DBB-9FE2-444E-A374-E53B7DFB9B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E6B6DBB-9FE2-444E-A374-E53B7DFB9B7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
