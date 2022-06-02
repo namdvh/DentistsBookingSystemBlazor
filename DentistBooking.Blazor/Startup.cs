@@ -2,26 +2,32 @@ using Constant;
 using DentistBooking.Application.System.Bookings;
 using DentistBooking.Application.System.Clinics;
 using DentistBooking.Application.System.Dentists;
+using DentistBooking.Blazor.Data;
+using DentistBooking.Blazor.Services.Users;
 using DentistBooking.Data.DataContext;
 using DentistBooking.Data.Entities;
 using DentistBooking.ViewModels.System.Dentists;
 using DentistBooking.ViewModels.System.Users;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
-namespace DentistsBooking.Api
+namespace DentistBooking.Blazor
 {
     public class Startup
     {
-        private readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,17 +36,17 @@ namespace DentistsBooking.Api
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpClient();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            //Add Dbcontext
-            services.AddDbContext<DentistDBContext>(options => options.
-            UseSqlServer(Configuration.GetConnectionString(ConnectionString.MainConnectionString)));
+
+            services.AddHttpClient<IUserService,UserService>(client=> { client.BaseAddress = new Uri("https://localhost:5001");
+            });
+            //Declare DI;
 
 
             services.AddIdentity<User, Role>().AddEntityFrameworkStores<DentistDBContext>().AddDefaultTokenProviders();
-            //Declare DI
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<UserManager<User>, UserManager<User>>();
             services.AddScoped<SignInManager<User>, SignInManager<User>>();
             services.AddScoped<RoleManager<Role>, RoleManager<Role>>();
@@ -51,11 +57,9 @@ namespace DentistsBooking.Api
             services.AddScoped<IValidator<AddDentistRequest>, AddDentistRequestValidator>();
             services.AddScoped<IClinicService, ClinicService>();
 
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DentistsBooking.Api", Version = "v1" });
-            });
+            services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001") });
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,23 +68,23 @@ namespace DentistsBooking.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DentistsBooking.Api v1"));
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseCors(x => x
-                     .AllowAnyMethod()
-                     .AllowAnyHeader()
-                     .SetIsOriginAllowed(origin => true) // allow any origin
-                     .AllowCredentials());
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapBlazorHub();
+                endpoints.MapFallbackToPage("/_Host");
             });
         }
     }

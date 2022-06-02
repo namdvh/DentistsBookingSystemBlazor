@@ -24,6 +24,7 @@
     <ProjectReference Include="..\Constant\BookingDentist.Constant.csproj" />
     <ProjectReference Include="..\DentistBooking.Application\DentistBooking.Application.csproj" />
     <ProjectReference Include="..\DentistBooking.Data\DentistBooking.Data.csproj" />
+    <ProjectReference Include="..\DentistBookingBlazor.FE\DentistBookingBlazor.FE.csproj" />
   </ItemGroup>
 
 </Project>

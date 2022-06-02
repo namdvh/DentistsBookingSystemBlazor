@@ -1,0 +1,90 @@
+﻿@page "/register"
+@using DentistBooking.Data.Enum
+
+<h3>Register</h3>
+@if (ShowRegistrationErrors)
+{
+    <div class="alert alert-danger" role="alert">
+        @foreach (var error in Message)
+        {
+            <p>@error</p>
+        }
+    </div>
+}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title-login">
+            <EditForm Model="registerRequest" OnValidSubmit="Registers">
+                <div class="form-group">
+                    <label for="username">
+                        User name
+                    </label>
+                    <InputText id="username" class="form-control" @bind-Value="registerRequest.UserName"></InputText>
+                    <ValidationMessage For="@(() => registerRequest.UserName)" />
+                </div>
+                <div class="form-group">
+                    <label for="password">
+                        Password
+                    </label>
+                    <InputText id="password" type="password" class="form-control" @bind-Value="registerRequest.Password"></InputText>
+                    <ValidationMessage For="@(() => registerRequest.Password)" />
+                </div>
+                <div class="form-group">
+                    <label for="confirm">
+                        Confirm password
+                    </label>
+                    <InputText id="confirm" type="password" class="form-control" @bind-Value="registerRequest.ConfirmPassword"></InputText>
+                    <ValidationMessage For="@(() => registerRequest.ConfirmPassword)" />
+                </div>
+                <div class="form-group">
+                    <label for="email">
+                        Email
+                    </label>
+                    <InputText id="email" class="form-control" @bind-Value="registerRequest.Email"></InputText>
+                    <ValidationMessage For="@(() => registerRequest.Email)" />
+                </div>
+                <div class="form-group">
+                    <label for="firstname">
+                        First Name
+                    </label>
+                    <InputText id="firstname" class="form-control" @bind-Value="registerRequest.FirstName"></InputText>
+                    <ValidationMessage For="@(() => registerRequest.FirstName)" />
+                </div>
+                <div class="form-group">
+                    <label for="last-name">
+                        Last Name
+                    </label>
+                    <InputText id="lastname" class="form-control" @bind-Value="registerRequest.LastName"></InputText>
+                    <ValidationMessage For="@(() => registerRequest.LastName)" />
+                </div>
+                <div class="form-group">
+                    <label for="phone-number">
+                        Phone number
+                    </label>
+                    <InputText id="phone" type="number" class="form-control" @bind-Value="registerRequest.PhoneNumber"></InputText>
+                    <ValidationMessage For="@(() => registerRequest.PhoneNumber)" />
+                </div>
+                 <div class="form-group">
+                    <label for="date">
+                        Date of Birth
+                    </label>
+                    <InputDate id="dob" class="form-control" asp-for="@registerRequest.DOB" @bind-Value="registerRequest.PhoneNumber"></InputDate>
+                    <ValidationMessage For="@(() => registerRequest.DOB)" />
+                </div>
+                <div class="form-group">
+                    <label for="Name">Gender</label>
+                    <InputSelect class="form-control" @bind-Value="registerRequest.Gender">
+                        <option>Select a priority</option>
+                        @foreach (string item in Enum.GetNames(typeof(Gender)))
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="()=>registerRequest.Gender"></ValidationMessage>
+                    <small id="nameHelp" class="form-text text-muted">Choose a gender which you want.</small>
+                </div>
+                <button type="submit" class="btn btn-success">Register</button>
+            </EditForm>
+        </h5>
+    </div>
+</div>

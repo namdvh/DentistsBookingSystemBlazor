@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DentistBookingBlazor", "DentistBookingBlazor\DentistBookingBlazor.csproj", "{D0544EE5-604E-45CE-BD80-8766E92D3288}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DentistsBooking.Api", "DentistsBooking.Api\DentistsBooking.Api.csproj", "{B961F56D-61F4-47B4-ABB8-7CFC517134D3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DentistBooking.Data", "DentistBooking.Data\DentistBooking.Data.csproj", "{0B04C18B-D667-4914-8955-72C620FE7172}"
@@ -15,16 +13,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DentistBooking.Application"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DentistBooking.ViewModels", "DentistBooking.ViewModels\DentistBooking.ViewModels.csproj", "{6E6B6DBB-9FE2-444E-A374-E53B7DFB9B7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DentistBookingBlazor.FE", "DentistBookingBlazor.FE\DentistBookingBlazor.FE.csproj", "{BB7A2A74-BC59-4E40-9D82-9AC0E632D1FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D0544EE5-604E-45CE-BD80-8766E92D3288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D0544EE5-604E-45CE-BD80-8766E92D3288}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D0544EE5-604E-45CE-BD80-8766E92D3288}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D0544EE5-604E-45CE-BD80-8766E92D3288}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B961F56D-61F4-47B4-ABB8-7CFC517134D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B961F56D-61F4-47B4-ABB8-7CFC517134D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B961F56D-61F4-47B4-ABB8-7CFC517134D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{6E6B6DBB-9FE2-444E-A374-E53B7DFB9B7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E6B6DBB-9FE2-444E-A374-E53B7DFB9B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E6B6DBB-9FE2-444E-A374-E53B7DFB9B7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB7A2A74-BC59-4E40-9D82-9AC0E632D1FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB7A2A74-BC59-4E40-9D82-9AC0E632D1FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB7A2A74-BC59-4E40-9D82-9AC0E632D1FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB7A2A74-BC59-4E40-9D82-9AC0E632D1FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

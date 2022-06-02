@@ -15,6 +15,7 @@ namespace DentistBooking.ViewModels.System.Users
         public string Code { get; set; }
 
         public List<string> Messages { get; set; }
+        public bool Successfull { get; set; }
 
     }
 }
