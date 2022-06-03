@@ -1,11 +1,15 @@
-﻿using DentistBooking.Data.DataContext;
+﻿using Blazored.LocalStorage;
+using DentistBooking.Data.DataContext;
 using DentistBooking.Data.Entities;
 using DentistBooking.Data.Enum;
 using DentistBooking.ViewModels.System.Users;
+using DentistBookingBlazor.FE;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -14,12 +18,17 @@ namespace DentistBooking.Blazor.Services.Users
 {
     public class UserService : IUserService
     {
-        private readonly IConfiguration _config;
         private readonly HttpClient _httpClient;
-        public UserService( IConfiguration config, HttpClient httpClient)
+        private readonly ILocalStorageService _localStorage;
+        private readonly AuthenticationStateProvider _authenticationStateProvider;
+
+
+        public UserService(  HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider,
+                           ILocalStorageService localStorage)
         {
-            _config = config;
             _httpClient = httpClient;
+            _authenticationStateProvider = authenticationStateProvider;
+            _localStorage = localStorage;
         }
 
         public async Task<LoginResponse> Login(LoginRequest loginRequest)
@@ -35,6 +44,10 @@ namespace DentistBooking.Blazor.Services.Users
             {
                 return loginResponse;
             }
+            await _localStorage.SetItemAsync("authToken", loginResponse.Token);
+            ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(loginRequest.UserName);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loginResponse.Token);
+
             return loginResponse;
         }
 
@@ -51,6 +64,7 @@ namespace DentistBooking.Blazor.Services.Users
             {
                 return registerResponse;
             }
+           
             return registerResponse;
         }
 
