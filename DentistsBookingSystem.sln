@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DentistBooking.Application"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DentistBooking.ViewModels", "DentistBooking.ViewModels\DentistBooking.ViewModels.csproj", "{6E6B6DBB-9FE2-444E-A374-E53B7DFB9B7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DentistBookingBlazor.FE", "DentistBookingBlazor.FE\DentistBookingBlazor.FE.csproj", "{BB7A2A74-BC59-4E40-9D82-9AC0E632D1FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DentistBookingBlazor.FE", "DentistBookingBlazor.FE\DentistBookingBlazor.FE.csproj", "{BB7A2A74-BC59-4E40-9D82-9AC0E632D1FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
