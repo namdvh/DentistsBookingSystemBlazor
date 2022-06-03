@@ -24,7 +24,7 @@ namespace DentistBooking.Blazor.Services.Users
 
         public async Task<LoginResponse> Login(LoginRequest loginRequest)
         {
-            var rs = await _httpClient.PostAsJsonAsync("/api/Login", loginRequest);
+            var rs = await _httpClient.PostAsJsonAsync("/api/login", loginRequest);
             var content = await rs.Content.ReadAsStringAsync();
             var loginResponse = JsonSerializer.Deserialize<LoginResponse>(content,
                 new JsonSerializerOptions()
@@ -72,5 +72,5 @@ namespace DentistBooking.Blazor.Services.Users
         }
     }
 
-}
+}   
 

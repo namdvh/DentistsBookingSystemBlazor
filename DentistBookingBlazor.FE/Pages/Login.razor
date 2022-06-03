@@ -1,6 +1,7 @@
 ﻿@page "/login"
 @using DentistBooking.Blazor.Services.Users
 @using DentistBooking.ViewModels.System.Users
+@inject HttpClient _httpClient
 @inject IUserService userService;
 
 <h3>Login</h3>
@@ -32,10 +33,11 @@
         var rs =await userService.Login(Model);
         if (rs.Successful)
         {
+            Console.Write("success");
         }
         else
         {
-            Console.WriteLine("success");
+            Console.WriteLine("fail");
         }
 
     }

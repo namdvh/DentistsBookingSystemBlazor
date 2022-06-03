@@ -68,7 +68,7 @@
                     <label for="date">
                         Date of Birth
                     </label>
-                    <InputDate id="dob" class="form-control" asp-for="@registerRequest.DOB" @bind-Value="registerRequest.PhoneNumber"></InputDate>
+                    <InputDate id="dob" class="form-control" asp-for="@registerRequest.DOB" @bind-Value="registerRequest.DOB"></InputDate>
                     <ValidationMessage For="@(() => registerRequest.DOB)" />
                 </div>
                 <div class="form-group">

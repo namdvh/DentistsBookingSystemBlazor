@@ -9,5 +9,5 @@ namespace DentistBooking.ViewModels.System.Users
     public class LoginResponse
     {
         public bool Successful { get; set; }
-        public string Error { get; set; }    }
+        public string Error {   get; set; }    }
 }

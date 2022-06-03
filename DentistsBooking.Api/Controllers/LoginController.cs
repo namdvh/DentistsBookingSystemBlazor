@@ -94,10 +94,13 @@ namespace DentistsBooking.Api.Controllers
                     response.Successfull = true;
                     response.Messages.Add("Regist successfully");
                 }
-                response.Content = null;
-                response.Code = "200";
-                response.Successfull = false;
-                response.Messages.Add("Username already exists ");         
+                else
+                {
+                    response.Content = null;
+                    response.Code = "200";
+                    response.Successfull = false;
+                    response.Messages.Add("Username already exists ");
+                }
                 return Ok(response);
             }
         }
