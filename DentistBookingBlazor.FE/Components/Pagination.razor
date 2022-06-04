@@ -1,0 +1,65 @@
+﻿@using DentistBooking.ViewModels.Pagination
+@using DentistBookingBlazor.FE.Features
+<h3>Pagination</h3>
+
+<nav aria-label="Page ">
+    <ul class="pagination justify-content-center">
+        @foreach (var link in _links)
+        {
+            <li @onclick="() => OnSelectedPage(link)" style="cursor: pointer;" class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)">
+                <span class="page-link" href="#">@link.Text</span>
+            </li>
+        }
+    </ul>
+</nav>
+
+
+
+@code {
+    [Parameter]
+    public PaginationFilter filter { get; set; }
+
+    [Parameter]
+    public PaginationDTO paginationDTO { get; set; }
+
+    [Parameter]
+    public int Spread { get; set; }
+
+    [Parameter]
+    public EventCallback<int> SelectedPage { get; set; }
+
+    private List<PaginationLink> _links;
+
+    protected override void OnParametersSet()
+    {
+        CreatePaginationLinks();
+    }
+
+
+
+    private void CreatePaginationLinks()
+    {
+        _links = new();
+        _links.Add(new PaginationLink(paginationDTO.CurrentPage - 1, paginationDTO.HasPrevious, "Previous"));
+        for (int i = 1; i < paginationDTO.TotalPages; i++)
+        {
+            if (i >= paginationDTO.CurrentPage - Spread && i <= paginationDTO.CurrentPage + Spread)
+            {
+                _links.Add(new PaginationLink(i, true, i.ToString()) { Active = paginationDTO.CurrentPage == i });
+            }
+        }
+        _links.Add(new PaginationLink(paginationDTO.CurrentPage + 1, paginationDTO.HasNext, "Next"));
+    }
+
+
+    private async Task OnSelectedPage(PaginationLink link)
+    {
+        if (link.Page == paginationDTO.CurrentPage || !link.Enabled) return;
+
+        paginationDTO.CurrentPage = link.Page;
+
+        await SelectedPage.InvokeAsync(link.Page);
+    }
+
+
+}

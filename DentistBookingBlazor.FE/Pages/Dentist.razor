@@ -1,0 +1,107 @@
+﻿@page "/dentist"
+@using DentistBookingBlazor.FE.Components
+@using DentistBookingBlazor.FE.Services.Dentists
+@inject HttpClient _httpClient
+@inject IDentistService dentistService;
+
+
+
+<h3>Dentist</h3>
+
+@if (dentist == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+
+
+    <div class="content">
+
+        <div class="container">
+            <h2 class="mb-5">Table #6</h2>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped custom-table">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Position</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in dentist)
+                        {
+
+                            <tr scope="row">
+                                <td>
+                                    @item.Id
+                                </td>
+                                <td>@item.FirstName @item.LastName</td>
+                                @if (@item.Gender == 0)
+                                {
+                                    <td>Male</td>
+                                }
+                                else
+                                {
+                                    <td>Female</td>
+                                }
+                                <td>@item.Phone</td>
+                                @if (@item.Status == 0)
+                                {
+                                    <td>ACTIVE</td>
+                                }
+                                else
+                                {
+                                    <td>INACTIVE</td>
+                                }
+                                @if (@item.Position == 0)
+                                {
+                                    <td>HEAD</td>
+                                }
+                                else if (@item.Position.ToString().Equals(1.ToString()))
+                                {
+                                    <td>DENTIST</td>
+                                }
+                                else
+                                {
+                                    <td>ASSISTANT</td>
+                                }
+                                <td>
+                                    <button class="btn btn-primary">Detail</button>
+                                    <button class="btn btn-success">Update</button>
+                                    <button class="btn btn-danger">Delete</button>
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <Pagination filter="paginationFilter" paginationDTO="paginationDTO" Spread="1" SelectedPage="SelectedPage"></Pagination>
+                    </tfoot>
+                </table>
+            </div>
+
+
+        </div>
+
+    </div>
+}
+
+@code {
+    int i = 0;
+}
+
+
+
+
+

@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using DentistBooking.Blazor.Services.Users;
+using DentistBookingBlazor.FE.Services.Dentists;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,8 @@ namespace DentistBookingBlazor.FE
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001") });
+
+            builder.Services.AddScoped<IDentistService, DentistService>();
 
             await builder.Build().RunAsync();
         }
