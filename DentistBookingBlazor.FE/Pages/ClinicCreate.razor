@@ -1,0 +1,49 @@
+﻿@page "/clinicCreate"
+@using DentistBooking.ViewModels.System.Clinics
+
+<h3>TaskCreate</h3>
+
+@if (ShowErrors)
+{
+    <div class="alert alert-danger" role="alert">
+        @foreach (var error in Message)
+        {
+            <p>@error</p>
+        }
+    </div>
+}
+
+<EditForm Model="clinic">
+    <div class="form-group">
+
+        <label for="Name">Name</label>
+        <InputText class="form-control" @bind-Value="clinic.Name"></InputText>
+        <small id="nameHelp" class="form-text text-muted">Please enter clinic name here please.</small>
+        <ValidationMessage For="@(() => clinic.Name)" />
+
+        <label for="Address">Address</label>
+        <InputText class="form-control" @bind-Value="clinic.Address"></InputText>
+        <small id="addressHelp" class="form-text text-muted">Please enter clinic address here please.</small>
+        <ValidationMessage For="@(() => clinic.Address)" />
+
+
+        <label for="Phone">Phone Number</label>
+        <InputText class="form-control" typeof="number" @bind-Value="clinic.Phone"></InputText>
+        <small id="phoneHelp" class="form-text text-muted">Please enter clinic phone number here please.</small>
+        <ValidationMessage For="@(() => clinic.Phone)" />
+
+
+        <label for="Description">Description</label>
+        <InputText class="form-control" @bind-Value="clinic.Description"></InputText>
+        <small id="descriptionHelp" class="form-text text-muted">Please enter clinic description here please.</small>
+        <ValidationMessage For="@(() => clinic.Description)" />
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</EditForm>
+
+@code {
+    private ClinicRequest clinic = new ClinicRequest();
+}

@@ -4,6 +4,6 @@ namespace Constant
 {
     public class ConnectionString
     {
-        public const string MainConnectionString = "LocalDbThinh";
+        public const string MainConnectionString = "LocalDbKhoa";
     }
 }
