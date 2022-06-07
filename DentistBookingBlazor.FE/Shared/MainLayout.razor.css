@@ -31,7 +31,7 @@
         text-overflow: ellipsis;
     }
 
-@media (max-width: 640.98px) {
+/*@media (max-width: 1919px) {
     .top-row:not(.auth) {
         display: none;
     }
@@ -43,9 +43,9 @@
     .top-row a, .top-row .btn-link {
         margin-left: 0;
     }
-}
+}*/
 
-@media (min-width: 641px) {
+/*@media (min-width: 1920px) {
     .page {
         flex-direction: row;
     }
@@ -67,4 +67,4 @@
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
     }
-}
+}*/
