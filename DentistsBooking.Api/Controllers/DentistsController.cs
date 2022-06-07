@@ -3,6 +3,7 @@ using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Dentists;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace DentistsBooking.Api.Controllers
@@ -27,6 +28,16 @@ namespace DentistsBooking.Api.Controllers
             var result = await _dentistService.GetDentistList(validFilter);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("{dentistID}")]
+        public async Task<IActionResult> GetDentist([FromRoute] Guid dentistID)
+        {
+            DentistDTO result = await _dentistService.GetDentist(dentistID);
+            return Ok(result);
+        }
+
+
 
         //[HttpGet("search")]
         //public async Task<IActionResult> SearchDentist([FromQuery] PaginationFilter filter, string keyword)

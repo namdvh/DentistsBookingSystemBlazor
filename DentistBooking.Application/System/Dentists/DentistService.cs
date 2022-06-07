@@ -289,5 +289,41 @@ namespace DentistBooking.Application.System.Dentists
 
             return final;
         }
+
+        public async Task<DentistDTO> GetDentist(Guid userID)
+        {
+            try
+            {
+                var data = await (from user in _context.Users
+                                  join dentist in _context.Dentists on user.DentistId equals dentist.Id into dentistsUser
+                                  from dentistAttribute in dentistsUser.DefaultIfEmpty()
+                                  where user.Deleted_by != null && user.Id == userID
+                                  select new { user, dentistAttribute })
+                    .Where(x => x.user.DentistId != null).FirstOrDefaultAsync();
+
+
+                DentistDTO dto = new();
+                dto.Description = data.dentistAttribute?.Description;
+                dto.Email = data.user.Email;
+                dto.Gender = data.user.Gender;
+                dto.Id = data.user.Id;
+                dto.Phone = data.user.PhoneNumber;
+                dto.Position = data.dentistAttribute.Position;
+                dto.Status = data.user.Status;
+                dto.FirstName = data.user.FirstName;
+                dto.LastName = data.user.LastName;
+
+                dto.Services = await GetServiceFromDentist(data.dentistAttribute.Id);
+
+
+                return dto;
+
+            }
+            catch (DbUpdateException)
+            {
+
+                return null;
+            }
+        }
     }
 }

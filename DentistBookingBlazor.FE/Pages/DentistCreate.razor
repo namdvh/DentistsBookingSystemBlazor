@@ -1,0 +1,112 @@
+﻿@page "/createDentist"
+@using DentistBooking.Data.Enum
+@using DentistBooking.ViewModels.System.Dentists
+@using DentistBookingBlazor.FE.Services.Dentists
+@inject IDentistService dentisttService;
+@inject NavigationManager NavigationManager;
+<h3>DentistCreate</h3>
+
+
+
+<div class="main">
+
+    <section class="signup">
+        <!-- <img src="images/signup-bg.jpg" alt=""> -->
+        <div class="container">
+            <div class="signup-content">
+                <EditForm Model="dentist" OnValidSubmit="SubmitDentist">
+                    <h2 class="form-title">Create account</h2>
+                    <div class="form-group">
+                        <InputText id="username" class="form-control" @bind-Value="dentist.UserName" placeholder="User name"></InputText>
+                        <ValidationMessage For="@(() => dentist.UserName)" />
+                    </div>
+                    <div class="form-group">
+                        <InputText id="password" type="password" class="form-control" @bind-Value="dentist.Password" placeholder="Password"></InputText>
+                        <ValidationMessage For="@(() => dentist.Password)" />
+                    </div>
+                    <div class="form-group">
+                        <InputText id="confirm" type="password" class="form-control" @bind-Value="dentist.ConfirmPassword" placeholder="Confirm Password"></InputText>
+                        <ValidationMessage For="@(() => dentist.ConfirmPassword)" />
+                    </div>
+                    <div class="form-group">
+                        <InputText id="email" class="form-control" @bind-Value="dentist.Email" placeholder="Email"></InputText>
+                        <ValidationMessage For="@(() => dentist.Email)" />
+                    </div>
+                    <div class="form-group">
+                        <InputText id="firstname" class="form-control" @bind-Value="dentist.FirstName" placeholder="First Name"></InputText>
+                        <ValidationMessage For="@(() => dentist.FirstName)" />
+                    </div>
+                    <div class="form-group">
+                        <InputText id="lastname" class="form-control" @bind-Value="dentist.LastName" placeholder="Last Name"></InputText>
+                        <ValidationMessage For="@(() => dentist.LastName)" />
+                    </div>
+
+                    <div class="form-group">
+                        <InputText id="phone" type="number" class="form-control" @bind-Value="dentist.PhoneNumber" placeholder="Phone Number"></InputText>
+                        <ValidationMessage For="@(() => dentist.PhoneNumber)" />
+                    </div>
+
+                    <div class="form-group">
+                        <InputDate id="dob" class="form-control" asp-for="@dentist.DOB" @bind-Value="dentist.DOB" placeholder="Date of Birth"></InputDate>
+                        <ValidationMessage For="@(() => dentist.DOB)" />
+                    </div>
+                    <div class="form-group">
+                        <InputSelect class="form-control" @bind-Value="dentist.Gender">
+                            <option>Select a priority</option>
+                            @foreach (string item in Enum.GetNames(typeof(Gender)))
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="()=>dentist.Gender"></ValidationMessage>
+                        <small id="nameHelp" class="form-text text-muted">Choose a gender which you want.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <InputSelect class="form-control" @bind-Value="dentist.Position">
+                            <option>Select a position</option>
+                            @foreach (string item in Enum.GetNames(typeof(Position)))
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="()=>dentist.Position"></ValidationMessage>
+                    </div>
+
+                    <div class="form-group">
+                        <InputDate id="dob" class="form-control" asp-for="@dentist.Description" @bind-Value="dentist.Description" placeholder="Description"></InputDate>
+                        <ValidationMessage For="@(() => dentist.Description)" />
+                    </div>
+
+                    <div class="form-group">
+                        <InputSelect class="form-control" @bind-Value="dentist.ClinicId">
+                            <option>Select a clinic</option>
+                            @foreach (var items in clinic)
+                            {
+                                <option value="@items.Id">@items.Name</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(()=>dentist.ClinicId)"></ValidationMessage>
+                    </div>
+
+                    @*<button type="submit" class="btn btn-primary">Register</button>*@
+                    <input type="submit" name="submit" id="submit" class="form-submit" value="Create" />
+                </EditForm>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+@code {
+
+    private async Task SubmitDentist(EditContext context)
+    {
+        var rs = await dentisttService.CreateDentist(dentist);
+        if (rs != null)
+        {
+            NavigationManager.NavigateTo("/dentist");
+        }
+    }
+}
