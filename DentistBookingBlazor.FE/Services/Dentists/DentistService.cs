@@ -1,6 +1,7 @@
 ﻿using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Clinics;
 using DentistBooking.ViewModels.System.Dentists;
+using DentistBooking.ViewModels.System.Services;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,21 @@ namespace DentistBookingBlazor.FE.Services.Dentists
         {
             var rs = await _httpClient.GetFromJsonAsync<ListClinicResponse>($"/api/clinics");
             return rs;
+        }
+
+        public async Task<ListServiceResponse> GetServices(PaginationFilter filter)
+        {
+
+            var queryStringParam = new Dictionary<string, string>
+            {
+                ["PageNumber"] = filter.PageNumber.ToString(),
+                ["PageSize"] = filter.PageSize.ToString(),
+            };
+
+            var url = QueryHelpers.AddQueryString("/api/services", queryStringParam);
+            var result = await _httpClient.GetFromJsonAsync<ListServiceResponse>(url);
+
+            return result;
         }
     }
 }

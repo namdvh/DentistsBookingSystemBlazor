@@ -31,7 +31,7 @@
         text-overflow: ellipsis;
     }
 
-@media (max-width: 640.98px) {
+/*@media (max-width: 640.98px) {
     .top-row:not(.auth) {
         display: none;
     }
@@ -67,4 +67,4 @@
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
     }
-}
+}*/

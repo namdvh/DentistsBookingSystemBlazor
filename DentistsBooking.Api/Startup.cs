@@ -2,6 +2,7 @@ using Constant;
 using DentistBooking.Application.System.Bookings;
 using DentistBooking.Application.System.Clinics;
 using DentistBooking.Application.System.Dentists;
+using DentistBooking.Application.System.Services;
 using DentistBooking.Data.DataContext;
 using DentistBooking.Data.Entities;
 using DentistBooking.ViewModels.System.Dentists;
@@ -67,6 +68,7 @@ namespace DentistsBooking.Api
             services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
             services.AddScoped<IValidator<AddDentistRequest>, AddDentistRequestValidator>();
             services.AddScoped<IClinicService, ClinicService>();
+            services.AddScoped<IServiceService, ServiceService>();
 
 
             services.AddControllers();

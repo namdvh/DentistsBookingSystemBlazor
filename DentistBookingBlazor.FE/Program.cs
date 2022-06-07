@@ -30,6 +30,7 @@ namespace DentistBookingBlazor.FE
 
 
 
+
             await builder.Build().RunAsync();
         }
     }
