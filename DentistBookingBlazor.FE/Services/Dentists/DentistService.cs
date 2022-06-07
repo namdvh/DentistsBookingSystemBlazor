@@ -71,5 +71,12 @@ namespace DentistBookingBlazor.FE.Services.Dentists
 
             return result;
         }
+
+        public async Task<bool> UpdateDentist(UpdateDentistRequest request)
+        {
+            var result = await _httpClient.PutAsJsonAsync("/api/dentists", request);
+            return result.IsSuccessStatusCode;
+
+        }
     }
 }

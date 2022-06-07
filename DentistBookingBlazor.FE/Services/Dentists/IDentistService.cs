@@ -11,6 +11,7 @@ namespace DentistBookingBlazor.FE.Services.Dentists
     {
         Task<DentistResponse> GetDentistList(PaginationFilter filter);
 
+        Task<bool> UpdateDentist(UpdateDentistRequest request);
         Task<bool> CreateDentist(AddDentistRequest request);
         Task<DentistDTO> GetDentist(Guid userID);
 

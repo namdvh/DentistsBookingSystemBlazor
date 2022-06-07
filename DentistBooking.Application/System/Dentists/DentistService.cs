@@ -18,11 +18,15 @@ namespace DentistBooking.Application.System.Dentists
     {
         private readonly DentistDBContext _context;
         private readonly UserManager<User> _userService;
+        private readonly RoleManager<Role> _roleManager;
+        private const string DENTIST_ID = "20efd516-f16c-41b3-b11d-bc908cd2056d";
 
-        public DentistService(DentistDBContext context, UserManager<User> userService)
+        public DentistService(DentistDBContext context, UserManager<User> userService, RoleManager<Role> roleManager)
         {
             _context = context;
             _userService = userService;
+            _roleManager = roleManager;
+
         }
 
         public async Task<DentistResponse> GetDentistList(PaginationFilter filter)
@@ -83,10 +87,14 @@ namespace DentistBooking.Application.System.Dentists
                     dto.Gender = item.user.Gender;
                     dto.Id = item.user.Id;
                     dto.Phone = item.user.PhoneNumber;
+                    dto.UserName = item.user.UserName;
                     dto.Position = item.dentistAttribute.Position;
+                    dto.Dob = item.user.DOB;
                     dto.Status = item.user.Status;
                     dto.FirstName = item.user.FirstName;
                     dto.LastName = item.user.LastName;
+                    dto.DentistID = item.dentistAttribute.Id;
+                    dto.ClinicID = item.dentistAttribute.ClinicId;
 
                     dto.Services = await GetServiceFromDentist(item.dentistAttribute.Id);
 
@@ -118,6 +126,8 @@ namespace DentistBooking.Application.System.Dentists
             var validator = new AddDentistRequestValidator();
             response.Errors = new List<string>();
             var results = await validator.ValidateAsync(request);
+            var defaultRole = _roleManager.FindByIdAsync(DENTIST_ID).Result;
+
 
             var clinic = _context.Clinics.FirstOrDefault(x => x.Id == request.ClinicId);
 
@@ -162,6 +172,7 @@ namespace DentistBooking.Application.System.Dentists
             if (result.Succeeded)
             {
                 var dentistService = new ServiceDentist();
+                await _userService.AddToRoleAsync(newUser, defaultRole.Name);
 
                 if (request.ServiceId != null && request.ServiceId.Any())
                 {
@@ -204,11 +215,20 @@ namespace DentistBooking.Application.System.Dentists
                 {
                     foreach (var x in request.ServiceId)
                     {
-                        dentistService.DentistId = dentist.Id;
-                        dentistService.ServiceId = x;
+                        if (_context.ServiceDentists.Any(y => y.DentistId == dentist.Id && y.ServiceId == x))
+                        {
 
-                        _context.ServiceDentists.Add(dentistService);
-                        await _context.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            dentistService.DentistId = dentist.Id;
+                            dentistService.ServiceId = x;
+
+                            _context.ServiceDentists.Add(dentistService);
+                            await _context.SaveChangesAsync();
+
+                        }
+
                     }
                 }
 
@@ -297,7 +317,7 @@ namespace DentistBooking.Application.System.Dentists
                 var data = await (from user in _context.Users
                                   join dentist in _context.Dentists on user.DentistId equals dentist.Id into dentistsUser
                                   from dentistAttribute in dentistsUser.DefaultIfEmpty()
-                                  where user.Deleted_by != null && user.Id == userID
+                                  where user.Deleted_by == null && user.Id == userID
                                   select new { user, dentistAttribute })
                     .Where(x => x.user.DentistId != null).FirstOrDefaultAsync();
 
@@ -308,10 +328,14 @@ namespace DentistBooking.Application.System.Dentists
                 dto.Gender = data.user.Gender;
                 dto.Id = data.user.Id;
                 dto.Phone = data.user.PhoneNumber;
+                dto.UserName = data.user.UserName;
                 dto.Position = data.dentistAttribute.Position;
+                dto.Dob = data.user.DOB;
                 dto.Status = data.user.Status;
                 dto.FirstName = data.user.FirstName;
                 dto.LastName = data.user.LastName;
+                dto.DentistID = data.dentistAttribute.Id;
+                dto.ClinicID = data.dentistAttribute.ClinicId;
 
                 dto.Services = await GetServiceFromDentist(data.dentistAttribute.Id);
 
