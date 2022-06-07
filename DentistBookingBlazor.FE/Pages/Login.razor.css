@@ -11445,7 +11445,7 @@ h1, h2, h3, h4, h5,
 }
 
 .heading-section {
-    font-family: 'Montserrat';
+    /*font-family: 'Montserrat';*/
     font-size: 28px;
     color: #000;
 }

@@ -9,14 +9,9 @@ namespace DentistBooking.ViewModels.System.Clinics
         public string Name { get; set; }
         public string? Description { get; set; }
         public string Address { get; set; }
-        public int Phone { get; set; }
+        public string Phone { get; set; }
 
         public Status Status { get; set; }
-        public DateTime Created_at { get; set; }
-        public DateTime? Updated_at { get; set; }
-        public DateTime? Deleted_at { get; set; }
-        public Guid? Created_by { get; set; }
-        public Guid? Deleted_by { get; set; }
-        public Guid? Updated_by { get; set; }
+
     }
 }
