@@ -1,10 +1,18 @@
-﻿@page "/clinicCreate"
+﻿@page "/clinicUpdate/{ClinicId}"
 @using DentistBooking.ViewModels.System.Clinics
 @using DentistBookingBlazor.FE.Services.Clinics
 @inject IClinicService clinicService;
 @inject NavigationManager NavigationManager;
 
-<h3>Clinic Create</h3>
+@if (clinic == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+<h3>Clinic Edit: @clinic.Name</h3>
+
+
 
 <EditForm Model="clinic" OnValidSubmit="SubmitTask">
     <div class="form-group">
@@ -36,13 +44,28 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 
 </EditForm>
+}
 
 @code {
-    private ClinicRequest clinic = new ClinicRequest();
+    [Parameter]
+    public string ClinicId { get; set; }
 
-    private async Task SubmitTask(EditContext context)
+    private ClinicRequest clinic;
+
+    protected async override Task OnInitializedAsync()
     {
-        var rs = await clinicService.CreateClinic(clinic);
+        var clinicDTO = await clinicService.GetClinic(Int32.Parse(ClinicId));
+        clinic = new ClinicRequest();
+        clinic.Id = Int32.Parse(ClinicId);
+        clinic.Name = clinicDTO.Name;
+        clinic.Description = clinicDTO.Description;
+        clinic.Address = clinicDTO.Address;
+        clinic.Phone = clinicDTO.Phone;
+    }
+
+    private async void SubmitTask(EditContext context)
+    {
+        var rs = await clinicService.UpdateClinic(clinic);
         if (rs)
         {
             NavigationManager.NavigateTo("/clinic");

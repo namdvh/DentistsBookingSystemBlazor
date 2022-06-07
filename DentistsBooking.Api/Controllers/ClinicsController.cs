@@ -27,6 +27,14 @@ namespace DentistsBooking.Api.Controllers
             ListClinicResponse result = await _clinicService.GetClinicList(validFilter);
             return Ok(result);
         }
+        
+        [HttpGet]
+        [Route("{clinicId}")]
+        public async Task<IActionResult> GetClinic([FromRoute] int clinicId)
+        {
+            ClinicDTO result = await _clinicService.GetClinic(clinicId);
+            return Ok(result);
+        }
 
         [HttpPost]
         [AllowAnonymous]

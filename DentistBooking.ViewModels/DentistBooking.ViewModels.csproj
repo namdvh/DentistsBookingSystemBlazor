@@ -4,17 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="NewFolder\**" />
-    <Compile Remove="System\NewFolder1\**" />
-    <Compile Remove="System\NewFolder\**" />
-    <EmbeddedResource Remove="NewFolder\**" />
-    <EmbeddedResource Remove="System\NewFolder1\**" />
-    <EmbeddedResource Remove="System\NewFolder\**" />
-    <None Remove="NewFolder\**" />
-    <None Remove="System\NewFolder1\**" />
-    <None Remove="System\NewFolder\**" />
-  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />

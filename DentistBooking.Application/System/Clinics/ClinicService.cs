@@ -97,14 +97,9 @@ namespace DentistBooking.Application.System.Clinics
                 Address = clinic.Address,
                 Description = clinic.Description,
                 Name = clinic.Name,
-                Phone = clinic.Phone,
+                Phone = clinic.Phone.ToString(),
                 Status = clinic.Status,
-                Created_at = clinic.Created_at,
-                Updated_at = (DateTime)clinic.Updated_at,
-                Deleted_at = (DateTime)clinic.Deleted_at,
-                Created_by = (Guid)clinic.Created_by,
-                Deleted_by = (Guid)clinic.Deleted_by,
-                Updated_by = (Guid)clinic.Updated_by,
+
 
             };
             return clinicDTO;
@@ -225,6 +220,27 @@ namespace DentistBooking.Application.System.Clinics
             }
         }
 
+        public async Task<ClinicDTO> GetClinic(int clinicId)
+        {
 
+            try
+            {
+                Clinic obj = await _context.Clinics.FindAsync(clinicId);
+                if (obj != null)
+                {
+                    var result = MapToDTO(obj);
+                    
+
+                    return result;
+                }
+                return null;
+
+            }
+            catch (DbUpdateException)
+            {
+
+                return null;
+            }
+        }
     }
 }
