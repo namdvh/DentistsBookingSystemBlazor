@@ -205,31 +205,63 @@ namespace DentistBooking.Application.System.Dentists
             var dentist = _context.Dentists.FirstOrDefault(x => x.Id == request.Id);
             var clinic = _context.Clinics.FirstOrDefault(x => x.Id == request.ClinicId);
             var dentistService = new ServiceDentist();
+            bool flag = false;
+
+            var postService = _context.ServiceDentists.Where(x => x.DentistId == dentist.Id).Select(x => x.ServiceId).ToList();
+
             if (dentist != null)
             {
                 if (clinic != null) dentist.Clinic = clinic;
                 dentist.Description = request.Description;
                 if (request.Position != null) dentist.Position = (Position)request.Position;
 
-                if (request.ServiceId.Any())
+                var services = _context.Services.ToList();
+
+
+
+                //foreach (var x in request.ServiceId)
+                //{
+                //    if (_context.ServiceDentists.Any(y => y.DentistId == dentist.Id && y.ServiceId == x))
+                //    {
+                //    }
+                //    else
+                //    {
+                //        dentistService.DentistId = dentist.Id;
+                //        dentistService.ServiceId = x;
+
+                //        _context.ServiceDentists.Add(dentistService);
+                //        await _context.SaveChangesAsync();
+                //    }
+
+                //}
+                foreach (var option in services)
                 {
-                    foreach (var x in request.ServiceId)
+                    if (request.ServiceId.Contains(option.Id))       //is checked
                     {
-                        if (_context.ServiceDentists.Any(y => y.DentistId == dentist.Id && y.ServiceId == x))
+                        if (!postService.Contains(option.Id))
                         {
-
-                        }
-                        else
-                        {
+                            dentistService = new();
                             dentistService.DentistId = dentist.Id;
-                            dentistService.ServiceId = x;
-
+                            dentistService.ServiceId = option.Id;
                             _context.ServiceDentists.Add(dentistService);
                             await _context.SaveChangesAsync();
 
                         }
-
                     }
+                    else
+                    {
+                        if (postService.Contains(option.Id))
+                        {
+                            dentistService = new();
+                            dentistService.DentistId = dentist.Id;
+                            dentistService.ServiceId = option.Id;
+                            _context.ServiceDentists.Remove(dentistService);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+
+
+
                 }
 
                 var user = _context.Users.FirstOrDefault(x => x.DentistId == dentist.Id);
