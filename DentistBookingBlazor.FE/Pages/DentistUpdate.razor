@@ -1,0 +1,116 @@
+﻿@page "/updateDentist/{userID}"
+@using DentistBooking.Data.Enum
+@inject NavigationManager navigationManager;
+<h3>DentistUpdate</h3>
+
+@code {
+
+}
+
+<div class="main">
+
+    <section class="signup">
+        <!-- <img src="images/signup-bg.jpg" alt=""> -->
+        <div class="container">
+            <div class="signup-content">
+                <EditForm Model="dentistRequest" OnValidSubmit="UpdateDentist">
+                    <h2 class="form-title">Create account</h2>
+                    <div class="form-group">
+                        <InputText id="username" class="form-control" @bind-Value="dentistRequest.UserName" placeholder="User name"></InputText>
+                        <ValidationMessage For="@(() => dentistRequest.UserName)" />
+                    </div>
+                    <div class="form-group">
+                        <InputText id="email" class="form-control" @bind-Value="dentistRequest.Email" placeholder="Email"></InputText>
+                        <ValidationMessage For="@(() => dentistRequest.Email)" />
+                    </div>
+                    <div class="form-group">
+                        <InputText id="firstname" class="form-control" @bind-Value="dentistRequest.FirstName" placeholder="First Name"></InputText>
+                        <ValidationMessage For="@(() => dentistRequest.FirstName)" />
+                    </div>
+                    <div class="form-group">
+                        <InputText id="lastname" class="form-control" @bind-Value="dentistRequest.LastName" placeholder="Last Name"></InputText>
+                        <ValidationMessage For="@(() => dentistRequest.LastName)" />
+                    </div>
+
+                    <div class="form-group">
+                        <InputText id="phone" type="number" class="form-control" @bind-Value="dentistRequest.PhoneNumber" placeholder="Phone Number"></InputText>
+                        <ValidationMessage For="@(() => dentistRequest.PhoneNumber)" />
+                    </div>
+
+                    <div class="form-group">
+                        <InputDate id="dob" class="form-control" asp-for="@dentistRequest.Dob" @bind-Value="dentistRequest.Dob" placeholder="Date of Birth"></InputDate>
+                        <ValidationMessage For="@(() => dentistRequest.Dob)" />
+                    </div>
+                    <div class="form-group">
+                        <InputSelect class="form-control" @bind-Value="dentistRequest.Gender">
+                            <option>Select a priority</option>
+                            @foreach (string item in Enum.GetNames(typeof(Gender)))
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="()=>dentistRequest.Gender"></ValidationMessage>
+                        <small id="nameHelp" class="form-text text-muted">Choose a gender which you want.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <InputSelect class="form-control" @bind-Value="dentistRequest.Position">
+                            <option>Select a position</option>
+                            @foreach (string item in Enum.GetNames(typeof(Position)))
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="()=>dentistRequest.Position"></ValidationMessage>
+                    </div>
+
+                    <div class="form-group">
+                        <InputText id="dob" class="form-control" asp-for="@dentistRequest.Description" @bind-Value="dentistRequest.Description" placeholder="Description"></InputText>
+                        <ValidationMessage For="@(() => dentistRequest.Description)" />
+                    </div>
+
+                    <div class="form-group">
+                        <InputSelect class="form-control" @bind-Value="dentistRequest.ClinicId">
+                            <option>Select a clinic</option>
+                            @foreach (var items in clinic)
+                            {
+                                if(items.Id == selectedClinicId)
+                                {
+                                    <option value="@items.Id" selected>@items.Name</option>
+                                }
+                                else
+                            {
+                                    <option value="@items.Id" >@items.Name</option>
+                                    
+                                }
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(()=>dentistRequest.ClinicId)"></ValidationMessage>
+                    </div>
+                    @foreach (var check in sevices)
+                    {
+                        @if (existedService.Contains(check.Id))
+                        {
+                            <input value="@check.Id" type="checkbox" checked @onchange="eventArgs => { CheckboxClicked(check.Id, eventArgs.Value); }" />
+                            @check.ServiceName
+                            <br>
+                        }
+                        else
+                        {
+                            <input value="@check.Id" type="checkbox" @onchange="eventArgs => { CheckboxClicked(check.Id, eventArgs.Value); }" />
+                            @check.ServiceName
+                            <br>
+                        }
+
+
+
+                    }
+
+                    @*<button type="submit" class="btn btn-primary">Register</button>*@
+                    <input type="submit" name="submit" id="submit" class="form-submit" value="Create" />
+                </EditForm>
+            </div>
+        </div>
+    </section>
+
+</div>

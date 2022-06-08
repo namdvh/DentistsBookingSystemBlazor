@@ -16,7 +16,7 @@ namespace DentistBooking.Data.Entities
         public DateTime DOB { get; set; }
         public string? Token { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
-
+        public string Image;
         public DateTime Created_at { get; set; }
         public DateTime? Updated_at { get; set; }
         public DateTime? Deleted_at { get; set; }

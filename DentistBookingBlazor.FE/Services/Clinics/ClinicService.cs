@@ -22,7 +22,7 @@ namespace DentistBookingBlazor.FE.Services.Clinics
             var rs = await _httpClient.PostAsJsonAsync("/api/clinics", request);
 
             return rs.IsSuccessStatusCode;
-            
+
         }
 
         public async Task<ClinicDTO> GetClinic(int clinicId)
@@ -49,8 +49,6 @@ namespace DentistBookingBlazor.FE.Services.Clinics
         {
             var result = await _httpClient.PutAsJsonAsync("/api/clinics", request);
             return result.IsSuccessStatusCode;
-
-
         }
     }
 }

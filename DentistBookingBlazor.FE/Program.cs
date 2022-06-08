@@ -24,11 +24,12 @@ namespace DentistBookingBlazor.FE
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
             builder.Services.AddTransient<IClinicService, ClinicService>();
+            builder.Services.AddTransient<IDentistService, DentistService>();
             //builder.Services.AddTransient<IValidator<ClinicRequest>, ClinicRequestValidator>();
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001") });
 
 
-            builder.Services.AddScoped<IDentistService, DentistService>();
+
 
             await builder.Build().RunAsync();
         }
