@@ -78,5 +78,11 @@ namespace DentistBookingBlazor.FE.Services.Dentists
             return result.IsSuccessStatusCode;
 
         }
+
+        public async Task<bool> DeleteDentist(int dentistID)
+        {
+            var result = await _httpClient.DeleteAsync($"/api/dentists/{dentistID}");
+            return result.IsSuccessStatusCode;
+        }
     }
 }

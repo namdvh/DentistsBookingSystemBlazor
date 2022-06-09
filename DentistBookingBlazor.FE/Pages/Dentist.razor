@@ -79,7 +79,15 @@ else
                                 }
                                 <td>
                                     <a href="/updateDentist/@item.Id" class="btn btn-success">Update</a>
-                                    <button class="btn btn-danger">Delete</button>
+                                    @if (@item.Status == 0)
+                                    {
+                                        <button class="btn btn-danger" @onclick="()=>OnDeleteDentist(item.DentistID,1)">Delete</button>
+
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-primary" @onclick="()=>OnDeleteDentist(item.DentistID,-1)">Active</button>
+                                    }
 
                                 </td>
 
@@ -96,6 +104,10 @@ else
         </div>
 
     </div>
+    <Confirmation ConfirmationMessage="Are you sure you want to delete it?"
+              ConfirmationTitle="Delete Dentist"
+              @ref="DeleteConfirmation"
+              ConfirmationChanged="OnConfirmDeleteDentist"></Confirmation>
 }
 
 @code {
