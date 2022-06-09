@@ -10,6 +10,7 @@ namespace DentistBookingBlazor.FE.Services.Clinics
         Task<ListClinicResponse> GetClinicList(PaginationFilter filter);
         Task<bool> CreateClinic(ClinicRequest request);
         Task<bool> UpdateClinic(ClinicRequest request);
+        Task<bool> DeleteClinic(int clinicId);
         Task<ClinicDTO> GetClinic(int clinicId);
     }
 }
