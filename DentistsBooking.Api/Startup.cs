@@ -20,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
+using DentistBooking.Application.System.Users;
 
 namespace DentistsBooking.Api
 {
@@ -69,6 +70,7 @@ namespace DentistsBooking.Api
             services.AddScoped<IValidator<AddDentistRequest>, AddDentistRequestValidator>();
             services.AddScoped<IClinicService, ClinicService>();
             services.AddScoped<IServiceService, ServiceService>();
+            services.AddScoped<IUserService,UserService>();
 
 
             services.AddControllers();
