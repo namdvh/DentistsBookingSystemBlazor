@@ -25,6 +25,12 @@ namespace DentistBookingBlazor.FE.Services.Clinics
 
         }
 
+        public async Task<bool> DeleteClinic(int clinicId)
+        {
+            var result = await _httpClient.DeleteAsync($"/api/clinics/{clinicId}");
+            return result.IsSuccessStatusCode;
+        }
+
         public async Task<ClinicDTO> GetClinic(int clinicId)
         {
             var rs = await _httpClient.GetFromJsonAsync<ClinicDTO>($"/api/clinics/{clinicId}");

@@ -181,7 +181,7 @@ namespace DentistBooking.Application.System.Clinics
 
         }
 
-        public async Task<ClinicResponse> DeleteClinic(int clinicId, Guid userId)
+        public async Task<ClinicResponse> DeleteClinic(int clinicId)
         {
             ClinicResponse response = new ClinicResponse();
 
@@ -190,9 +190,18 @@ namespace DentistBooking.Application.System.Clinics
                 Clinic obj = await _context.Clinics.FindAsync(clinicId);
                 if (obj != null)
                 {
-                    obj.Deleted_by = userId;
-                    obj.Deleted_at = DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd"));
-                    obj.Status = Status.INACTIVE;
+                    if (obj.Status == Status.INACTIVE)
+                    {
+                        obj.Deleted_at = null;
+                        obj.Status = Status.ACTIVE;
+                    }
+                    else
+                    {
+                        obj.Deleted_at = DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd"));
+                        obj.Status = Status.INACTIVE;
+                        
+                    }
+                    
 
                     await _context.SaveChangesAsync();
 

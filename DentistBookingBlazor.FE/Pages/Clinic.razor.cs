@@ -1,6 +1,7 @@
 ﻿
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Clinics;
+using DentistBookingBlazor.FE.Components;
 using DentistBookingBlazor.FE.Services.Clinics;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
@@ -13,6 +14,10 @@ namespace DentistBookingBlazor.FE.Pages
     {
         [Inject] 
         private IClinicService ClinicService { get; set; }
+
+        protected Confirmation DeleteConfirmation { get; set; }
+
+        private int DeleteId { get; set; }
 
         private List<ClinicDTO> clinic;
         private ListClinicResponse response;
@@ -39,6 +44,30 @@ namespace DentistBookingBlazor.FE.Pages
         {
             paginationFilter.PageNumber = page;
             await GetClinics();
+        }
+
+        public async Task OnDeleteClinic(int deleteId, int checkStatus)
+        {
+            if (checkStatus != -1)
+            {
+                DeleteId = deleteId;
+                DeleteConfirmation.Show();
+            }
+            else
+            {
+                 await ClinicService.DeleteClinic(deleteId);
+                 await GetClinics();
+            }
+            
+        }
+
+        public async Task OnConfirmDeleteClinic(bool deleteConfirmed)
+        {
+            if (deleteConfirmed)
+            {
+                await ClinicService.DeleteClinic(DeleteId);
+                await GetClinics();
+            }
         }
     }
 }

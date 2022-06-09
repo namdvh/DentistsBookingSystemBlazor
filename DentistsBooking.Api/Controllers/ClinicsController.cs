@@ -60,13 +60,14 @@ namespace DentistsBooking.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteClinic([FromQuery] int clinicId, Guid userId)
+        [Route("{clinicId}")]
+        public async Task<IActionResult> DeleteClinic([FromRoute] int clinicId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            ClinicResponse result = await _clinicService.DeleteClinic(clinicId, userId);
+            ClinicResponse result = await _clinicService.DeleteClinic(clinicId);
             return Ok(result);
         }
     }
