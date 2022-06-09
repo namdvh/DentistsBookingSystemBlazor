@@ -13,6 +13,9 @@ namespace DentistBooking.Application.System.Discounts
         Task<ListDiscountResponse> GetDiscountList(PaginationFilter filter);
         Task<DiscountResponse> CreateDiscount(DiscountRequest request);
         Task<DiscountResponse> UpdateDiscount(DiscountRequest request);
-        Task<DiscountResponse> DeleteDiscount(int discountId, Guid userId);
+        Task<DiscountResponse> DeleteDiscount(int discountId);
+        Task<DiscountDTO> GetDiscount(int discountId);
+        Task<bool> ApplyForAll(int discountId);
+
     }
 }

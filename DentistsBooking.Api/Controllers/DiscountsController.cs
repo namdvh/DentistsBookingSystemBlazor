@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace DentistsBooking.Api.Controllers
 {
-    [Route("api/discounts")]
     [ApiController]
     //Authorize]
     public class DiscountsController : ControllerBase
@@ -21,6 +20,7 @@ namespace DentistsBooking.Api.Controllers
         }
 
         [HttpGet]
+        [Route("api/discounts")]
         public async Task<IActionResult> GetAllDiscounts([FromQuery] PaginationFilter filter)
         {
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize, filter._by, filter._order);
@@ -29,6 +29,7 @@ namespace DentistsBooking.Api.Controllers
         }
 
         [HttpPost]
+        [Route("api/discounts")]
         [AllowAnonymous]
         public async Task<IActionResult> CreateDiscount([FromBody] DiscountRequest request)
         {
@@ -41,6 +42,7 @@ namespace DentistsBooking.Api.Controllers
         }
 
         [HttpPut]
+        [Route("api/discounts")]
         public async Task<IActionResult> UpdateDiscount([FromBody] DiscountRequest request)
         {
             if (!ModelState.IsValid)
@@ -52,13 +54,30 @@ namespace DentistsBooking.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteDiscount([FromQuery] int discountId, Guid userId)
+        [Route("api/discounts/{discountId}")]
+        public async Task<IActionResult> DeleteDiscount([FromRoute] int discountId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            DiscountResponse result = await _discountService.DeleteDiscount(discountId, userId);
+            DiscountResponse result = await _discountService.DeleteDiscount(discountId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("api/discounts/{discountId}")]
+        public async Task<IActionResult> GetDiscount([FromRoute] int discountId)
+        {
+            DiscountDTO result = await _discountService.GetDiscount(discountId);
+            return Ok(result);
+        }
+
+        [HttpDelete()]
+        [Route("api/discounts/apply/{discountId}")]
+        public async Task<IActionResult> ApplyForAll([FromRoute] int discountId)
+        {
+            var result = await _discountService.ApplyForAll(discountId);
             return Ok(result);
         }
     }

@@ -35,33 +35,45 @@ namespace DentistBooking.Application.System.Discounts
             {
                 orderBy = "ascending";
             }
-            var pagedData = await _context.Discounts
-                    .OrderBy(filter._by + " " + orderBy)
-                    .Skip((filter.PageNumber - 1) * filter.PageSize)
-                    .Take(filter.PageSize)
-                    .ToListAsync();
+            List<Discount> pagedData;
 
-            var totalRecords = await _context.Discounts.CountAsync();
+            pagedData = await _context.Discounts
+               .OrderBy(filter._by + " " + orderBy)
+               .Skip((filter.PageNumber - 1) * filter.PageSize)
+               .Take(filter.PageSize)
+               .ToListAsync();
+
+
+
+            var totalRecords = await _context.Discounts.CountAsync(x => x.status != Data.Enum.Status.INACTIVE);
 
             if (!pagedData.Any())
             {
                 response.Content = null;
                 response.Code = "200";
-                response.Message = "There aren't any discount in DB";
+                response.Message = "There aren't any discounts in DB";
             }
             else
             {
-
-                response.Content = pagedData;
+                List<DiscountDTO> result = new List<DiscountDTO>();
+                foreach (Discount x in pagedData)
+                {
+                    result.Add(MapToDTO(x));
+                }
+                response.Content = result;
                 response.Message = "SUCCESS";
                 response.Code = "200";
 
             }
             var totalPages = ((double)totalRecords / (double)filter.PageSize);
-            int roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
+
+
+            var roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
 
             paginationDTO.CurrentPage = filter.PageNumber;
+
             paginationDTO.PageSize = filter.PageSize;
+
             paginationDTO.TotalPages = roundedTotalPages;
             paginationDTO.TotalRecords = totalRecords;
 
@@ -87,7 +99,6 @@ namespace DentistBooking.Application.System.Discounts
                     Percent = request.Percent,
                     Amount = request.Amount,
                     status = Data.Enum.Status.ACTIVE,
-                    ApplyForAll = request.ApplyForAll,
                     Created_at = DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd")),
                     Created_by = request.UserId
                 };
@@ -124,7 +135,6 @@ namespace DentistBooking.Application.System.Discounts
                     obj.Description = request.Description;
                     obj.Percent = request.Percent;
                     obj.Amount = request.Amount;
-                    obj.ApplyForAll = request.ApplyForAll;
                     obj.Updated_at = DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd"));
                     obj.Updated_by = request.UserId;
 
@@ -155,7 +165,7 @@ namespace DentistBooking.Application.System.Discounts
 
         }
 
-        public async Task<DiscountResponse> DeleteDiscount(int discountId, Guid userId)
+        public async Task<DiscountResponse> DeleteDiscount(int discountId)
         {
             DiscountResponse response = new DiscountResponse();
 
@@ -164,14 +174,23 @@ namespace DentistBooking.Application.System.Discounts
                 Discount obj = await _context.Discounts.FindAsync(discountId);
                 if (obj != null)
                 {
-                    obj.Deleted_by = userId;
-                    obj.Deleted_at = DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd"));
-                    obj.status = Data.Enum.Status.ACTIVE;
+                    if (obj.status == Data.Enum.Status.INACTIVE)
+                    {
+                        obj.Deleted_at = null;
+                        obj.status = Data.Enum.Status.ACTIVE;
+                    }
+                    else
+                    {
+                        obj.Deleted_at = DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd"));
+                        obj.status = Data.Enum.Status.INACTIVE;
+
+                    }
+
 
                     await _context.SaveChangesAsync();
 
                     response.Code = "200";
-                    response.Message = "Delete discount successfully";
+                    response.Message = "Delete clinic successfully";
 
                     return response;
                 }
@@ -192,6 +211,79 @@ namespace DentistBooking.Application.System.Discounts
 
                 return response;
             }
+        }
+
+        public async Task<DiscountDTO> GetDiscount(int discountId)
+        {
+
+            try
+            {
+                Discount obj = await _context.Discounts.FindAsync(discountId);
+                if (obj != null)
+                {
+                    var result = MapToDTO(obj);
+
+
+                    return result;
+                }
+                return null;
+
+            }
+            catch (DbUpdateException)
+            {
+
+                return null;
+            }
+        }
+
+        public async Task<bool> ApplyForAll(int discountId)
+        {
+
+            try
+            {
+                Discount obj = await _context.Discounts.FindAsync(discountId);
+                if (obj != null)
+                {
+                    if (obj.ApplyForAll == true)
+                    {
+                        obj.ApplyForAll = false;
+                    }
+                    else
+                    {
+                        obj.ApplyForAll = true;
+                    }
+                    await _context.SaveChangesAsync();
+
+
+                    return true;
+                }
+                return false;
+
+            }
+            catch (DbUpdateException)
+            {
+
+                return false;
+            }
+        }
+
+        public DiscountDTO MapToDTO(Discount discount)
+        {
+            DiscountDTO discountDTO = new DiscountDTO()
+            {
+                Id = discount.Id,
+                Description = discount.Description,
+                Title = discount.Title,
+                Amount = discount.Amount,
+                Percent = discount.Percent,
+                ApplyForAll = discount.ApplyForAll,
+                StartDate = discount.StartDate,
+                EndDate = discount.EndDate,
+                status = discount.status
+
+
+            };
+            return discountDTO;
         }
     }
 }

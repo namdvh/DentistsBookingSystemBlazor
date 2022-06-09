@@ -1,0 +1,80 @@
+﻿@page "/discountUpdate/{DiscountId}"
+@using DentistBooking.ViewModels.System.Discounts
+@using DentistBookingBlazor.FE.Services.Discounts
+@inject IDiscountService discountService;
+@inject NavigationManager NavigationManager;
+
+@if (discount == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+<h3>Discount Edit: @discount.Title</h3>
+
+
+
+<EditForm Model="discount" OnValidSubmit="SubmitTask">
+    <div class="form-group">
+
+        <label for="Name">Title</label>
+        <InputText class="form-control" @bind-Value="discount.Title"></InputText>
+        <small id="nameHelp" class="form-text text-muted">Please enter discount title here please.</small>
+
+        <label for="Name">Start Date</label>
+        <InputDate class="form-control"  asp-for="@discount.StartDate" @bind-Value="discount.StartDate"></InputDate>
+        <small id="nameHelp" class="form-text text-muted">Please enter clinic start date here please.</small>
+
+        <label for="Name">End Date</label>
+        <InputDate class="form-control"  asp-for="@discount.EndDate" @bind-Value="discount.EndDate"></InputDate>
+        <small id="nameHelp" class="form-text text-muted">Please enter discount end date here please.</small>
+
+        <label for="Name">Description</label>
+        <InputText class="form-control" @bind-Value="discount.Description"></InputText>
+        <small id="nameHelp" class="form-text text-muted">Please enter discount description here please.</small>
+
+        <label for="Name">Amount</label>
+        <InputNumber class="form-control" asp-for="@discount.Amount" @bind-Value="discount.Amount"></InputNumber>
+        <small id="nameHelp" class="form-text text-muted">Please enter discount amount here please.</small>
+
+        <label for="Name">Percent</label>
+        <InputNumber class="form-control" asp-for="@discount.Percent" @bind-Value="discount.Percent"></InputNumber>
+        <small id="nameHelp" class="form-text text-muted">Please enter discount percent here please.</small>
+
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</EditForm>
+}
+
+@code {
+    [Parameter]
+    public string DiscountId { get; set; }
+
+    private DiscountRequest discount;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var DiscountDTO = await discountService.GetDiscount(Int32.Parse(DiscountId));
+        discount = new DiscountRequest();
+        discount.Id = Int32.Parse(DiscountId);
+        discount.Title = DiscountDTO.Title;
+        discount.StartDate = DiscountDTO.StartDate;
+        discount.EndDate = DiscountDTO.EndDate;
+        discount.Description = DiscountDTO.Description;
+        discount.Amount = DiscountDTO.Amount;
+        discount.Percent = DiscountDTO.Percent;
+
+    }
+
+    private async void SubmitTask(EditContext context)
+    {
+        var rs = await discountService.UpdateDiscount(discount);
+        if (rs)
+        {
+            NavigationManager.NavigateTo("/discount");
+        }
+    }
+}
