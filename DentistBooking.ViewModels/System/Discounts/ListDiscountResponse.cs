@@ -10,7 +10,7 @@ namespace DentistBooking.ViewModels.System.Discounts
 {
     public class ListDiscountResponse
     {
-        public IEnumerable<Discount> Content { get; set; }
+        public IEnumerable<DiscountDTO> Content { get; set; }
         public string Code { get; set; }
 
         public string Message { get; set; }
