@@ -30,7 +30,7 @@ namespace DentistBooking.Data.Entities
         //public int BookingDetailId { get; set; }
         public ICollection<BookingDetail> BookingDetails { get; set; }
 
-        public int DiscountId { get; set; }
+        public int? DiscountId { get; set; }
         public Discount Discount { get; set; }
 
     }

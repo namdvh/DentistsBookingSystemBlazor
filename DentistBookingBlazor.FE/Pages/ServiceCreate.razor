@@ -1,0 +1,41 @@
+﻿@page "/serviceCreate"
+@using DentistBooking.ViewModels.System.Services
+@using DentistBookingBlazor.FE.Services.Services
+@inject IServiceService serviceService;
+@inject NavigationManager NavigationManager;
+
+<h3>Service Create</h3>
+
+<EditForm Model="service" OnValidSubmit="SubmitTask">
+    <div class="form-group">
+
+        <label for="Name">Name</label>
+        <InputText class="form-control" @bind-Value="service.Name"></InputText>
+        <small id="nameHelp" class="form-text text-muted">Please enter service name here please.</small>
+        
+        <label for="Procedure">Procedure</label>
+        <InputText class="form-control" @bind-Value="service.Procedure"></InputText>
+        <small id="procedureHelp" class="form-text text-muted">Please enter service procedure here please.</small>
+        
+        <label for="Price">Price</label>
+        <InputNumber class="form-control" @bind-Value="service.Price"></InputNumber>
+        <small id="priceHelp" class="form-text text-muted">Please enter service price here please.</small>
+        
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</EditForm>
+
+@code {
+    private AddServiceRequest service = new AddServiceRequest();
+
+    private async Task SubmitTask(EditContext context)
+    {
+        var rs = await serviceService.CreateService(service);
+        if (rs)
+        {
+            NavigationManager.NavigateTo("/service");
+        }
+    }
+}

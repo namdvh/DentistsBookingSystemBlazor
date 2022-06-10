@@ -11,7 +11,7 @@ namespace DentistBookingBlazor.FE.Services.Discounts
         Task<bool> CreateDiscount(DiscountRequest request);
         Task<bool> UpdateDiscount(DiscountRequest request);
         Task<bool> DeleteDiscount(int discountId);
-        Task<Discount> GetDiscount(int discountId);
+        Task<DiscountDTO> GetDiscount(int discountId);
         Task<bool> ApplyForAll(int discountId);
     }
 }

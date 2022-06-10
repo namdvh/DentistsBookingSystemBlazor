@@ -32,9 +32,9 @@ namespace DentistBookingBlazor.FE.Services.Discounts
             return result.IsSuccessStatusCode;
         }
 
-        public async Task<Discount> GetDiscount(int discountId)
+        public async Task<DiscountDTO> GetDiscount(int discountId)
         {
-            var rs = await _httpClient.GetFromJsonAsync<Discount>($"/api/discounts/{discountId}");
+            var rs = await _httpClient.GetFromJsonAsync<DiscountDTO>($"/api/discounts/{discountId}");
             return rs;
         }
 

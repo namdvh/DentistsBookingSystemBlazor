@@ -1,0 +1,111 @@
+﻿@page "/service"
+@using DentistBookingBlazor.FE.Components
+@using DentistBookingBlazor.FE.Services.Services
+@using DentistBookingBlazor.FE.Services.Discounts
+@inject HttpClient _httpClient
+@inject IServiceService serviceService;
+@inject IDiscountService discountService;
+
+<h3>Service</h3>
+
+@if (service == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+
+
+    <div class="content">
+
+        <div class="container">
+            <div class="col pt4">
+                <a href="/serviceCreate" class="btn btn-success">Create</a>
+            </div>
+            <h2 class="mb-5">Table #6</h2>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped custom-table">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Procedure</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Discount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in service)
+                        {
+
+                            <tr scope="row">
+                                <td>
+                                    @item.Id
+                                </td>
+                                <td>@item.ServiceName </td>
+
+                                <td>@item.Procedure</td>
+                                @if (@item.Status == 0)
+                                {
+                                    <td>ACTIVE</td>
+                                }
+                                else
+                                {
+                                    <td>INACTIVE</td>
+                                }
+                                <td>@item.Price</td>
+                                @if (@item.DiscountId != null)
+                                {
+                                    var id = @item.DiscountId;
+                                    foreach (var dis in discount)
+                                    {
+                                        if (@dis.Id == id)
+                                        {
+                                            <td>@dis.Title</td>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <td>None</td>
+                                }
+
+                                <td>
+                                    <a href="/serviceUpdate/@item.Id" class="btn btn-warning">Update</a>
+                                    @if (@item.Status == 0)
+                                    {
+                                        <button class="btn btn-danger" @onclick="()=>OnDeleteService(item.Id,1)">Delete</button>
+
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-primary" @onclick="()=>OnDeleteService(item.Id,-1)">Active</button>
+                                    }
+
+
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <Pagination filter="paginationFilter" paginationDTO="paginationDTO" Spread="1" SelectedPage="SelectedPage"></Pagination>
+                    </tfoot>
+                </table>
+            </div>
+
+
+        </div>
+
+    </div>
+    <Confirmation ConfirmationMessage="Are you sure you want to delete it?"
+              ConfirmationTitle="Delete Service"
+              @ref="DeleteConfirmation"
+              ConfirmationChanged="OnConfirmDeleteService"></Confirmation>
+}
