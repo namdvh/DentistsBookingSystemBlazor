@@ -1,0 +1,12 @@
+﻿.page {
+    display: flex;
+    height: 100vh
+}
+.top-row[b-xxxgnh8bpq] {
+    justify-content: flex-end;
+    gap: 10rem
+}
+
+.top-row[b-xxxgnh8bpq] > * {
+        margin-left: 0 !important;
+    }
