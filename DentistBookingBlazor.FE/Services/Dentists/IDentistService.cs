@@ -19,5 +19,7 @@ namespace DentistBookingBlazor.FE.Services.Dentists
 
         Task<ListServiceResponse> GetServices(PaginationFilter filter);
 
+        Task<bool> DeleteDentist(int dentistID);
+
     }
 }

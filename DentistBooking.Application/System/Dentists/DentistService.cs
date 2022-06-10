@@ -289,19 +289,10 @@ namespace DentistBooking.Application.System.Dentists
             return response;
         }
 
-        public async Task<DentistCodeResponse> DeleteDentist(DeleteDentistRequest request)
+        public async Task<DentistCodeResponse> DeleteDentist(int dentistID)
         {
             var response = new DentistCodeResponse();
-            var dentist = _context.Dentists.FirstOrDefault(x => x.Id == request.DentistId);
-
-            if (dentist == null)
-            {
-                response.Code = "404";
-                response.Message = "Not found dentist";
-                return response;
-            }
-
-            var user = _context.Users.FirstOrDefault(x => x.DentistId == dentist.Id);
+            var user = _context.Users.FirstOrDefault(x => x.DentistId == dentistID);
 
             if (user == null)
             {
@@ -309,9 +300,20 @@ namespace DentistBooking.Application.System.Dentists
                 response.Message = "Error";
                 return response;
             }
+            else
+            {
+                if (user.Status == Status.INACTIVE)
+                {
+                    user.Deleted_at = null;
+                    user.Status = Status.ACTIVE;
+                }
+                else
+                {
+                    user.Deleted_at = DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd"));
+                    user.Status = Status.INACTIVE;
+                }
+            }
 
-
-            user.Deleted_by = request.DeletedBy;
             await _userService.UpdateAsync(user);
             response.Code = "200";
             response.Message = "Delete successfully";

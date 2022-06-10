@@ -68,9 +68,10 @@ namespace DentistsBooking.Api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> RemoveDentist([FromBody] DeleteDentistRequest request)
+        [Route("{dentistID}")]
+        public async Task<IActionResult> RemoveDentist([FromRoute] int dentistID)
         {
-            var result = await _dentistService.DeleteDentist(request);
+            var result = await _dentistService.DeleteDentist(dentistID);
             return Ok(result);
         }
     }
