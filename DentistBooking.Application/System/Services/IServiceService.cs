@@ -13,6 +13,8 @@ namespace DentistBooking.Application.System.Services
         Task<ListServiceResponse> GetServiceList(PaginationFilter filter);
         Task<ServiceResponse> CreateService(AddServiceRequest request);
         Task<ServiceResponse> UpdateService(ServiceRequest request);
-        Task<ServiceResponse> DeleteService(int clinicId, Guid userId);
+        Task<ServiceResponse> DeleteService(int serviceId);
+        Task<ServiceDto> GetService(int serviceId);
+
     }
 }

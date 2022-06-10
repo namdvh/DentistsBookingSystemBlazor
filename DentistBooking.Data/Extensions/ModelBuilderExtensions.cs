@@ -110,7 +110,6 @@ namespace DentisBooking.Data.Extensions
                         Created_by = Guid.Parse("74965f04-3baa-44ef-878a-50862a6fe9a" + i),
                         Updated_by = Guid.Parse("74965f04-3baa-44ef-878a-50862a6fe9a" + i),
                         Deleted_by = Guid.Parse("74965f04-3baa-44ef-878a-50862a6fe9a" + i),
-                        DiscountId = i
                     });
             }
 

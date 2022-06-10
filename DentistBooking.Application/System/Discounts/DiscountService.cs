@@ -100,7 +100,8 @@ namespace DentistBooking.Application.System.Discounts
                     Amount = request.Amount,
                     status = Data.Enum.Status.ACTIVE,
                     Created_at = DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd")),
-                    Created_by = request.UserId
+                    Created_by = request.UserId,
+                    ApplyForAll = false
                 };
 
                 _context.Discounts.Add(discount);

@@ -42,7 +42,6 @@ namespace DentistBooking.Application.System.Services
 
                 pagedData = await _context.Services
               .OrderBy(filter._by + " " + orderBy)
-              .Where(x => x.Deleted_by != null)
               .Skip((filter.PageNumber - 1) * filter.PageSize)
               .Take(filter.PageSize)
               .ToListAsync();
@@ -111,7 +110,6 @@ namespace DentistBooking.Application.System.Services
                 service.Status = Data.Enum.Status.ACTIVE;
                 service.Price = request.Price;
                 service.Procedure = request.Procedure;
-                service.Price = request.Price;
 
                 _context.Services.Add(service);
                 await _context.SaveChangesAsync();
@@ -183,7 +181,7 @@ namespace DentistBooking.Application.System.Services
             }
         }
 
-        public async Task<ServiceResponse> DeleteService(int serviceID, Guid userId)
+        public async Task<ServiceResponse> DeleteService(int serviceID)
         {
             var response = new ServiceResponse();
 
@@ -192,9 +190,18 @@ namespace DentistBooking.Application.System.Services
                 Service obj = _context.Services.FirstOrDefault(x => x.Id == serviceID);
                 if (obj != null)
                 {
-                    obj.Deleted_by = userId;
-                    obj.Deleted_at = DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd"));
-                    obj.Status = Data.Enum.Status.ACTIVE;
+                    if (obj.Status == Data.Enum.Status.INACTIVE)
+                    {
+                        obj.Deleted_at = null;
+                        obj.Status = Data.Enum.Status.ACTIVE;
+                    }
+                    else
+                    {
+                        obj.Deleted_at = DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd"));
+                        obj.Status = Data.Enum.Status.INACTIVE;
+                        
+                    }
+                    
 
                     await _context.SaveChangesAsync();
 
@@ -228,11 +235,37 @@ namespace DentistBooking.Application.System.Services
             {
                 Id = service.Id,
                 Procedure = service.Procedure,
-                ServiceName = service.Name
+                ServiceName = service.Name,
+                Status = service.Status,
+                Price = service.Price,
+                DiscountId = service.DiscountId
 
 
             };
             return serviceDto;
+        }
+
+        public async Task<ServiceDto> GetService(int serviceId)
+        {
+
+            try
+            {
+                Service obj = await _context.Services.FindAsync(serviceId);
+                if (obj != null)
+                {
+                    var result = MapToDTO(obj);
+
+
+                    return result;
+                }
+                return null;
+
+            }
+            catch (DbUpdateException)
+            {
+
+                return null;
+            }
         }
     }
 }

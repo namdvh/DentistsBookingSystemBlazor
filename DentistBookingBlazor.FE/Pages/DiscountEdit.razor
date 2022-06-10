@@ -17,29 +17,29 @@ else
 <EditForm Model="discount" OnValidSubmit="SubmitTask">
     <div class="form-group">
 
-        <label for="Name">Title</label>
+        <label for="Title">Title</label>
         <InputText class="form-control" @bind-Value="discount.Title"></InputText>
-        <small id="nameHelp" class="form-text text-muted">Please enter discount title here please.</small>
+        <small id="titleHelp" class="form-text text-muted">Please enter discount title here please.</small>
 
-        <label for="Name">Start Date</label>
+        <label for="Start Date">Start Date</label>
         <InputDate class="form-control"  asp-for="@discount.StartDate" @bind-Value="discount.StartDate"></InputDate>
-        <small id="nameHelp" class="form-text text-muted">Please enter clinic start date here please.</small>
+        <small id="startdateHelp" class="form-text text-muted">Please enter clinic start date here please.</small>
 
-        <label for="Name">End Date</label>
+        <label for="End Date">End Date</label>
         <InputDate class="form-control"  asp-for="@discount.EndDate" @bind-Value="discount.EndDate"></InputDate>
-        <small id="nameHelp" class="form-text text-muted">Please enter discount end date here please.</small>
+        <small id="enddateHelp" class="form-text text-muted">Please enter discount end date here please.</small>
 
-        <label for="Name">Description</label>
+        <label for="Description">Description</label>
         <InputText class="form-control" @bind-Value="discount.Description"></InputText>
-        <small id="nameHelp" class="form-text text-muted">Please enter discount description here please.</small>
+        <small id="descriptionHelp" class="form-text text-muted">Please enter discount description here please.</small>
 
-        <label for="Name">Amount</label>
+        <label for="Amount">Amount</label>
         <InputNumber class="form-control" asp-for="@discount.Amount" @bind-Value="discount.Amount"></InputNumber>
-        <small id="nameHelp" class="form-text text-muted">Please enter discount amount here please.</small>
+        <small id="amountHelp" class="form-text text-muted">Please enter discount amount here please.</small>
 
-        <label for="Name">Percent</label>
+        <label for="Percent">Percent</label>
         <InputNumber class="form-control" asp-for="@discount.Percent" @bind-Value="discount.Percent"></InputNumber>
-        <small id="nameHelp" class="form-text text-muted">Please enter discount percent here please.</small>
+        <small id="percentHelp" class="form-text text-muted">Please enter discount percent here please.</small>
 
 
     </div>
