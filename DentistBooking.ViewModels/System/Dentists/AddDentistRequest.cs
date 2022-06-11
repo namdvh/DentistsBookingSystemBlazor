@@ -12,7 +12,7 @@ namespace DentistBooking.ViewModels.System.Dentists
         public string ConfirmPassword { get; set; }
 
         public DateTime DOB { get; set; }
-
+        public string Image { get; set; }
         public string PhoneNumber { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

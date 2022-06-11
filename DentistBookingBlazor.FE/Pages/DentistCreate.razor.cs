@@ -1,11 +1,13 @@
 ﻿
 
+using DentistBooking.Data.DataContext;
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Clinics;
 using DentistBooking.ViewModels.System.Dentists;
 using DentistBooking.ViewModels.System.Services;
 using DentistBookingBlazor.FE.Services.Clinics;
 using DentistBookingBlazor.FE.Services.Dentists;
+using DentistBookingBlazor.FE.Services.Files;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System.Collections.Generic;
@@ -29,11 +31,16 @@ namespace DentistBookingBlazor.FE.Pages
         public List<ClinicDTO> clinic = new();
         public List<ServiceDto> sevices = new();
         public List<int> selectedServices = new();
+        [Inject]
+        private IFileApiClient fileApiClient { get; set; }
+        private FileDto fileDto;
+        private DentistDBContext _context;
 
         protected async override Task OnInitializedAsync()
         {
             await GetClinic();
             await GetServices();
+            await GetFiles();
 
         }
 

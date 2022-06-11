@@ -30,4 +30,8 @@
     <ProjectReference Include="..\DentistBookingBlazor.FE\DentistBookingBlazor.FE.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Files\" />
+  </ItemGroup>
+
 </Project>

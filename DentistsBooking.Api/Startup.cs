@@ -22,6 +22,9 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
 using DentistBooking.Application.System.Users;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace DentistsBooking.Api
 {
@@ -100,6 +103,13 @@ namespace DentistsBooking.Api
                      .AllowAnyHeader()
                      .SetIsOriginAllowed(origin => true) // allow any origin
                      .AllowCredentials());
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider
+                 (Path.Combine(Directory.GetCurrentDirectory(), @"Files")),
+                RequestPath = new PathString("/Files")
+            });
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

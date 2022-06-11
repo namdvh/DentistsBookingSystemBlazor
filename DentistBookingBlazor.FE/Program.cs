@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using DentistBookingBlazor.FE.Services.Files;
 
 namespace DentistBookingBlazor.FE
 {
@@ -27,6 +28,7 @@ namespace DentistBookingBlazor.FE
             builder.Services.AddTransient<IClinicService, ClinicService>();
             builder.Services.AddTransient<IDentistService, DentistService>();
             builder.Services.AddTransient<IDiscountService, DiscountService>();
+            builder.Services.AddTransient<IFileApiClient, FileApiClient>();
             //builder.Services.AddTransient<IValidator<ClinicRequest>, ClinicRequestValidator>();
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001") });
 
