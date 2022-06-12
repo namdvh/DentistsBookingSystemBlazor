@@ -1,17 +1,14 @@
 using Blazored.LocalStorage;
 using DentistBooking.Blazor.Services.Users;
-using DentistBooking.ViewModels.System.Clinics;
 using DentistBookingBlazor.FE.Services.Clinics;
-using DentistBookingBlazor.FE.Services.Discounts;
 using DentistBookingBlazor.FE.Services.Dentists;
-using FluentValidation;
+using DentistBookingBlazor.FE.Services.Discounts;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using DentistBookingBlazor.FE.Services.Files;
 
 namespace DentistBookingBlazor.FE
 {
@@ -28,7 +25,6 @@ namespace DentistBookingBlazor.FE
             builder.Services.AddTransient<IClinicService, ClinicService>();
             builder.Services.AddTransient<IDentistService, DentistService>();
             builder.Services.AddTransient<IDiscountService, DiscountService>();
-            builder.Services.AddTransient<IFileApiClient, FileApiClient>();
             //builder.Services.AddTransient<IValidator<ClinicRequest>, ClinicRequestValidator>();
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001") });
 
