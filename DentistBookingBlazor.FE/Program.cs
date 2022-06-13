@@ -1,6 +1,5 @@
 using Blazored.LocalStorage;
 using DentistBooking.Blazor.Services.Users;
-using DentistBooking.ViewModels.System.Clinics;
 using DentistBookingBlazor.FE.Services.Clinics;
 using DentistBookingBlazor.FE.Services.Discounts;
 using DentistBookingBlazor.FE.Services.Dentists;

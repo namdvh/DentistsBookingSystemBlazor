@@ -1,0 +1,94 @@
+﻿@page "/user"
+@using DentistBookingBlazor.FE.Components
+@using DentistBooking.Blazor.Services.Users;
+@inject HttpClient _httpClient
+@inject IUserService userService;
+
+<h3>User</h3>
+
+@if (user == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+
+
+    <div class="content">
+
+        <div class="container">
+            <h2 class="mb-5">Table #6</h2>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped custom-table">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">ID</th>
+                            <th scope="col">First Name</th>
+                            <th scope="col">Last Name</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Birthday</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in user)
+                        {
+
+                            <tr scope="row">
+                                <td>
+                                    @item.Id
+                                </td>
+                                <td>@item.FirstName </td>
+
+                                <td>@item.LastName</td>
+                                <td>@item.Phone</td>
+                                <td>@item.Email</td>
+                                <td>@item.Gender</td>
+                                <td>@item.DOB</td>
+                                @if (@item.Status == 0)
+                                {
+                                    <td>ACTIVE</td>
+                                }
+                                else
+                                {
+                                    <td>INACTIVE</td>
+                                }
+                                <td>
+                                    <a href="/userUpdate/@item.Id" class="btn btn-warning">Update</a>
+                                    @if(@item.Status == 0)
+                                    {
+                                    <button class="btn btn-danger" @onclick="()=>OnDeleteUser(item.Id,1)">Delete</button>
+                                        
+                                    }else{
+                                    <button class="btn btn-primary" @onclick="()=>OnDeleteUser(item.Id,-1)">Active</button>
+                                    }
+
+
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <Pagination filter="paginationFilter" paginationDTO="paginationDTO" Spread="1" SelectedPage="SelectedPage"></Pagination>
+                    </tfoot>
+                </table>
+            </div>
+            
+
+        </div>
+
+    </div>
+    <Confirmation 
+        ConfirmationMessage="Are you sure you want to delete it?"
+                      ConfirmationTitle="Delete User"
+                      @ref="DeleteConfirmation"
+                      ConfirmationChanged="OnConfirmDeleteUser"></Confirmation>
+}

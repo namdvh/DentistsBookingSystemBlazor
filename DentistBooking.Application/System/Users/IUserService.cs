@@ -8,7 +8,7 @@ namespace DentistBooking.Application.System.Users
 {
     public interface IUserService
     {
-        Task<UserResponse> GetUserList(PaginationFilter filter);
+        Task<ListUserResponse> GetUserList(PaginationFilter filter);
         Task<DentistCodeResponse> UpdateUser(UpdateUserRequest request);
         Task<DentistCodeResponse> DeleteUser(Guid userId);
         Task<UserDTO> GetUser(Guid userId);
