@@ -70,5 +70,12 @@ namespace DentistsBooking.Api.Controllers
             ServiceDto result = await _serviceService.GetService(serviceId);
             return Ok(result);
         }
+        
+        [HttpGet("clinics/{clinicId}")]
+        public async Task<IActionResult> GetServiceFromClinic( int clinicId)
+        {
+            var result = await _serviceService.GetServiceListByClinic(clinicId);
+            return Ok(result);
+        }
     }
 }

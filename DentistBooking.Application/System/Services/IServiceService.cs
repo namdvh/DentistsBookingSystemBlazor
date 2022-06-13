@@ -15,6 +15,8 @@ namespace DentistBooking.Application.System.Services
         Task<ServiceResponse> UpdateService(ServiceRequest request);
         Task<ServiceResponse> DeleteService(int serviceId);
         Task<ServiceDto> GetService(int serviceId);
+        Task<ListServiceResponse> GetServiceListByClinic(int clinicId);
+
 
     }
 }
