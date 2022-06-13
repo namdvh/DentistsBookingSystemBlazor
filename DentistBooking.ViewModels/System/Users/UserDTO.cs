@@ -12,12 +12,6 @@ namespace DentistBooking.ViewModels.System.Users
         public string LastName { get; set; }
         public Gender Gender { get; set; }
         public DateTime DOB { get; set; }
-
-
-        public DateTime Created_at { get; set; }
-       
-        public string role { get; set; }
-
         public Status Status { get; set; }
     }
 }

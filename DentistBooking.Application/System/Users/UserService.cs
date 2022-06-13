@@ -29,9 +29,9 @@ namespace DentistBooking.Application.System.Users
             _roleManager = roleManager;
         }
 
-        public async Task<UserResponse> GetUserList(PaginationFilter filter)
+        public async Task<ListUserResponse> GetUserList(PaginationFilter filter)
         {
-            UserResponse response = new();
+            ListUserResponse response = new();
             PaginationDTO paginationDto = new();
 
             var orderBy = filter._order.ToString();
@@ -49,7 +49,7 @@ namespace DentistBooking.Application.System.Users
                         on user.Id equals userRole.UserId
                     join role in _context.Roles
                         on userRole.RoleId equals role.Id
-                    where role.Name.Equals("User") && user.Status != Status.INACTIVE
+                    where role.Name.Equals("User")
                     select user
                 )
                 .OrderBy(filter._by + " " + orderBy)
@@ -116,7 +116,6 @@ namespace DentistBooking.Application.System.Users
                 user.FirstName = request.FirstName;
                 user.LastName = request.LastName;
                 user.PhoneNumber = request.PhoneNumber;
-                user.Status = (Status)request.Status;
                 user.Gender = (Gender)request.Gender;
             }
 
@@ -153,7 +152,6 @@ namespace DentistBooking.Application.System.Users
                 user.Status = Status.INACTIVE;
             }
 
-            _context.Users.Update(user);
             var rs = await _context.SaveChangesAsync();
             response.Code = "200";
             response.Message = "Delete successfully";

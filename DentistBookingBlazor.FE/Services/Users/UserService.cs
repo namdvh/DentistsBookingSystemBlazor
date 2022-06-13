@@ -2,12 +2,16 @@
 using DentistBooking.Data.DataContext;
 using DentistBooking.Data.Entities;
 using DentistBooking.Data.Enum;
+using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Users;
 using DentistBookingBlazor.FE;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -68,21 +72,35 @@ namespace DentistBooking.Blazor.Services.Users
             return registerResponse;
         }
 
-        private UserDTO MapToDto(User user, string roleName)
+        public async Task<bool> DeleteUser(Guid userId)
         {
-            var userDto = new UserDTO()
+            var result = await _httpClient.DeleteAsync($"/api/users/{userId}");
+            return result.IsSuccessStatusCode;
+        }
+
+        public async Task<UserDTO> GetUser(Guid userId)
+        {
+            var rs = await _httpClient.GetFromJsonAsync<UserDTO>($"/api/users/{userId}");
+            return rs;
+        }
+
+        public async Task<ListUserResponse> GetUserList(PaginationFilter filter)
+        {
+            var queryStringParam = new Dictionary<string, string>
             {
-                Id = user.Id.ToString(),
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Gender = user.Gender,
-                Phone = user.PhoneNumber,
-                Status = user.Status,
-                Created_at = user.Created_at,
-                role = roleName
+                ["PageNumber"] = filter.PageNumber.ToString(),
+                ["PageSize"] = filter.PageSize.ToString(),
             };
-            return userDto;
+
+            var url = QueryHelpers.AddQueryString("/api/users", queryStringParam);
+            var result = await _httpClient.GetFromJsonAsync<ListUserResponse>(url);
+
+            return result;
+        }
+        public async Task<bool> UpdateUser(UpdateUserRequest request)
+        {
+            var result = await _httpClient.PutAsJsonAsync("/api/users", request);
+            return result.IsSuccessStatusCode;
         }
     }
 
