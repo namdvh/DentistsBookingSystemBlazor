@@ -403,6 +403,39 @@ namespace DentistBooking.Application.System.Bookings
             return final;
         }
 
+        public async Task<List<KeyTime>> GetUnavailableListKeyTime(int clinicId, int serviceId, DateTime date)
+        {
+            List<KeyTime> list = new();
 
+            var details = await (from t1 in _context.Bookings
+                           join t2 in _context.BookingDetails
+                           on t1.Id equals t2.BookingId
+                           where t1.Date.Equals(date)
+                           select t2).ToListAsync();
+            var dentists = await (from dentist in _context.Dentists
+                           where dentist.ClinicId == clinicId
+                           select dentist).ToListAsync();
+            int count = 0;
+            foreach (var detail in details)
+            {
+                foreach (var dentist in dentists)
+                {
+                    if (detail.ServiceId == serviceId && detail.DentistId == dentist.Id)
+                    {
+                        count++;
+                        if (count == dentists.Count())
+                        {
+                            list.Add(detail.KeyTime);
+                            
+                        }
+                    }
+
+                }
+            }
+
+            return list;
+
+            
+        }
     }
 }
