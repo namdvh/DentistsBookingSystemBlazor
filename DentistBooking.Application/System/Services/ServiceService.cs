@@ -40,11 +40,11 @@ namespace DentistBooking.Application.System.Services
             List<Service> pagedData;
 
 
-                pagedData = await _context.Services
-              .OrderBy(filter._by + " " + orderBy)
-              .Skip((filter.PageNumber - 1) * filter.PageSize)
-              .Take(filter.PageSize)
-              .ToListAsync();
+            pagedData = await _context.Services
+                .OrderBy(filter._by + " " + orderBy)
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToListAsync();
 
             var totalRecords = await _context.Services.CountAsync(x => x.Status != Data.Enum.Status.INACTIVE);
 
@@ -61,11 +61,12 @@ namespace DentistBooking.Application.System.Services
                 {
                     result.Add(MapToDTO(x));
                 }
+
                 response.Content = result;
                 response.Message = "SUCCESS";
                 response.Code = "200";
-
             }
+
             var totalPages = ((double)totalRecords / (double)filter.PageSize);
 
 
@@ -79,7 +80,6 @@ namespace DentistBooking.Application.System.Services
             paginationDto.TotalRecords = totalRecords;
 
             response.Pagination = paginationDto;
-
 
 
             return response;
@@ -151,6 +151,7 @@ namespace DentistBooking.Application.System.Services
                     {
                         obj.Discount = discount;
                     }
+
                     obj.Updated_by = request.UserId;
                     obj.Price = request.Price;
                     obj.Procedure = request.Procedure;
@@ -160,7 +161,6 @@ namespace DentistBooking.Application.System.Services
                     response.Message = "Update services successfully";
 
                     return response;
-
                 }
                 else
                 {
@@ -169,11 +169,9 @@ namespace DentistBooking.Application.System.Services
 
                     return response;
                 }
-
             }
             catch (DbUpdateException)
             {
-
                 response.Code = "200";
                 response.Message = "Update clinic failed";
 
@@ -199,9 +197,8 @@ namespace DentistBooking.Application.System.Services
                     {
                         obj.Deleted_at = DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd"));
                         obj.Status = Data.Enum.Status.INACTIVE;
-                        
                     }
-                    
+
 
                     await _context.SaveChangesAsync();
 
@@ -217,11 +214,9 @@ namespace DentistBooking.Application.System.Services
 
                     return response;
                 }
-
             }
             catch (DbUpdateException)
             {
-
                 response.Code = "200";
                 response.Message = "Delete service failed";
 
@@ -239,15 +234,12 @@ namespace DentistBooking.Application.System.Services
                 Status = service.Status,
                 Price = service.Price,
                 DiscountId = service.DiscountId
-
-
             };
             return serviceDto;
         }
 
         public async Task<ServiceDto> GetService(int serviceId)
         {
-
             try
             {
                 Service obj = await _context.Services.FindAsync(serviceId);
@@ -258,14 +250,52 @@ namespace DentistBooking.Application.System.Services
 
                     return result;
                 }
-                return null;
 
+                return null;
             }
             catch (DbUpdateException)
             {
-
                 return null;
             }
+        }
+
+
+        async Task<ListServiceResponse> IServiceService.GetServiceListByClinic(int clinicId)
+        {
+            List<ServiceDto> dtoList = new();
+            ListServiceResponse response = new();
+
+            try
+            {
+                var data = await (from service in _context.Services
+                        join serviceDentist in _context.ServiceDentists on service.Id equals serviceDentist.ServiceId
+                        join dentist in _context.Dentists on serviceDentist.DentistId equals dentist.Id
+                        where dentist.ClinicId == clinicId
+                                select service).Distinct()
+                    .ToListAsync();
+
+
+                var test = data.ToList();
+
+
+
+                foreach (var x in data)
+                {
+                    dtoList.Add(MapToDTO(x));
+                }
+            }
+            catch (Exception e)
+            {
+                
+            }
+
+            response.Content = dtoList;
+            response.Code = "200";
+            response.Message = "Successful";
+
+            return response;
+
+
         }
     }
 }
