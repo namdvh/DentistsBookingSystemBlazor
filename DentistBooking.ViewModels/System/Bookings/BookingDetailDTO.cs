@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DentistBooking.Data.Enum;
+using DentistBooking.ViewModels.System.Dentists;
 using DentistBooking.ViewModels.System.Services;
 
 namespace DentistBooking.ViewModels.System.Bookings
@@ -12,7 +13,7 @@ namespace DentistBooking.ViewModels.System.Bookings
         public string? Note { get; set; }
 
         public Status Status { get; set; }
-        public List<ServiceDto> Services { get; set; }
+        public List<DentistServiceDto> Services { get; set; }
 
 
     }
