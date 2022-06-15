@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DentistBooking.Data.DataContext;
+﻿using DentistBooking.Data.DataContext;
 using DentistBooking.Data.Entities;
 using DentistBooking.Data.Enum;
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Dentists;
-using DentistBooking.ViewModels.System.Services;
 using DentistBooking.ViewModels.System.Users;
 using Microsoft.AspNetCore.Identity;
-using System.Linq.Dynamic.Core;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
 namespace DentistBooking.Application.System.Users
 {
@@ -45,12 +44,12 @@ namespace DentistBooking.Application.System.Users
 
 
             var usersInUserRole = await (from user in _context.Users
-                    join userRole in _context.UserRoles
-                        on user.Id equals userRole.UserId
-                    join role in _context.Roles
-                        on userRole.RoleId equals role.Id
-                    where role.Name.Equals("User")
-                    select user
+                                         join userRole in _context.UserRoles
+                                             on user.Id equals userRole.UserId
+                                         join role in _context.Roles
+                                             on userRole.RoleId equals role.Id
+                                         where role.Name.Equals("User")
+                                         select user
                 )
                 .OrderBy(filter._by + " " + orderBy)
                 .Skip((filter.PageNumber - 1) * filter.PageSize)
@@ -62,12 +61,12 @@ namespace DentistBooking.Application.System.Users
 
 
             var totalRecords = (from user in _context.Users
-                    join userRole in _context.UserRoles
-                        on user.Id equals userRole.UserId
-                    join role in _context.Roles
-                        on userRole.RoleId equals role.Id
-                    where role.Name.Equals("User") && user.Status != Status.INACTIVE
-                    select user
+                                join userRole in _context.UserRoles
+                                    on user.Id equals userRole.UserId
+                                join role in _context.Roles
+                                    on userRole.RoleId equals role.Id
+                                where role.Name.Equals("User") && user.Status != Status.INACTIVE
+                                select user
                 ).Count();
 
             if (!usersInUserRole.Any())
@@ -163,7 +162,7 @@ namespace DentistBooking.Application.System.Users
         public async Task<UserDTO> GetUser(Guid userId)
         {
             try
-            {
+            {         
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
                 return MapToDto(user);
             }
@@ -184,7 +183,6 @@ namespace DentistBooking.Application.System.Users
             dto.Status = user.Status;
             dto.FirstName = user.FirstName;
             dto.LastName = user.LastName;
-
             return dto;
         }
 

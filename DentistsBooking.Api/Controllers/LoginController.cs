@@ -109,6 +109,7 @@ namespace DentistsBooking.Api.Controllers
                 };
 
                 var rs = await _userManager.CreateAsync(user, request.Password);
+                await _userManager.AddToRoleAsync(user, defaultRole.Name);
                 if (rs.Succeeded)
                 {
                     response.Content = user;

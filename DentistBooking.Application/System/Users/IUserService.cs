@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using DentistBooking.ViewModels.Pagination;
+﻿using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Dentists;
 using DentistBooking.ViewModels.System.Users;
+using System;
+using System.Threading.Tasks;
 
 namespace DentistBooking.Application.System.Users
 {

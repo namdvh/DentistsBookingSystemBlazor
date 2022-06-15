@@ -1,34 +1,24 @@
-﻿using DentistBooking.Data.Entities;
-using DentistBooking.Data.Enum;
-using DentistBooking.ViewModels.System.Users;
-using FluentValidation.Results;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using DentistBooking.Application.System.Users;
+﻿using DentistBooking.Application.System.Users;
 using DentistBooking.ViewModels.Pagination;
-using DentistBooking.ViewModels.System.Dentists;
+using DentistBooking.ViewModels.System.Users;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace DentistsBooking.Api.Controllers
 {
     [Route("api/users")]
     [ApiController]
-    public class UserController :ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
 
         public UserController(IUserService userService)
         {
             _userService = userService;
+
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetAllUser([FromQuery] PaginationFilter filter)
         {
@@ -44,7 +34,7 @@ namespace DentistsBooking.Api.Controllers
             UserDTO result = await _userService.GetUser(userID);
             return Ok(result);
         }
-        
+
 
         [HttpPut]
         public async Task<IActionResult> UpdateDentist([FromBody] UpdateUserRequest request)
@@ -59,6 +49,6 @@ namespace DentistsBooking.Api.Controllers
         {
             var result = await _userService.DeleteUser(userId);
             return Ok(result);
-        }
+        }  
     }
 }

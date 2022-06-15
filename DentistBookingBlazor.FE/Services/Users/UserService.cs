@@ -1,15 +1,9 @@
 ﻿using Blazored.LocalStorage;
-using DentistBooking.Data.DataContext;
-using DentistBooking.Data.Entities;
-using DentistBooking.Data.Enum;
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Users;
 using DentistBookingBlazor.FE;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -27,7 +21,7 @@ namespace DentistBooking.Blazor.Services.Users
         private readonly AuthenticationStateProvider _authenticationStateProvider;
 
 
-        public UserService(  HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider,
+        public UserService(HttpClient httpClient, AuthenticationStateProvider authenticationStateProvider,
                            ILocalStorageService localStorage)
         {
             _httpClient = httpClient;
@@ -39,7 +33,7 @@ namespace DentistBooking.Blazor.Services.Users
         {
             var rs = await _httpClient.PostAsJsonAsync("/api/login", loginRequest);
             var content = await rs.Content.ReadAsStringAsync();
-            var loginResponse = JsonSerializer.Deserialize<LoginResponse>(content,
+            var loginResponse = System.Text.Json.JsonSerializer.Deserialize<LoginResponse>(content,
                 new JsonSerializerOptions()
                 {
                     PropertyNameCaseInsensitive = true,
@@ -59,7 +53,7 @@ namespace DentistBooking.Blazor.Services.Users
         {
             var rs = await _httpClient.PostAsJsonAsync("/api/Login/register", request);
             var content = await rs.Content.ReadAsStringAsync();
-            var registerResponse = JsonSerializer.Deserialize<RegisterResponse>(content,
+            var registerResponse = System.Text.Json.JsonSerializer.Deserialize<RegisterResponse>(content,
                 new JsonSerializerOptions()
                 {
                     PropertyNameCaseInsensitive = true,
