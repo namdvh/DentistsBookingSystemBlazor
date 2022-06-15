@@ -51,6 +51,13 @@ namespace DentistBookingBlazor.FE.Services.Services
             return result;
         }
 
+        public async Task<ListServiceResponse> GetServiceListByClinic(int clinicId)
+        {
+            var rs = await _httpClient.GetFromJsonAsync<ListServiceResponse>($"/api/services/clinics/{clinicId}");
+            return rs;
+
+        }
+
         public async Task<bool> UpdateService(ServiceRequest request)
         {
             var result = await _httpClient.PutAsJsonAsync("/api/services", request);

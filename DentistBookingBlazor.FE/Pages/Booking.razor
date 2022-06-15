@@ -1,0 +1,17 @@
+﻿@page "/booking"
+
+<h3>Booking</h3>
+
+<div class="form-group">
+    <InputSelect class="form-control" @bind-Value="clinicList">
+        <option>Select a clinic</option>
+        @foreach (var item in clinicList)
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+    </InputSelect>
+</div>
+
+@code {
+
+}

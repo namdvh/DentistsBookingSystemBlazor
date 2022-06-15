@@ -11,5 +11,7 @@ namespace DentistBookingBlazor.FE.Services.Services
         Task<bool> UpdateService(ServiceRequest request);
         Task<bool> DeleteService(int serviceId);
         Task<ServiceDto> GetService(int serviceId);
+        Task<ListServiceResponse> GetServiceListByClinic(int clinicId);
+
     }
 }

@@ -37,7 +37,7 @@ namespace DentistsBooking.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            List<KeyTime> result = await _bookingService.GetUnavailableListKeyTime(clinicId, serviceId, date);
+            List<KeyTime> result = await _bookingService.GetPostListKeyTime(clinicId, serviceId, date);
             return Ok(result);
         }
         

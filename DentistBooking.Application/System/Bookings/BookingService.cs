@@ -403,7 +403,7 @@ namespace DentistBooking.Application.System.Bookings
             return final;
         }
 
-        public async Task<List<KeyTime>> GetUnavailableListKeyTime(int clinicId, int serviceId, DateTime date)
+        public async Task<List<KeyTime>> GetPostListKeyTime(int clinicId, int serviceId, DateTime date)
         {
             List<KeyTime> list = new();
 

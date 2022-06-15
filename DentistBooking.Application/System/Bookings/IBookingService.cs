@@ -19,7 +19,7 @@ namespace DentistBooking.Application.System.Bookings
         
         Task<ListBookingDTOResponse> GetBookingListForDentist(PaginationFilter filter, int dentistId);
 
-        Task<List<KeyTime>> GetUnavailableListKeyTime(int clinicId, int serviceId, DateTime date);
+        Task<List<KeyTime>> GetPostListKeyTime(int clinicId, int serviceId, DateTime date);
 
     }
 }
