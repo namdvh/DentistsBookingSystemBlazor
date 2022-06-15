@@ -21,5 +21,6 @@ namespace DentistBooking.Application.System.Bookings
 
         Task<List<KeyTime>> GetPostListKeyTime(int clinicId, int serviceId, DateTime date);
 
+
     }
 }

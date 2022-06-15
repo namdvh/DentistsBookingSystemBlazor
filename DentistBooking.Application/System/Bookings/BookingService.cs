@@ -25,28 +25,13 @@ namespace DentistBooking.Application.System.Bookings
 
         public async Task<BookingResponse> CreateBooking(CreateBookingRequest request)
         {
-            BookingResponse response = new BookingResponse(); 
+            BookingResponse response = new BookingResponse();
             try
             {
-                for (int i = 0; i < request.DentistIds.Count; i++)
-                {
-                    //check keyTime
-                    BookingDetail existedDetail = _context.BookingDetails
-                                                  .Where(g => g.DentistId == request.DentistIds[i]
-                                                  && g.ServiceId == request.ServiceIds[i]
-                                                  && g.Created_at == DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd")))
-                                                  .SingleOrDefault();
-                    if (existedDetail.KeyTime == request.KeyTimes[i])
-                    {
-                        response.Code = "700";
-                        response.Message = "KeyTime is already chosen!";
-                        return response;
-                    }
-                }
                 Booking booking = new Booking()
                 {
-                    Status = 0,
-                    Date = DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd")),
+                    Status = Status.PENDING,
+                    Date = DateTime.Parse(request.Date.ToString("yyyy/MMM/dd")),
                     Total = request.Total,
                     UserId = request.UserId,
                     Created_at = DateTime.Now
@@ -55,21 +40,52 @@ namespace DentistBooking.Application.System.Bookings
                 _context.Bookings.Add(booking);
                 await _context.SaveChangesAsync();
 
-                for (int i = 0; i < request.DentistIds.Count; i++)
+                
+                dynamic existedDetails = null;
+
+                for (int i = 0; i < request.ServiceIds.Count; i++)
                 {
+                    var dentists = await (from dentist in _context.Dentists
+                                          where dentist.ClinicId == request.ClinicId
+                                          select dentist).ToListAsync();
+
+                    existedDetails = await (from t1 in _context.Bookings
+                                            join t2 in _context.BookingDetails
+                                            on t1.Id equals t2.BookingId
+                                            where t1.Date.Equals(DateTime.Parse(request.Date.ToString("yyyy/MMM/dd")))
+                                            && t2.KeyTime == request.KeyTimes[i]
+                                            select t2).ToListAsync();
+
+                    foreach (var item in existedDetails)
+                    {
+                        for (int j = 0; j < dentists.Count; j++)
+                        {
+                            if (item.DentistId == dentists[j].Id)
+                            {
+                                dentists.Remove(dentists[j]);
+                            }
+                        }
+  
+                    }
+
+
                     BookingDetail detail = new BookingDetail()
                     {
                         BookingId = booking.Id,
+                        DentistId = dentists[0].Id,
                         Created_at = DateTime.Now,
                         KeyTime = request.KeyTimes[i],
                         Note = request.Note,
                         Created_by = request.UserId,
-                        Status = 0,
+                        Status = Status.ACTIVE,
                         ServiceId = request.ServiceIds[i]
+
                     };
                     _context.BookingDetails.Add(detail);
                     await _context.SaveChangesAsync();
+
                 }
+
 
                 response.Code = "200";
                 response.Message = "Booking successfully";
@@ -84,10 +100,6 @@ namespace DentistBooking.Application.System.Bookings
 
                 return response;
             }
-
-
-
-
         }
 
         public async Task<BookingResponse> DeleteBooking(string bookingId, Guid userId)
@@ -101,7 +113,7 @@ namespace DentistBooking.Application.System.Bookings
                 {
                     obj.Deleted_by = userId;
                     obj.Deleted_at = DateTime.Parse(DateTime.Now.ToString("yyyy/MMM/dd"));
-                    obj.Status =Status.INACTIVE;
+                    obj.Status = Status.INACTIVE;
 
                     await _context.SaveChangesAsync();
 
@@ -225,7 +237,7 @@ namespace DentistBooking.Application.System.Bookings
         {
             BookingDetailResponse response = new BookingDetailResponse();
             List<BookingDetailDTO> listDto = new();
-            
+
             try
             {
                 List<BookingDetail> details =
@@ -235,9 +247,9 @@ namespace DentistBooking.Application.System.Bookings
                 {
                     foreach (var x in details)
                     {
-                        listDto.Add( MapToBookingDetailDto(x));
+                        listDto.Add(MapToBookingDetailDto(x));
                     }
-                    
+
                     response.Details = listDto;
                     response.Code = "200";
                     response.Message = "GetBookingDetail successfully";
@@ -262,8 +274,8 @@ namespace DentistBooking.Application.System.Bookings
                 return response;
             }
         }
-        
-         public async Task<ListBookingDTOResponse> GetBookingListForDentist(PaginationFilter filter, int dentistId)
+
+        public async Task<ListBookingDTOResponse> GetBookingListForDentist(PaginationFilter filter, int dentistId)
         {
             ListBookingDTOResponse response = new();
             PaginationDTO paginationDto = new();
@@ -281,26 +293,26 @@ namespace DentistBooking.Application.System.Bookings
                 orderBy = "ascending";
             }
 
-            dynamic pagedData=null;
+            dynamic pagedData = null;
 
-         
-                pagedData = await (from booking in _context.Bookings
-                        join bookingDetail in _context.BookingDetails on booking.Id equals bookingDetail.BookingId
-                        where bookingDetail.DentistId == dentistId
-                        select new { booking, bookingDetail })
-                    .OrderBy("booking."+"Date" + " " + orderBy)
-                    .Skip((filter.PageNumber - 1) * filter.PageSize)
-                    .Take(filter.PageSize)
-                    .ToListAsync();
-            
+
+            pagedData = await (from booking in _context.Bookings
+                               join bookingDetail in _context.BookingDetails on booking.Id equals bookingDetail.BookingId
+                               where bookingDetail.DentistId == dentistId
+                               select new { booking, bookingDetail })
+                .OrderBy("booking." + "Date" + " " + orderBy)
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToListAsync();
+
 
 
             var totalRecords = await (from booking in _context.Bookings
-                join bookingDetail in _context.BookingDetails on booking.Id equals bookingDetail.BookingId
-                where bookingDetail.DentistId == dentistId
-                select new { booking, bookingDetail }).CountAsync();
+                                      join bookingDetail in _context.BookingDetails on booking.Id equals bookingDetail.BookingId
+                                      where bookingDetail.DentistId == dentistId
+                                      select new { booking, bookingDetail }).CountAsync();
 
-            if (pagedData==null)
+            if (pagedData == null)
             {
                 response.Content = null;
                 response.Code = "200";
@@ -312,8 +324,8 @@ namespace DentistBooking.Application.System.Bookings
                 {
                     listDto.Add(mapToBookingDto(x.booking));
                 }
-                
-                
+
+
                 response.Content = listDto;
                 response.Message = "SUCCESS";
                 response.Code = "200";
@@ -321,7 +333,7 @@ namespace DentistBooking.Application.System.Bookings
 
             var totalPages = ((double)totalRecords / (double)filter.PageSize);
             int roundedTotalPages = Convert.ToInt32(Math.Ceiling(totalPages));
-            
+
             paginationDto.CurrentPage = filter.PageNumber;
             paginationDto.PageSize = filter.PageSize;
             paginationDto.TotalPages = roundedTotalPages;
@@ -332,17 +344,17 @@ namespace DentistBooking.Application.System.Bookings
 
             return response;
         }
-        
-        
-        
-        
+
+
+
+
         private BookingDetailDTO MapToBookingDetailDto(BookingDetail bookingDetail)
         {
             var detailDto = new BookingDetailDTO()
             {
                 Id = bookingDetail.Id,
                 Note = bookingDetail.Note,
-                Services =  GetServiceFromDentist(bookingDetail.DentistId),
+                Services = GetServiceFromDentist(bookingDetail.DentistId),
                 Status = bookingDetail.Status,
                 KeyTime = bookingDetail.KeyTime
 
@@ -350,7 +362,7 @@ namespace DentistBooking.Application.System.Bookings
 
             return detailDto;
         }
-        
+
         private BookingDTO mapToBookingDto(Booking booking)
         {
             BookingDTO bookingDto = new BookingDTO()
@@ -364,12 +376,12 @@ namespace DentistBooking.Application.System.Bookings
             };
             return bookingDto;
         }
-        
+
 
         private UserDTO MapToDTO(Guid userID)
         {
             var user = _context.Users.FirstOrDefault(x => x.Id == userID);
-            
+
             var userDto = new UserDTO()
             {
                 FirstName = user.FirstName,
@@ -381,14 +393,14 @@ namespace DentistBooking.Application.System.Bookings
 
             return userDto;
         }
-        
-        private  List<DentistServiceDto> GetServiceFromDentist(int? dentistId)
+
+        private List<DentistServiceDto> GetServiceFromDentist(int? dentistId)
         {
-            var results =  (from t1 in _context.ServiceDentists
-                join t2 in _context.Services
-                    on t1.ServiceId equals t2.Id
-                where t1.DentistId == dentistId
-                select t2).ToList();
+            var results = (from t1 in _context.ServiceDentists
+                           join t2 in _context.Services
+                               on t1.ServiceId equals t2.Id
+                           where t1.DentistId == dentistId
+                           select t2).ToList();
 
             var final = new List<DentistServiceDto>();
 
@@ -408,13 +420,13 @@ namespace DentistBooking.Application.System.Bookings
             List<KeyTime> list = new();
 
             var details = await (from t1 in _context.Bookings
-                           join t2 in _context.BookingDetails
-                           on t1.Id equals t2.BookingId
-                           where t1.Date.Equals(date)
-                           select t2).ToListAsync();
+                                 join t2 in _context.BookingDetails
+                                 on t1.Id equals t2.BookingId
+                                 where t1.Date.Equals(date)
+                                 select t2).ToListAsync();
             var dentists = await (from dentist in _context.Dentists
-                           where dentist.ClinicId == clinicId
-                           select dentist).ToListAsync();
+                                  where dentist.ClinicId == clinicId
+                                  select dentist).ToListAsync();
             int count = 0;
             foreach (var detail in details)
             {
@@ -426,7 +438,7 @@ namespace DentistBooking.Application.System.Bookings
                         if (count == dentists.Count())
                         {
                             list.Add(detail.KeyTime);
-                            
+
                         }
                     }
 
@@ -435,7 +447,7 @@ namespace DentistBooking.Application.System.Bookings
 
             return list;
 
-            
+
         }
     }
 }
