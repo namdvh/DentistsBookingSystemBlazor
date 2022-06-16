@@ -17,6 +17,7 @@ namespace DentistBookingBlazor.FE.Pages
 
         protected Confirmation DeleteConfirmation { get; set; }
 
+
         private int DeleteId { get; set; }
 
         private List<ClinicDTO> clinic;

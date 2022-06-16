@@ -1,0 +1,80 @@
+﻿@using DentistBooking.Data.Enum
+@if (ShowKeyTime)
+{
+    <div class="modal fade show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="justify-content: center">
+                    <h5 class="modal-title">@KeyTimeTitle</h5>
+                </div>
+                <div class="modal-body">
+                    @KeyTimeMessage
+                </div>
+                <div>
+                    <form style="display: flex;flex-wrap: wrap;gap: 2rem;">
+
+                        @foreach (var item in @KeyTimeList)
+                        {
+                            var value = (int)@item;
+                            <input id="@item" type="radio" value="@value" @onchange="SelectionChanged">
+                            <label for="@item">@item</label>
+                            <br />
+                        }
+                        <input type="submit" @onclick="@OnSubmit"  style="display: block; width: fit-content; margin: 0 auto">
+                    </form>
+
+
+
+
+                    @*                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                @onclick="() => OnKeyTimeChange(false)">
+                Cancel
+                </button>
+                <button type="button" class="btn btn-danger"
+                @onclick="() => OnKeyTimeChange(true)">
+                Delete
+                </button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    public string Selected;
+    protected bool ShowKeyTime { get; set; } = false;
+
+    [Parameter]
+    public string KeyTimeTitle { get; set; } = "Key Times";
+
+    [Parameter]
+    public string KeyTimeMessage { get; set; } = "Select your appropriate time";
+
+    [Parameter]
+    public EventCallback<int> KeyTimeChanged { get; set; }
+
+    [Parameter]
+    public List<DentistBooking.Data.Enum.KeyTime> KeyTimeList { get; set; }
+
+    public void Show()
+    {
+        ShowKeyTime = true;
+        StateHasChanged();
+    }
+
+    protected async Task OnKeyTimeChange(int value)
+    {
+        ShowKeyTime = false;
+        await KeyTimeChanged.InvokeAsync(value);
+    }
+
+    public void SelectionChanged(ChangeEventArgs args)
+    {
+        Selected = args.Value.ToString();
+    }
+
+    public void OnSubmit()
+    {
+        OnKeyTimeChange(int.Parse(Selected));
+    }
+}

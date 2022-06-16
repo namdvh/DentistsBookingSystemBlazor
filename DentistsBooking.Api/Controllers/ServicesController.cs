@@ -71,8 +71,9 @@ namespace DentistsBooking.Api.Controllers
             return Ok(result);
         }
         
-        [HttpGet("clinics/{clinicId}")]
-        public async Task<IActionResult> GetServiceFromClinic( int clinicId)
+        [HttpGet]
+        [Route("clinics/{clinicId}")]
+        public async Task<IActionResult> GetServiceFromClinic([FromRoute] int clinicId)
         {
             var result = await _serviceService.GetServiceListByClinic(clinicId);
             return Ok(result);
