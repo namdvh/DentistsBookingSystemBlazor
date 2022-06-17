@@ -1,6 +1,7 @@
 ﻿@page "/login"
 @using DentistBooking.Blazor.Services.Users
 @using DentistBooking.ViewModels.System.Users
+@inject NavigationManager NavigationManager;
 @inject HttpClient _httpClient
 @inject IUserService userService;
 
@@ -43,7 +44,7 @@
         var rs = await userService.Login(Model);
         if (rs.Successful)
         {
-            Console.Write("success");
+             NavigationManager.NavigateTo("/");
         }
         else
         {

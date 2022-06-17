@@ -1,24 +1,40 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime JSRuntime
-<link rel="stylesheet" href="./TestMainLayout.css" />
+@using Microsoft.AspNetCore.Components.Authorization;
+
+<link rel="stylesheet" href="./MainLayout.css" />
 <div class="page" id="page">
     <div class="sidebar">
         <NavMenu />
     </div>
 
-    <div class="main">
+   <div class="main">
+
         <div class="top-row px-4">
+            <AuthorizeView>
+                <Authorized>
+                    Hello, @context.User.Identity.Name
+                    <a href="/Logout">Logout</a>
+                </Authorized>
+                <NotAuthorized>
+                    <a href="/Login" class="ml-md-auto">Login</a>
+                </NotAuthorized>
+            </AuthorizeView>
+
+
             <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
-            <a href="/login" target="_blank" class="ml-md-auto">Login</a>
-            <a href="/register" target="_blank" class="ml-md-auto">Register</a>
         </div>
 
         <div class="content px-4">
-            @Body
+            <AuthorizeView>
+                <Authorized>
+                    @Body
+                </Authorized>
+                <NotAuthorized>
+                    @Body
+                     <a href="/Login" class="ml-md-auto">Login</a>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
     </div>
 </div>
-@code {
-
-}
-

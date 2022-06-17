@@ -22,6 +22,9 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Text;
 using DentistBooking.Application.System.Users;
+using System.Net;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 namespace DentistsBooking.Api
 {
@@ -43,8 +46,14 @@ namespace DentistsBooking.Api
             //Add Dbcontext
             services.AddDbContext<DentistDBContext>(options => options.
             UseSqlServer(Configuration.GetConnectionString(ConnectionString.MainConnectionString)));
-
-
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                 .AddCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.SlidingExpiration = true;
+                //options.LoginPath = "/api/Error";
+                //options.AccessDeniedPath = "/api/Error";
+            });
             services.AddIdentity<User, Role>().AddEntityFrameworkStores<DentistDBContext>().AddDefaultTokenProviders();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
               .AddJwtBearer(options =>
@@ -60,6 +69,7 @@ namespace DentistsBooking.Api
                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecurityKey"]))
                   };
               });
+              
             //Declare DI
             services.AddScoped<UserManager<User>, UserManager<User>>();
             services.AddScoped<SignInManager<User>, SignInManager<User>>();
@@ -72,7 +82,7 @@ namespace DentistsBooking.Api
             services.AddScoped<IValidator<AddDentistRequest>, AddDentistRequestValidator>();
             services.AddScoped<IClinicService, ClinicService>();
             services.AddScoped<IServiceService, ServiceService>();
-            services.AddScoped<IUserService,UserService>();
+            services.AddScoped<IUserService, UserService>();
 
 
             services.AddControllers();
@@ -100,7 +110,17 @@ namespace DentistsBooking.Api
                      .AllowAnyHeader()
                      .SetIsOriginAllowed(origin => true) // allow any origin
                      .AllowCredentials());
+            app.UseAuthentication();
             app.UseAuthorization();
+            //app.UseStatusCodePages(async context =>
+            //{
+            //    var response = context.HttpContext.Response;
+
+            //    if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
+            //            response.StatusCode == (int)HttpStatusCode.Forbidden)
+            //        response.Redirect("/api/Error");
+            //});
+
 
             app.UseEndpoints(endpoints =>
             {

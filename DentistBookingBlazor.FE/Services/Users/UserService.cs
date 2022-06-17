@@ -2,13 +2,16 @@
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Users;
 using DentistBookingBlazor.FE;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -45,7 +48,6 @@ namespace DentistBooking.Blazor.Services.Users
             await _localStorage.SetItemAsync("authToken", loginResponse.Token);
             ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsAuthenticated(loginRequest.UserName);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loginResponse.Token);
-
             return loginResponse;
         }
 
@@ -62,7 +64,7 @@ namespace DentistBooking.Blazor.Services.Users
             {
                 return registerResponse;
             }
-           
+
             return registerResponse;
         }
 
@@ -96,7 +98,14 @@ namespace DentistBooking.Blazor.Services.Users
             var result = await _httpClient.PutAsJsonAsync("/api/users", request);
             return result.IsSuccessStatusCode;
         }
+
+        public async Task Logout()
+        {
+            await _localStorage.RemoveItemAsync("authToken");
+            ((ApiAuthenticationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
+            _httpClient.DefaultRequestHeaders.Authorization = null;
+        }
     }
 
-}   
+}
 
