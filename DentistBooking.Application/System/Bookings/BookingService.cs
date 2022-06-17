@@ -299,7 +299,7 @@ namespace DentistBooking.Application.System.Bookings
             pagedData = await (from booking in _context.Bookings
                                join bookingDetail in _context.BookingDetails on booking.Id equals bookingDetail.BookingId
                                where bookingDetail.DentistId == dentistId
-                               select new { booking, bookingDetail })
+                               select new { booking})
                 .OrderBy("booking." + "Date" + " " + orderBy)
                 .Skip((filter.PageNumber - 1) * filter.PageSize)
                 .Take(filter.PageSize)
@@ -309,8 +309,8 @@ namespace DentistBooking.Application.System.Bookings
 
             var totalRecords = await (from booking in _context.Bookings
                                       join bookingDetail in _context.BookingDetails on booking.Id equals bookingDetail.BookingId
-                                      where bookingDetail.DentistId == dentistId
-                                      select new { booking, bookingDetail }).CountAsync();
+                                      where bookingDetail.DentistId == dentistId 
+                                      select new { booking}).CountAsync();
 
             if (pagedData == null)
             {
@@ -348,21 +348,6 @@ namespace DentistBooking.Application.System.Bookings
 
 
 
-        private BookingDetailDTO MapToBookingDetailDto(BookingDetail bookingDetail)
-        {
-            var detailDto = new BookingDetailDTO()
-            {
-                Id = bookingDetail.Id,
-                Note = bookingDetail.Note,
-                Services = GetServiceFromDentist(bookingDetail.DentistId),
-                Status = bookingDetail.Status,
-                KeyTime = bookingDetail.KeyTime
-
-            };
-
-            return detailDto;
-        }
-
         private BookingDTO mapToBookingDto(Booking booking)
         {
             BookingDTO bookingDto = new BookingDTO()
@@ -372,10 +357,27 @@ namespace DentistBooking.Application.System.Bookings
                 Status = booking.Status,
                 Total = booking.Total,
                 UserId = booking.UserId,
-                User = MapToDTO(booking.UserId)
+                User = MapToDTO(booking.UserId),
+                Detail = GetDetailFromBooking(booking.Id)
+
             };
             return bookingDto;
         }
+        private BookingDetailDTO MapToBookingDetailDto(BookingDetail bookingDetail)
+        {
+            var detailDto = new BookingDetailDTO()
+            {
+                Id = bookingDetail.Id,
+                Note = bookingDetail.Note,
+                Services = GetService(bookingDetail.ServiceId),
+                Status = bookingDetail.Status,
+                KeyTime = bookingDetail.KeyTime
+
+            };
+
+            return detailDto;
+        }
+
 
 
         private UserDTO MapToDTO(Guid userID)
@@ -388,31 +390,23 @@ namespace DentistBooking.Application.System.Bookings
                 LastName = user.LastName,
                 Phone = user.PhoneNumber,
                 Id = user.Id.ToString(),
-                Email = user.Email
+                Email = user.Email,
+                ImageUrl = user.Image
+
             };
 
             return userDto;
         }
 
-        private List<DentistServiceDto> GetServiceFromDentist(int? dentistId)
+        private DentistServiceDto GetService(int serviceId)
         {
-            var results = (from t1 in _context.ServiceDentists
-                           join t2 in _context.Services
-                               on t1.ServiceId equals t2.Id
-                           where t1.DentistId == dentistId
-                           select t2).ToList();
+            var result = _context.Services.FirstOrDefault(x => x.Id == serviceId);
 
-            var final = new List<DentistServiceDto>();
+            DentistServiceDto dto = new();
+            dto.Id = result.Id;
+            dto.ServiceName = result.Name;
 
-            foreach (var service in results)
-            {
-                DentistServiceDto dto = new();
-                dto.Id = service.Id;
-                dto.ServiceName = service.Name;
-                final.Add(dto);
-            }
-
-            return final;
+            return dto;
         }
 
         public async Task<List<KeyTime>> GetPostListKeyTime(int clinicId, int serviceId, DateTime date)
@@ -449,5 +443,32 @@ namespace DentistBooking.Application.System.Bookings
 
 
         }
+        
+        private List<BookingDtoDetail> GetDetailFromBooking(int bookingId)
+        {
+            List<BookingDtoDetail> list = new();
+
+
+            var data = _context.BookingDetails.Where(x => x.BookingId == bookingId).ToList();
+
+
+            foreach (var x in data)
+            {
+                var serviceName = _context.Services.FirstOrDefault(y => y.Id == x.ServiceId)?.Name;
+                if (serviceName != null)
+                {
+                    BookingDtoDetail detail = new()
+                    {
+                        DetailID = x.Id,
+                        KeyTime = x.KeyTime,
+                    
+                    };
+                    list.Add(detail);
+                }
+            }
+
+            return list;
+        }
+        
     }
 }

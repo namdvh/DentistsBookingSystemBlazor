@@ -13,5 +13,6 @@ namespace DentistBooking.ViewModels.System.Users
         public Gender Gender { get; set; }
         public DateTime DOB { get; set; }
         public Status Status { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

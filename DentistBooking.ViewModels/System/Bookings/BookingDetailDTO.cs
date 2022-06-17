@@ -13,7 +13,7 @@ namespace DentistBooking.ViewModels.System.Bookings
         public string? Note { get; set; }
 
         public Status Status { get; set; }
-        public List<DentistServiceDto> Services { get; set; }
+        public DentistServiceDto Services { get; set; }
 
 
     }
