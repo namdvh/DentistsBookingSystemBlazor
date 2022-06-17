@@ -22,9 +22,10 @@ namespace DentistBookingBlazor.FE
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
             builder.Services.AddTransient<IUserService, UserService>();
+
+            builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddAuthorizationCore();
-            builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
             builder.Services.AddTransient<IClinicService, ClinicService>();
             builder.Services.AddTransient<IDentistService, DentistService>();
             builder.Services.AddTransient<IDiscountService, DiscountService>();

@@ -1,0 +1,14 @@
+﻿@using DentistBooking.Blazor.Services.Users
+@page "/Logout"
+<h3>Logout</h3>
+
+@inject IUserService userservices
+@inject NavigationManager NavigationManager
+@code {
+     protected async override Task OnInitializedAsync()
+    {
+        await userservices.Logout();
+        NavigationManager.NavigateTo("/");
+    }
+
+}

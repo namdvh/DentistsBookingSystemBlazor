@@ -3,11 +3,15 @@
 @using DentistBookingBlazor.FE.Services.Dentists
 @inject HttpClient _httpClient
 @inject IDentistService dentistService;
+@inject NavigationManager NavigationManager;
+
 
 
 
 <h3>Dentist</h3>
-
+<NotAuthorized>
+    @if (true) { NavigationManager.NavigateTo("login"); }
+</NotAuthorized>
 @if (dentist == null)
 {
     <div>Loading...</div>

@@ -1,6 +1,8 @@
 ﻿using DentistBooking.Application.System.Dentists;
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Dentists;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,8 +12,7 @@ namespace DentistsBooking.Api.Controllers
 {
     [Route("api/dentists")]
     [ApiController]
-    //[TypeFilter(typeof(AuthorizeMiddleWare))]
-    //[Authorize]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class DentistsController : ControllerBase
     {
         private readonly IDentistService _dentistService;
@@ -22,6 +23,8 @@ namespace DentistsBooking.Api.Controllers
         }
 
         [HttpGet]
+        
+        //[Authorize(Roles ="Admin")]
         public async System.Threading.Tasks.Task<IActionResult> GetAllDentist([FromQuery] PaginationFilter filter)
         {
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize, filter._by, filter._order);

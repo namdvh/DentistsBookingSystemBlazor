@@ -13,5 +13,7 @@ namespace DentistBooking.Blazor.Services.Users
         Task<bool> UpdateUser(UpdateUserRequest request);
         Task<bool> DeleteUser(Guid userId);
         Task<UserDTO> GetUser(Guid userId);
+        Task Logout();
+
     }
 }
