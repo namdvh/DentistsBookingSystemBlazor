@@ -1,0 +1,66 @@
+﻿using Blazored.SessionStorage;
+using DentistBooking.ViewModels.System.Bookings;
+using DentistBookingBlazor.FE.Services.Bookings;
+using DentistBookingBlazor.FE.Services.Discounts;
+using DentistBookingBlazor.FE.Services.Services;
+using Microsoft.AspNetCore.Components;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace DentistBookingBlazor.FE.Pages
+{
+    public partial class Checkout
+    {
+        public CreateBookingRequest request = new();
+        public List<CheckoutDTO> listCheckout = new();
+        public string Note { get; set; }
+        public decimal Total { get; set; }
+        public decimal afterPrice { get; set; }
+        [Inject]
+        public ISessionStorageService sessionStorage { get; set; }
+        [Inject]
+        public NavigationManager NavManager { get; set; }
+
+        [Inject]
+        public IServiceService ServiceService { get; set; }
+        [Inject]
+        public IDiscountService DiscountService { get; set; } 
+        [Inject]
+        public IBookingService BookingService { get; set; }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await GetCart();
+        }
+
+        private async Task GetCart()
+        {
+            request = await sessionStorage.GetItemAsync<CreateBookingRequest>("cart");
+            for (int i = 0; i < request.ServiceIds.Count; i++)
+            {
+                var service = await ServiceService.GetService(request.ServiceIds[i]);
+                var discount = await DiscountService.GetDiscount(service.DiscountId);
+
+                CheckoutDTO checkoutDTO = new CheckoutDTO
+                {
+                    ServiceNames = service.ServiceName,
+                    KeyTimes = request.KeyTimes[i],
+                    Price = service.Price - discount.Amount
+
+                };
+                Total += checkoutDTO.Price;
+                listCheckout.Add(checkoutDTO);
+            }
+        }
+
+
+        public async Task Buy()
+        {
+            request.Note = Note;
+            request.Total = Total;
+            await BookingService.CreateBooking(request);
+            await sessionStorage.ClearAsync();
+            NavManager.NavigateTo("/booking");
+        }
+    }
+}

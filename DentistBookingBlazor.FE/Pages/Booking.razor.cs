@@ -12,15 +12,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Blazored.SessionStorage;
 
 namespace DentistBookingBlazor.FE.Pages
 {
     public partial class Booking
     {
         [Parameter] public string InitialText { get; set; } = "Select clinic";
-        private readonly ISyncLocalStorageService _localStorage;
-
-
+        [Inject]
+        public ISessionStorageService sessionStorage { get; set; }
         [Inject]
         public IClinicService ClinicService { get; set; }
         [Inject]
@@ -29,7 +30,7 @@ namespace DentistBookingBlazor.FE.Pages
         public IServiceService ServiceService { get; set; }
 
         public string clinicId;
-        public DateTime Date;
+        public DateTime OrderDate;
         List<DentistBooking.Data.Enum.KeyTime> listKeytime = new();
         List<DentistBooking.Data.Enum.KeyTime> allKeyTime = Enum.GetValues(typeof(DentistBooking.Data.Enum.KeyTime)).Cast<DentistBooking.Data.Enum.KeyTime>().ToList();
         List<int> serviceIds = new();
@@ -45,11 +46,12 @@ namespace DentistBookingBlazor.FE.Pages
         List<ClinicDTO> clinicList = new();
         List<ServiceDto> serviceList = new();
 
-
+        public CreateBookingRequest Cart { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             await GetClinics();
+
         }
 
         public async Task GetClinics()
@@ -68,18 +70,21 @@ namespace DentistBookingBlazor.FE.Pages
 
         public async Task OnGetKeyTime(int serviceId)
         {
-                ServiceId = serviceId;
-                GetKeyTime.Show();
+            ServiceId = serviceId;
+            GetKeyTime.Show();
 
         }
 
-        public void AddKeyTime(int keytime)
+        public async Task AddKeyTime(int keytime)
         {
-            var cart =  _localStorage.GetItem<CreateBookingRequest>("cart");
-            if(cart != null)
+            var cart = await sessionStorage.GetItemAsync<CreateBookingRequest>("cart");
+            if (cart != null)
             {
-                request.KeyTimes.Add((DentistBooking.Data.Enum.KeyTime)keytime);
-                request.ServiceIds.Add(ServiceId);
+                cart.KeyTimes.Add((DentistBooking.Data.Enum.KeyTime)keytime);
+                cart.ServiceIds.Add(ServiceId);
+
+                await sessionStorage.SetItemAsync("cart", cart);
+
             }
             else
             {
@@ -88,16 +93,19 @@ namespace DentistBookingBlazor.FE.Pages
                 request = new CreateBookingRequest()
                 {
                     ClinicId = int.Parse(clinicId),
-                    Date = Date,
-                    UserId = Guid.NewGuid(),
+                    Date = OrderDate,
+                    UserId = Guid.Parse("d5a918c6-5ed4-43eb-bcdf-042594ae2620"),
                     KeyTimes = listKeytime,
                     ServiceIds = serviceIds
+                    
                 };
-            }
-             _localStorage.SetItem("cart", request);
+                await sessionStorage.SetItemAsync("cart", request);
 
-            // lay keytime qua cart
-            
+            }
+            Cart = await sessionStorage.GetItemAsync<CreateBookingRequest>("cart");
+
+
+
         }
     }
 }

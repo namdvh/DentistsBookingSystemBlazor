@@ -1,4 +1,5 @@
 ﻿using DentistBooking.Data.Enum;
+using DentistBooking.ViewModels.System.Bookings;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,14 @@ namespace DentistBookingBlazor.FE.Services.Bookings
         {
             _httpClient = httpClient;
         }
+
+        public async Task<bool> CreateBooking(CreateBookingRequest request)
+        {
+            var rs = await _httpClient.PostAsJsonAsync("/api/bookings", request);
+
+            return rs.IsSuccessStatusCode;
+        }
+
         public async Task<List<KeyTime>> GetPostListKeyTime(int clinicId, int serviceId, DateTime date)
         {
             var queryStringParam = new Dictionary<string, string>

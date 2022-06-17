@@ -31,7 +31,7 @@ namespace DentistBooking.Application.System.Bookings
                 Booking booking = new Booking()
                 {
                     Status = Status.PENDING,
-                    Date = DateTime.Parse(request.Date.ToString("yyyy/MMM/dd")),
+                    Date = request.Date,
                     Total = request.Total,
                     UserId = request.UserId,
                     Created_at = DateTime.Now
@@ -52,7 +52,7 @@ namespace DentistBooking.Application.System.Bookings
                     existedDetails = await (from t1 in _context.Bookings
                                             join t2 in _context.BookingDetails
                                             on t1.Id equals t2.BookingId
-                                            where t1.Date.Equals(DateTime.Parse(request.Date.ToString("yyyy/MMM/dd")))
+                                            where t1.Date.Equals(request.Date)
                                             && t2.KeyTime == request.KeyTimes[i]
                                             select t2).ToListAsync();
 

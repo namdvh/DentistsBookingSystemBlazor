@@ -1,0 +1,75 @@
+﻿@page "/checkout"
+
+<h3>Checkout</h3>
+
+@if (request != null)
+{
+    <div class="content">
+
+        <div class="container">
+
+            <h2 class="mb-5">request.ClinicId</h2>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped custom-table">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">Service</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in listCheckout)
+                        {
+                            <tr scope="row">
+                                <td>
+                                    @item.ServiceNames
+                                </td>
+                                <td>@item.KeyTimes </td>
+
+                                <td>@item.Price</td>
+
+                                <td>
+                                    @*delete item from cart*@
+                                </td>
+
+                            </tr>
+                        }
+                        <tr scope="row">
+                            Total:
+                            @Total
+                        </tr>
+
+                    </tbody>
+                </table>
+                <label>Note</label>
+                <input type="text" @bind-value="Note">
+                <div class="col pt4">
+                    <a href="/booking" class="btn btn-success">Back to list</a>
+                </div>
+                <div class="col pt4" style="display: block; width: fit-content; margin: 0 auto">
+                    <button class="btn btn-primary" @onclick="()=>Buy()">Buy</button>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+}
+else
+{
+    <h5>You hasn't choose any service</h5>
+    <div class="col pt4">
+        <a href="/booking" class="btn btn-success">Back to list</a>
+    </div>
+}
+
+@code {
+
+}

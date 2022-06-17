@@ -12,6 +12,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using DentistBookingBlazor.FE.Services.Services;
 using DentistBookingBlazor.FE.Services.Bookings;
+using Blazored.SessionStorage;
+using System.Text.Json;
 
 namespace DentistBookingBlazor.FE
 {
@@ -23,6 +25,7 @@ namespace DentistBookingBlazor.FE
             builder.RootComponents.Add<App>("#app");
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddBlazoredSessionStorage();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, ApiAuthenticationStateProvider>();
             builder.Services.AddTransient<IClinicService, ClinicService>();

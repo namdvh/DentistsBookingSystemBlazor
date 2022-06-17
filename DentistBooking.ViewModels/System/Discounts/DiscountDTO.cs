@@ -14,10 +14,9 @@ namespace DentistBooking.ViewModels.System.Discounts
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Description { get; set; }
-        public float? Percent { get; set; }
-        public decimal? Amount { get; set; }
+        public float Percent { get; set; }
+        public decimal Amount { get; set; }
         public bool ApplyForAll { get; set; }
-
         public Status status { get; set; }
     }
 }

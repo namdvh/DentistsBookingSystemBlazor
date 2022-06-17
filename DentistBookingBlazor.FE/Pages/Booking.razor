@@ -1,8 +1,9 @@
 ﻿@page "/booking"
 
 <h3>Booking</h3>
-
-<div class="form-group">
+@if (Cart == null)
+{
+    <div class="form-group">
     <select class="form-control" @onchange="DoStuff">
         <option>@InitialText</option>
         @foreach (var items in clinicList)
@@ -10,7 +11,10 @@
             <option value="@items.Id">@items.Name</option>
         }
     </select>
+    <input type="date" @bind-value="OrderDate"/>
 </div>
+}
+
 <div class="content">
 
     <div class="container">
@@ -34,8 +38,9 @@
                 <tbody>
                     @foreach (var item in serviceList)
                     {
-
-                        <tr scope="row">
+                        @if (Cart == null || !Cart.ServiceIds.Contains(@item.Id))
+                        {
+                            <tr scope="row">
                             <td>
                                 @item.Id
                             </td>
@@ -47,14 +52,16 @@
                             <td>
                                 <button class="btn btn-danger" @onclick="()=>OnGetKeyTime(item.Id)">Choose</button>
                             </td>
-
-
-
                         </tr>
+                        }
+                        
                     }
                 </tbody>
 
             </table>
+            <div class="col pt4">
+                <a href="/checkout" class="btn btn-success">Go to cart</a>
+            </div>
         </div>
 
 
