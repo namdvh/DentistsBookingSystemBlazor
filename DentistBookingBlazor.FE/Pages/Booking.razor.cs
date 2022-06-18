@@ -1,111 +1,86 @@
-﻿using Blazored.LocalStorage;
+﻿
+using DentistBooking.Data.Enum;
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Bookings;
-using DentistBooking.ViewModels.System.Clinics;
-using DentistBooking.ViewModels.System.Services;
 using DentistBookingBlazor.FE.Components;
 using DentistBookingBlazor.FE.Services.Bookings;
-using DentistBookingBlazor.FE.Services.Clinics;
-using DentistBookingBlazor.FE.Services.Services;
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Blazored.SessionStorage;
 
 namespace DentistBookingBlazor.FE.Pages
 {
     public partial class Booking
     {
-        [Parameter] public string InitialText { get; set; } = "Select clinic";
         [Inject]
-        public ISessionStorageService sessionStorage { get; set; }
-        [Inject]
-        public IClinicService ClinicService { get; set; }
-        [Inject]
-        public IBookingService BookingService { get; set; }
-        [Inject]
-        public IServiceService ServiceService { get; set; }
+        private IBookingService BookingService { get; set; }
 
-        public string clinicId;
-        public DateTime OrderDate;
-        List<DentistBooking.Data.Enum.KeyTime> listKeytime = new();
-        List<DentistBooking.Data.Enum.KeyTime> allKeyTime = Enum.GetValues(typeof(DentistBooking.Data.Enum.KeyTime)).Cast<DentistBooking.Data.Enum.KeyTime>().ToList();
-        List<int> serviceIds = new();
 
-        protected KeyTime GetKeyTime { get; set; }
+
+        private List<BookingDTO> booking;
+        private ListBookingResponse response;
+        private PaginationDTO paginationDTO;
+        public BookingStatusRequest request { get; set; }
+        protected Confirmation ActionConfirmation { get; set; }
+        public int ActionID{get;set; }
+        public Status Status { get; set; }
+
 
         PaginationFilter paginationFilter = new();
-        ListClinicResponse clinicResponse = new();
-        ListServiceResponse serviceResponse = new();
-        CreateBookingRequest request;
-        private int ServiceId { get; set; }
 
-        List<ClinicDTO> clinicList = new();
-        List<ServiceDto> serviceList = new();
-
-        public CreateBookingRequest Cart { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            await GetClinics();
+            await GetBookings();
+        }
+
+        private async Task GetBookings()
+        {
+            response = await BookingService.GetBookingList(paginationFilter);
+            booking = (List<BookingDTO>)response.Content;
+            paginationDTO = response.Pagination;
+        }
+
+
+
+        private async Task SelectedPage(int page)
+        {
+            paginationFilter.PageNumber = page;
+            await GetBookings();
+        }
+
+        public async Task OnConfirm(int id, Status status)
+        {
+
+            ActionID = id;
+            Status = status;
+            ActionConfirmation.Show();
 
         }
 
-        public async Task GetClinics()
+        public async Task OnConfirmAction(bool actionConfirmed)
         {
-            clinicResponse = await ClinicService.GetClinicList(paginationFilter);
-            clinicList = clinicResponse.Content as List<ClinicDTO>;
-
-        }
-
-        public async Task DoStuff(ChangeEventArgs e)
-        {
-            clinicId = e.Value.ToString();
-            serviceResponse = await ServiceService.GetServiceListByClinic(int.Parse(clinicId));
-            serviceList = serviceResponse.Content as List<ServiceDto>;
-        }
-
-        public async Task OnGetKeyTime(int serviceId)
-        {
-            ServiceId = serviceId;
-            GetKeyTime.Show();
-
-        }
-
-        public async Task AddKeyTime(int keytime)
-        {
-            var cart = await sessionStorage.GetItemAsync<CreateBookingRequest>("cart");
-            if (cart != null)
+            if (actionConfirmed)
             {
-                cart.KeyTimes.Add((DentistBooking.Data.Enum.KeyTime)keytime);
-                cart.ServiceIds.Add(ServiceId);
+                request = new();
 
-                await sessionStorage.SetItemAsync("cart", cart);
-
-            }
-            else
-            {
-                listKeytime.Add((DentistBooking.Data.Enum.KeyTime)keytime);
-                serviceIds.Add(ServiceId);
-                request = new CreateBookingRequest()
+                if (Status == Status.CONFIRMED)
                 {
-                    ClinicId = int.Parse(clinicId),
-                    Date = OrderDate,
-                    UserId = Guid.Parse("d5a918c6-5ed4-43eb-bcdf-042594ae2620"),
-                    KeyTimes = listKeytime,
-                    ServiceIds = serviceIds
-                    
-                };
-                await sessionStorage.SetItemAsync("cart", request);
+                    request.bookingID = ActionID;
+                    request.status = Status;
+                }
+                else
+                {
+                    request.bookingID = ActionID;
+                    request.status = Status;
+                }
+
+                await bookingService.UpdateBookingStatus(request);
+                await GetBookings();
 
             }
-            Cart = await sessionStorage.GetItemAsync<CreateBookingRequest>("cart");
-
-
-
         }
+
     }
 }

@@ -144,6 +144,8 @@ namespace DentistBooking.Application.System.Bookings
         public async Task<ListBookingResponse> GetBookingList(PaginationFilter filter)
         {
             ListBookingResponse response = new();
+            List<BookingDTO> listDto = new();
+
             PaginationDTO paginationDTO = new();
 
             string orderBy = filter._order.ToString();
@@ -172,7 +174,11 @@ namespace DentistBooking.Application.System.Bookings
             }
             else
             {
-                response.Content = pagedData;
+                foreach (var x in pagedData)
+                {
+                    listDto.Add(mapToBookingDto(x));
+                }
+                response.Content = listDto;
                 response.Message = "SUCCESS";
                 response.Code = "200";
 
@@ -301,6 +307,7 @@ namespace DentistBooking.Application.System.Bookings
                                where bookingDetail.DentistId == dentistId
                                select new { booking})
                 .OrderBy("booking." + "Date" + " " + orderBy)
+                .Distinct()
                 .Skip((filter.PageNumber - 1) * filter.PageSize)
                 .Take(filter.PageSize)
                 .ToListAsync();
@@ -310,7 +317,7 @@ namespace DentistBooking.Application.System.Bookings
             var totalRecords = await (from booking in _context.Bookings
                                       join bookingDetail in _context.BookingDetails on booking.Id equals bookingDetail.BookingId
                                       where bookingDetail.DentistId == dentistId 
-                                      select new { booking}).CountAsync();
+                                      select new { booking}).Distinct().CountAsync();
 
             if (pagedData == null)
             {
@@ -469,6 +476,46 @@ namespace DentistBooking.Application.System.Bookings
 
             return list;
         }
-        
+
+        public async Task<BookingResponse> UpdateBookingStatus(BookingStatusRequest request)
+        {
+            BookingResponse response=null;
+            try
+            {
+                var booking = _context.Bookings.FirstOrDefault(x => x.Id == request.bookingID);
+                if (booking != null)
+                {
+                    booking.Status = request.status;
+                    response = new()
+                    {
+
+                        Code = "200",
+                        Message = "Update status succesfull"
+                    };
+
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    response = new()
+                    {
+
+                        Code = "203",
+                        Message = "Not found "
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                response = new()
+                {
+
+                    Code = "203",
+                    Message = "Update failed"
+                };
+            }
+
+            return  response;
+        }
     }
 }

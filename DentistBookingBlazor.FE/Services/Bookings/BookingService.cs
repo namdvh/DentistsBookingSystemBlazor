@@ -1,4 +1,5 @@
 ﻿using DentistBooking.Data.Enum;
+using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Bookings;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
@@ -25,6 +26,31 @@ namespace DentistBookingBlazor.FE.Services.Bookings
             return rs.IsSuccessStatusCode;
         }
 
+        public async Task<BookingDetailResponse> GetBookingDetail(int bookingId)
+        {
+            var queryStringParam = new Dictionary<string, string>
+            {
+                ["bookingId"] = bookingId.ToString()
+            };
+            var url = QueryHelpers.AddQueryString("/api/bookings/getbookingdetail", queryStringParam);
+            var rs = await _httpClient.GetFromJsonAsync<BookingDetailResponse>(url);
+            return rs;
+        }
+
+        public async Task<ListBookingResponse> GetBookingList(PaginationFilter filter)
+        {
+            var queryStringParam = new Dictionary<string, string>
+            {
+                ["PageNumber"] = filter.PageNumber.ToString(),
+                ["PageSize"] = filter.PageSize.ToString(),
+            };
+
+            var url = QueryHelpers.AddQueryString("/api/bookings/getallbooking", queryStringParam);
+            var result = await _httpClient.GetFromJsonAsync<ListBookingResponse>(url);
+
+            return result;
+        }
+
         public async Task<List<KeyTime>> GetPostListKeyTime(int clinicId, int serviceId, DateTime date)
         {
             var queryStringParam = new Dictionary<string, string>
@@ -38,6 +64,19 @@ namespace DentistBookingBlazor.FE.Services.Bookings
             var result = await _httpClient.GetFromJsonAsync<List<KeyTime>>(url);
 
             return result;
+
+        }
+
+        public async Task<bool> UpdateBooking(BookingRequest request)
+        {
+            var result = await _httpClient.PutAsJsonAsync("/api/bookings", request);
+            return result.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> UpdateBookingStatus(BookingStatusRequest request)
+        {
+            var result = await _httpClient.PutAsJsonAsync("/api/bookings/status", request);
+            return result.IsSuccessStatusCode;
 
         }
     }

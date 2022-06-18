@@ -1,81 +1,88 @@
 ﻿@page "/booking"
+@using DentistBookingBlazor.FE.Services.Bookings
+@using DentistBookingBlazor.FE.Components
+@inject HttpClient _httpClient
+@inject IBookingService bookingService;
 
 <h3>Booking</h3>
-@if (Cart == null)
+
+@if (booking == null)
 {
-    <div class="form-group">
-    <select class="form-control" @onchange="DoStuff">
-        <option>@InitialText</option>
-        @foreach (var items in clinicList)
-        {
-            <option value="@items.Id">@items.Name</option>
-        }
-    </select>
-    <input type="date" @bind-value="OrderDate"/>
-</div>
+    <div>Loading...</div>
 }
-
-<div class="content">
-
-    <div class="container">
-
-        <h2 class="mb-5">Table #6</h2>
+else
+{
 
 
-        <div class="table-responsive">
+    <div class="content">
 
-            <table class="table table-striped custom-table">
-                <thead>
-                    <tr>
-
-                        <th scope="col">ID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Procedure</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in serviceList)
-                    {
-                        @if (Cart == null || !Cart.ServiceIds.Contains(@item.Id))
-                        {
-                            <tr scope="row">
-                            <td>
-                                @item.Id
-                            </td>
-                            <td>@item.ServiceName </td>
-
-                            <td>@item.Procedure</td>
-
-                            <td>@item.Price</td>
-                            <td>
-                                <button class="btn btn-danger" @onclick="()=>OnGetKeyTime(item.Id)">Choose</button>
-                            </td>
-                        </tr>
-                        }
-                        
-                    }
-                </tbody>
-
-            </table>
+        <div class="container">
             <div class="col pt4">
-                <a href="/checkout" class="btn btn-success">Go to cart</a>
+                <a href="/bookingCreate" class="btn btn-success">Create</a>
             </div>
+            <h2 class="mb-5">Table #6</h2>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped custom-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in booking)
+                        {
+
+                            <tr scope="row">
+                                <td>@item.Date </td>
+
+                                <td>@item.Total</td>
+                                @if (@item.Status == DentistBooking.Data.Enum.Status.PENDING)
+                                {
+                                    <td>PENDING</td>
+                                }
+                                else if(@item.Status == DentistBooking.Data.Enum.Status.CONFIRMED)
+                                {
+                                    <td>CONFIRMED</td>
+                                }else if(@item.Status == DentistBooking.Data.Enum.Status.DONE)
+                                {
+                                    <td>DONE</td>
+                                }
+                                else
+                                {
+                                <td>DECLINED</td>
+                                }
+                                <td>
+                                    @if(@item.Status == DentistBooking.Data.Enum.Status.PENDING)
+                                    {
+                                        <button class="btn btn-danger" @onclick="()=>OnConfirm(item.Id,DentistBooking.Data.Enum.Status.CONFIRMED)">CONFIRM</button>
+                                        <button class="btn btn-danger" @onclick="()=>OnConfirm(item.Id,DentistBooking.Data.Enum.Status.DECLINED)">DECLINE</button>
+                                    }
+                                    
+                                    <a href="/bookingDetail/@item.Id" class="btn btn-primary">Detail</a>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <Pagination filter="paginationFilter" paginationDTO="paginationDTO" Spread="1" SelectedPage="SelectedPage"></Pagination>
+                    </tfoot>
+                </table>
+            </div>
+            
+
         </div>
 
-
     </div>
-
-</div>
-
-<DentistBookingBlazor.FE.Components.KeyTime KeyTimeMessage="test kt msg?"
-                                            KeyTimeTitle="test kt tittle"
-                                            @ref="GetKeyTime"
-                                            KeyTimeList=allKeyTime
-KeyTimeChanged="AddKeyTime"
-></DentistBookingBlazor.FE.Components.KeyTime>
-
-@code {
-
+        <Confirmation 
+        ConfirmationMessage="Do you want to do this action?"
+                      ConfirmationTitle="Action"
+                      @ref="ActionConfirmation"
+                      ConfirmationChanged="OnConfirmAction"></Confirmation>
 }

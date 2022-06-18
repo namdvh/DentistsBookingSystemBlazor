@@ -31,9 +31,19 @@ namespace DentistsBooking.Api.Controllers
             BookingResponse result = await _bookingService.CreateBooking(request);
             return Ok(result);
         }
+        [HttpGet("getallbooking")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllBooking([FromQuery] PaginationFilter filter)
+        {
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize, filter._by, filter._order);
+            ListBookingResponse result = await _bookingService.GetBookingList(validFilter);
+            return Ok(result);
+        }
 
 
         [HttpGet("getbookingdetail")]
+        [AllowAnonymous]
+
         public async Task<IActionResult> GetBookingDetail([FromQuery] int bookingId)
         {
             if (!ModelState.IsValid)
@@ -45,6 +55,8 @@ namespace DentistsBooking.Api.Controllers
         }
 
         [HttpGet("getUnavailableKeyTime")]
+        [AllowAnonymous]
+
         public async Task<IActionResult> GetBookingDetail([FromQuery] int clinicId, int serviceId, System.DateTime date)
         {
             if (!ModelState.IsValid)
@@ -56,6 +68,8 @@ namespace DentistsBooking.Api.Controllers
         }
 
         [HttpGet("dentist/{dentistID}")]
+        [AllowAnonymous]
+
         public async Task<IActionResult> GetBookingListDentist([FromQuery] PaginationFilter filter, int dentistID)
         {
             if (!ModelState.IsValid)
@@ -67,6 +81,32 @@ namespace DentistsBooking.Api.Controllers
 
             var result = await _bookingService.GetBookingListForDentist(validFilter, dentistID);
 
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [AllowAnonymous]
+
+        public async Task<IActionResult> UpdateBooking([FromBody] BookingRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            BookingResponse result = await _bookingService.UpdateBooking(request);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("status")]
+        public async Task<IActionResult> UpdateBookingStatus([FromBody] BookingStatusRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            BookingResponse result = await _bookingService.UpdateBookingStatus(request);
             return Ok(result);
         }
     }

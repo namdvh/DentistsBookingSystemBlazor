@@ -2,13 +2,13 @@
 
 <h3>Checkout</h3>
 
-@if (request != null)
+@if (request != null && request.KeyTimes.Any())
 {
     <div class="content">
 
         <div class="container">
 
-            <h2 class="mb-5">request.ClinicId</h2>
+            <h2 class="mb-5">@request.ClinicId</h2>
 
 
             <div class="table-responsive">
@@ -35,7 +35,7 @@
                                 <td>@item.Price</td>
 
                                 <td>
-                                    @*delete item from cart*@
+                                    <button class="btn btn-danger" @onclick="()=>OnDeleteItem(item.KeyTimes)">Remove</button>
                                 </td>
 
                             </tr>
@@ -50,7 +50,7 @@
                 <label>Note</label>
                 <input type="text" @bind-value="Note">
                 <div class="col pt4">
-                    <a href="/booking" class="btn btn-success">Back to list</a>
+                    <a href="/bookingCreate" class="btn btn-success">Back to list</a>
                 </div>
                 <div class="col pt4" style="display: block; width: fit-content; margin: 0 auto">
                     <button class="btn btn-primary" @onclick="()=>Buy()">Buy</button>
@@ -66,7 +66,7 @@ else
 {
     <h5>You hasn't choose any service</h5>
     <div class="col pt4">
-        <a href="/booking" class="btn btn-success">Back to list</a>
+        <a href="/bookingCreate" class="btn btn-success">Back to list</a>
     </div>
 }
 

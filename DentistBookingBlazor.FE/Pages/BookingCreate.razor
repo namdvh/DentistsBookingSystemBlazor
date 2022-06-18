@@ -1,0 +1,86 @@
+﻿@page "/bookingCreate"
+
+<h3>Booking</h3>
+@if (Cart == null)
+{
+    <div class="form-group">
+        <select class="form-control" @onchange="DoStuff">
+            <option>@InitialText</option>
+            @foreach (var items in clinicList)
+            {
+                <option value="@items.Id">@items.Name</option>
+            }
+        </select>
+        <input type="date" min=@MinDate max=@MaxDate  @bind-value="OrderDate" />
+    </div>
+}
+else
+{
+    <div class="col pt4">
+        <button class="btn btn-primary" @onclick="()=>Reset()">Reset</button>
+    </div>
+}
+
+<div class="content">
+
+    <div class="container">
+
+        <h2 class="mb-5">Table #6</h2>
+
+
+        <div class="table-responsive">
+
+            <table class="table table-striped custom-table">
+                <thead>
+                    <tr>
+
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Procedure</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in serviceList)
+                    {
+                        @if (Cart == null || !Cart.ServiceIds.Contains(@item.Id))
+                        {
+                            <tr scope="row">
+                                <td>
+                                    @item.Id
+                                </td>
+                                <td>@item.ServiceName </td>
+
+                                <td>@item.Procedure</td>
+
+                                <td>@item.Price</td>
+                                <td>
+                                    <button class="btn btn-danger" @onclick="()=>OnGetKeyTime(item.Id)">Choose</button>
+                                </td>
+                            </tr>
+                        }
+
+                    }
+                </tbody>
+
+            </table>
+            <div class="col pt4">
+                <a href="/checkout" class="btn btn-success">Go to cart</a>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+<DentistBookingBlazor.FE.Components.KeyTime KeyTimeMessage="test kt msg?"
+                                            KeyTimeTitle="test kt tittle"
+                                            @ref="GetKeyTime"
+                                            KeyTimeList=allKeyTime
+                                            KeyTimeChanged="AddKeyTime"></DentistBookingBlazor.FE.Components.KeyTime>
+
+@code {
+
+}

@@ -1,0 +1,59 @@
+﻿@page "/bookingDetail/{BookingId}"
+@using DentistBookingBlazor.FE.Components
+@using DentistBookingBlazor.FE.Services.Bookings
+@inject HttpClient _httpClient
+@inject IBookingService bookingService;
+
+<h3>Booking Details</h3>
+
+@if (detail == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+
+
+    <div class="content">
+
+        <div class="container">
+            <h2 class="mb-5">Table #6</h2>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped custom-table">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">Time</th>
+                            <th scope="col">Service</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in detail)
+                        {
+
+                            <tr scope="row">
+                                <td>
+                                    @item.KeyTime
+                                </td>
+                                <td>@item.Services.ServiceName </td>
+
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+                <p>
+                    @detail.First().Note
+                </p>
+            </div>
+            
+
+        </div>
+
+    </div>
+
+}
+

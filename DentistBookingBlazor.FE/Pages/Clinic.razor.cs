@@ -70,5 +70,6 @@ namespace DentistBookingBlazor.FE.Pages
                 await GetClinics();
             }
         }
+
     }
 }
