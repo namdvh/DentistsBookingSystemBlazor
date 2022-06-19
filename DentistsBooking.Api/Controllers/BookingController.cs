@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DentistBooking.Application.System.Bookings;
 using DentistBooking.Data.Enum;
@@ -37,6 +38,15 @@ namespace DentistsBooking.Api.Controllers
         {
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize, filter._by, filter._order);
             ListBookingResponse result = await _bookingService.GetBookingList(validFilter);
+            return Ok(result);
+        }
+        
+        [HttpGet]
+        [Route("{userId}")]
+        public async Task<IActionResult> GetAllBookingForUser([FromQuery] PaginationFilter filter,[FromRoute] Guid userId)
+        {
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize, filter._by, filter._order);
+            ListBookingResponse result = await _bookingService.GetBookingListForUser(validFilter,userId);
             return Ok(result);
         }
 
