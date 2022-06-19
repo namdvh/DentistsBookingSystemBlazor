@@ -2,14 +2,26 @@
 @inject IJSRuntime JSRuntime
 @using Microsoft.AspNetCore.Components.Authorization;
 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Free NGO Resonsive Website Tempalte | Smarteyeapps.com</title>
+    <link rel="shortcut icon" href="assets/images/fav.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/images/fav.jpg">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+</head>
+
 <link rel="stylesheet" href="./MainLayout.css" />
-<div class="page" id="page">
+<div class="page" id="page" style="background: transparent">
     <div class="sidebar">
         <NavMenu />
     </div>
 
    <div class="main">
-
         <div class="top-row px-4">
             <AuthorizeView>
                 <Authorized>
@@ -25,7 +37,7 @@
             <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
         </div>
 
-        <div class="content px-4">
+        <div class="content px-4" style="margin-top: 10rem">
             <AuthorizeView>
                 <Authorized>
                     @Body

@@ -110,6 +110,14 @@ namespace DentistsBooking.Api
                      .AllowAnyHeader()
                      .SetIsOriginAllowed(origin => true) // allow any origin
                      .AllowCredentials());
+            app.UseStatusCodePages(async context =>
+            {
+                var response = context.HttpContext.Response;
+
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
+                        response.StatusCode == (int)HttpStatusCode.Forbidden || response.StatusCode == (int)HttpStatusCode.NotFound)
+                       response.Redirect("/Error");
+            });
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseStatusCodePages(async context =>
