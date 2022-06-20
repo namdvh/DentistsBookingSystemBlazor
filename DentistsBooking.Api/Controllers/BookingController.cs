@@ -5,6 +5,7 @@ using DentistBooking.Application.System.Bookings;
 using DentistBooking.Data.Enum;
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Bookings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -78,7 +79,8 @@ namespace DentistsBooking.Api.Controllers
         }
 
         [HttpGet("dentist/{dentistID}")]
-        [AllowAnonymous]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles ="Docter")]
 
         public async Task<IActionResult> GetBookingListDentist([FromQuery] PaginationFilter filter, int dentistID)
         {

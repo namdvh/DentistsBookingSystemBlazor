@@ -16,6 +16,7 @@ namespace DentistBookingBlazor.FE.Services.Bookings
         Task<bool> UpdateBookingStatus(BookingStatusRequest request);
         Task<BookingDetailResponse> GetBookingDetail(int bookingId);
         Task<ListBookingDTOResponse> GetBookingListForDentist(PaginationFilter filter,int dentistId);
+        Task<ListBookingDTOResponse> GetBookingListForUser(PaginationFilter filter,Guid userId);
 
 
     }

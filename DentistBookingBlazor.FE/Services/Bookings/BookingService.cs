@@ -65,6 +65,19 @@ namespace DentistBookingBlazor.FE.Services.Bookings
             return result;
         }
 
+        public async Task<ListBookingDTOResponse> GetBookingListForUser(PaginationFilter filter, Guid userId)
+        {
+            var queryStringParam = new Dictionary<string, string>
+            {
+                ["PageNumber"] = filter.PageNumber.ToString(),
+                ["PageSize"] = filter.PageSize.ToString(),
+            };
+
+            var url = QueryHelpers.AddQueryString($"/api/bookings/{userId}", queryStringParam);
+            var result = await _httpClient.GetFromJsonAsync<ListBookingDTOResponse>(url);
+            return result;
+        }
+
         public async Task<List<KeyTime>> GetPostListKeyTime(int clinicId, int serviceId, DateTime date)
         {
             var queryStringParam = new Dictionary<string, string>
