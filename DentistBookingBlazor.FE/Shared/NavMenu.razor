@@ -1,69 +1,35 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">DentistBookingBlazor.FE</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+﻿<header>
+    <div class="head-row container">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 logocol">
+                    <img src="assets/images/logo.jpg" alt="">
+                    <a class="navbar-toggler d-block d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="bi bi-list"></i>
+                    </a>
+                </div>
+                <div id="navbarNav" class="col-md-9 d-none d-md-block infocol">
+                    <div class="row d-none d-sm-block float-end info-row">
+                        <ul>
+                            <li><i class="far fa-envelope"></i> support@smarteyeapps.com</li>
+                            <li><i class="fas fa-mobile-alt"></i> +91 9159669599</li>
+                        </ul>
+                    </div>
+                    <div class="nav-row ">
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="aboutus.html">About Us</a></li>
+                            <li><a href="services.html">Services</a></li>
+                            <li><a href="blog.html">Blog</a></li>
+                            <li><a href="contactus.html">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="login">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Login
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="register">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Register
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="testing">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Testing
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="dentist">
-                <span class="oi oi-list-people" aria-hidden="true"></span> Dentist
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="clinic">
-                <span class="oi oi-list-people" aria-hidden="true"></span> Clinic
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="discount">
-                <span class="oi oi-list-people" aria-hidden="true"></span> Discount
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="service">
-                <span class="oi oi-list-people" aria-hidden="true"></span> Service
-            </NavLink>
-        </li> 
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="user">
-                <span class="oi oi-list-people" aria-hidden="true"></span> User
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="booking">
-                <span class="oi oi-list-people" aria-hidden="true"></span> Booking
-            </NavLink>
-        </li>
-    </ul>
-</div>
+        </div>
+    </div>
+</header>
 
 @code {
     private bool collapseNavMenu = true;

@@ -51,8 +51,8 @@ namespace DentistsBooking.Api
             {
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                 options.SlidingExpiration = true;
-                //options.LoginPath = "/api/Error";
-                //options.AccessDeniedPath = "/api/Error";
+                options.LoginPath = "/Error";
+                options.AccessDeniedPath = "/Error";
             });
             services.AddIdentity<User, Role>().AddEntityFrameworkStores<DentistDBContext>().AddDefaultTokenProviders();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -69,7 +69,7 @@ namespace DentistsBooking.Api
                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecurityKey"]))
                   };
               });
-              
+
             //Declare DI
             services.AddScoped<UserManager<User>, UserManager<User>>();
             services.AddScoped<SignInManager<User>, SignInManager<User>>();
@@ -110,16 +110,24 @@ namespace DentistsBooking.Api
                      .AllowAnyHeader()
                      .SetIsOriginAllowed(origin => true) // allow any origin
                      .AllowCredentials());
+            app.UseStatusCodePages(async context =>
+            {
+                var response = context.HttpContext.Response;
+
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
+                        response.StatusCode == (int)HttpStatusCode.Forbidden || response.StatusCode == (int)HttpStatusCode.NotFound)
+                       response.Redirect("/Error");
+            });
             app.UseAuthentication();
             app.UseAuthorization();
-            //app.UseStatusCodePages(async context =>
-            //{
-            //    var response = context.HttpContext.Response;
+            app.UseStatusCodePages(async context =>
+            {
+                var response = context.HttpContext.Response;
 
-            //    if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
-            //            response.StatusCode == (int)HttpStatusCode.Forbidden)
-            //        response.Redirect("/api/Error");
-            //});
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
+                        response.StatusCode == (int)HttpStatusCode.Forbidden)
+                    response.Redirect("/Error");
+            });
 
 
             app.UseEndpoints(endpoints =>
