@@ -31,6 +31,8 @@ else
                             <th scope="col">Date</th>
                             <th scope="col">Total</th>
                             <th scope="col">Status</th>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Phone</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -57,6 +59,8 @@ else
                                 {
                                 <td>DECLINED</td>
                                 }
+                                <td>@item.User.FirstName + @item.User.LastName</td>
+                                <td>@item.User.Phone</td>
                                 <td>
                                     @if(@item.Status == DentistBooking.Data.Enum.Status.PENDING)
                                     {
