@@ -425,9 +425,11 @@ namespace DentistBooking.Application.System.Bookings
                                  on t1.Id equals t2.BookingId
                                  where t1.Date.Equals(date)
                                  select t2).ToListAsync();
-            var dentists = await (from dentist in _context.Dentists
-                                  where dentist.ClinicId == clinicId
-                                  select dentist).ToListAsync();
+            var dentists = await (from t1 in _context.Dentists
+                                  join t2 in _context.Users
+                                  on t1.Id equals t2.DentistId
+                                  where t1.ClinicId == clinicId && t2.Status != Status.INACTIVE
+                                  select t1).ToListAsync();
             int count = 0;
             foreach (var detail in details)
             {

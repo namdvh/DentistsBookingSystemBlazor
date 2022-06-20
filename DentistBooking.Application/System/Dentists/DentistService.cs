@@ -50,15 +50,11 @@ namespace DentistBooking.Application.System.Dentists
                 data = await (from user in _context.Users
                               join dentist in _context.Dentists on user.DentistId equals dentist.Id into dentistsUser
                               from dentistAttribute in dentistsUser.DefaultIfEmpty()
-                              where user.Deleted_by == null
                               select new { user, dentistAttribute })
                     .Where(x => x.user.DentistId != null)
                     .OrderByDescending(x => x.user.Created_at)
                     .Skip((filter.PageNumber - 1) * filter.PageSize)
                     .Take(filter.PageSize).ToListAsync();
-            }
-            else
-            {
             }
 
 
