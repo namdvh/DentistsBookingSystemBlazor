@@ -390,8 +390,6 @@ namespace DentistBooking.Application.System.Bookings
                 {
                     listDto.Add(mapToBookingDto(x.booking));
                 }
-
-
                 response.Content = listDto;
                 response.Message = "SUCCESS";
                 response.Code = "200";

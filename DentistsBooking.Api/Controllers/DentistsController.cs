@@ -24,7 +24,6 @@ namespace DentistsBooking.Api.Controllers
 
         [HttpGet]
         
-        //[Authorize(Roles ="Admin")]
         public async System.Threading.Tasks.Task<IActionResult> GetAllDentist([FromQuery] PaginationFilter filter)
         {
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize, filter._by, filter._order);

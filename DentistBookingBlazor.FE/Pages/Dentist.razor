@@ -10,7 +10,7 @@
 
 <h3>Dentist</h3>
 <NotAuthorized>
-    @if (true) { NavigationManager.NavigateTo("login"); }
+    @if (true) { NavigationManager.NavigateTo("Error"); }
 </NotAuthorized>
 @if (dentist == null)
 {
@@ -19,12 +19,10 @@
 else
 {
 
-
     <div class="content">
         <div class="container">
         <div class="col pt4">
             <a href="/createDentist" class="btn btn-success">Create</a>
-
         </div>
 
 

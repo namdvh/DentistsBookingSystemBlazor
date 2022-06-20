@@ -14,5 +14,7 @@ namespace DentistBooking.ViewModels.System.Users
         public DateTime DOB { get; set; }
         public Status Status { get; set; }
         public string ImageUrl { get; set; }
+
+        public int? DentistId { get; set; }
     }
 }

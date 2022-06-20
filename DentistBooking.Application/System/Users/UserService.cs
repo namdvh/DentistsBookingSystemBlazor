@@ -162,7 +162,7 @@ namespace DentistBooking.Application.System.Users
         public async Task<UserDTO> GetUser(Guid userId)
         {
             try
-            {         
+            {
                 var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
                 return MapToDto(user);
             }
@@ -183,6 +183,7 @@ namespace DentistBooking.Application.System.Users
             dto.Status = user.Status;
             dto.FirstName = user.FirstName;
             dto.LastName = user.LastName;
+            dto.DentistId = user.DentistId;
             return dto;
         }
 
