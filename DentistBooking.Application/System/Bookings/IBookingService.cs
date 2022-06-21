@@ -16,6 +16,7 @@ namespace DentistBooking.Application.System.Bookings
         Task<ListBookingResponse> GetBookingListForUser(PaginationFilter filter,Guid userId);
         Task<BookingResponse> UpdateBooking(BookingRequest request);
         Task<BookingResponse> UpdateBookingStatus(BookingStatusRequest request);
+        Task<BookingResponse> UpdateBookingDetailStatus(BookingDetailStatusRequest request);
         Task<BookingResponse> DeleteBooking(string bookingId, Guid userId);
         Task<BookingDetailResponse> GetBookingDetail(int bookingId);
         

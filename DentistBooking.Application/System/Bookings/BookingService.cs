@@ -77,7 +77,7 @@ namespace DentistBooking.Application.System.Bookings
                         KeyTime = request.KeyTimes[i],
                         Note = request.Note,
                         Created_by = request.UserId,
-                        Status = Status.ACTIVE,
+                        Status = Status.INACTIVE,
                         ServiceId = request.ServiceIds[i]
 
                     };
@@ -100,6 +100,43 @@ namespace DentistBooking.Application.System.Bookings
 
                 return response;
             }
+        }
+
+        public async Task<BookingResponse> UpdateBookingDetailStatus(BookingDetailStatusRequest request)
+        {
+            BookingResponse response=null;
+            try
+            {
+                var detail = await _context.BookingDetails.FirstOrDefaultAsync(x => x.Id == request.bookingDetailID);
+                var bookingId = detail.BookingId;
+                var booking = await _context.Bookings.Where(x => x.Id == bookingId).FirstOrDefaultAsync();
+                
+                detail.Status = request.status;
+                var count = _context.BookingDetails.Where(x=>x.BookingId == bookingId && x.Status == Status.INACTIVE).Count();
+                if(count == 0)
+                {
+                    booking.Status = Status.DONE;
+                }
+
+
+                response.Code = "200";
+                response.Message="Update successfully"; 
+                await _context.SaveChangesAsync();
+                return response;
+
+
+            }
+            catch (Exception e)
+            {
+                response = new()
+                {
+
+                    Code = "203",
+                    Message = "Update failed"
+                };
+            }
+
+            return  response;
         }
 
         public async Task<BookingResponse> DeleteBooking(string bookingId, Guid userId)
@@ -388,7 +425,7 @@ namespace DentistBooking.Application.System.Bookings
             {
                 foreach (var x in pagedData)
                 {
-                    listDto.Add(mapToBookingDto(x.booking));
+                    listDto.Add(mapToBookingDto(x.booking,dentistId));
                 }
                 response.Content = listDto;
                 response.Message = "SUCCESS";
@@ -409,9 +446,6 @@ namespace DentistBooking.Application.System.Bookings
             return response;
         }
 
-
-
-
         private BookingDTO mapToBookingDto(Booking booking)
         {
             BookingDTO bookingDto = new BookingDTO()
@@ -423,6 +457,23 @@ namespace DentistBooking.Application.System.Bookings
                 UserId = booking.UserId,
                 User = MapToDTO(booking.UserId),
                 Detail = GetDetailFromBooking(booking.Id)
+
+            };
+            return bookingDto;
+        }
+
+
+        private BookingDTO mapToBookingDto(Booking booking,int dentistId)
+        {
+            BookingDTO bookingDto = new BookingDTO()
+            {
+                Date = booking.Date,
+                Id = booking.Id,
+                Status = booking.Status,
+                Total = booking.Total,
+                UserId = booking.UserId,
+                User = MapToDTO(booking.UserId),
+                Detail = GetDetailFromBooking(booking.Id,dentistId)
 
             };
             return bookingDto;
@@ -508,6 +559,32 @@ namespace DentistBooking.Application.System.Bookings
             return list;
 
 
+        }
+        
+        private List<BookingDtoDetail> GetDetailFromBooking(int bookingId,int dentistId)
+        {
+            List<BookingDtoDetail> list = new();
+
+
+            var data = _context.BookingDetails.Where(x => x.BookingId == bookingId&&x.DentistId==dentistId).ToList();
+
+
+            foreach (var x in data)
+            {
+                var serviceName = _context.Services.FirstOrDefault(y => y.Id == x.ServiceId)?.Name;
+                if (serviceName != null)
+                {
+                    BookingDtoDetail detail = new()
+                    {
+                        DetailID = x.Id,
+                        KeyTime = x.KeyTime,
+                    
+                    };
+                    list.Add(detail);
+                }
+            }
+
+            return list;
         }
         
         private List<BookingDtoDetail> GetDetailFromBooking(int bookingId)
