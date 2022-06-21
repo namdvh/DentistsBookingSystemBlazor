@@ -6,9 +6,6 @@
 
 @page "/bookingD"
 <h3>Booking For Dentist @dentistName</h3>
-<NotAuthorized>
-    @if (true) { NavigationManager.NavigateTo("Error"); }
-</NotAuthorized>
 @if (booking == null)
 {
     <div>Loading...</div>

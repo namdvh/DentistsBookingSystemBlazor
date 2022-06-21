@@ -92,7 +92,6 @@ namespace DentistsBooking.Api.Controllers
 
         [HttpGet("dentist/{dentistID}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [Authorize(Roles ="Docter")]
 
         public async Task<IActionResult> GetBookingListDentist([FromQuery] PaginationFilter filter, int dentistID)
         {
