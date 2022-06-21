@@ -104,7 +104,7 @@ namespace DentistBooking.Application.System.Bookings
 
         public async Task<BookingResponse> UpdateBookingDetailStatus(BookingDetailStatusRequest request)
         {
-            BookingResponse response=null;
+            BookingResponse response=new();
             try
             {
                 var detail = await _context.BookingDetails.FirstOrDefaultAsync(x => x.Id == request.bookingDetailID);

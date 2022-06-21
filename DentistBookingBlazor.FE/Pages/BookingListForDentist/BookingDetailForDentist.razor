@@ -25,6 +25,8 @@ else
 
                             <th scope="col">Time</th>
                             <th scope="col">Service</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,7 +38,13 @@ else
                                     @item.KeyTime
                                 </td>
                                 <td>@item.Services.ServiceName </td>
-
+                                <td>@item.Status</td>
+                                <td>
+                                     @if(@item.Status == DentistBooking.Data.Enum.Status.ACTIVE)
+                                    {
+                                        <button class="btn btn-danger" @onclick="()=>OnConfirm(item.Id,DentistBooking.Data.Enum.Status.CONFIRMED)">CONFIRM</button>
+                                    }
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -51,5 +59,9 @@ else
         </div>
 
     </div>
-
+      <Confirmation 
+        ConfirmationMessage="Do you want to do this action?"
+                      ConfirmationTitle="Action"
+                      @ref="ActionConfirmation"
+                      ConfirmationChanged="OnConfirmAction"></Confirmation>
 }

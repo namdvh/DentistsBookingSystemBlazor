@@ -133,7 +133,6 @@ namespace DentistsBooking.Api.Controllers
             return Ok(result);
         }
         [HttpPut]
-        [AllowAnonymous]
         [Route("detail/status")]
         public async Task<IActionResult> UpdateBookingDetailStatus([FromBody] BookingDetailStatusRequest request)
         {

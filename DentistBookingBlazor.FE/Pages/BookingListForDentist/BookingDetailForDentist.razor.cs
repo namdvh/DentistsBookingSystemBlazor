@@ -1,7 +1,9 @@
 ﻿using Blazored.LocalStorage;
 using DentistBooking.Blazor.Services.Users;
+using DentistBooking.Data.Enum;
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Bookings;
+using DentistBookingBlazor.FE.Components;
 using DentistBookingBlazor.FE.Services.Bookings;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -27,6 +29,10 @@ namespace DentistBookingBlazor.FE.Pages.BookingListForDentist
         public string BookingId { get; set; }
         [Parameter]
         public string dentistId { get; set; }
+        protected Confirmation ActionConfirmation { get; set; }
+        public int ActionID { get; set; }
+        public Status Status { get; set; }
+        public BookingDetailStatusRequest request { get; set; }
         protected override async Task OnInitializedAsync()
         {
             await GetDetails();
@@ -37,6 +43,37 @@ namespace DentistBookingBlazor.FE.Pages.BookingListForDentist
             response = await BookingService.GetDetailByDentistAndBooking(int.Parse(dentistId),int.Parse(BookingId));
             detail = new();
             detail = (List<BookingDetailDTO>)response.Details;
+        }
+        public async Task OnConfirm(int id, Status status)
+        {
+
+            ActionID = id;
+            Status = status;
+            ActionConfirmation.Show();
+
+        }
+
+        public async Task OnConfirmAction(bool actionConfirmed)
+        {
+            if (actionConfirmed)
+            {
+                request = new();
+
+                if (Status == Status.CONFIRMED)
+                {
+                    request.bookingDetailID = ActionID;
+                    request.status = Status;
+                }
+                else
+                {
+                    request.bookingDetailID = ActionID;
+                    request.status = Status;
+                }
+
+                await BookingService.UpdateBookingDetailStatus(request);
+                await GetDetails();
+
+            }
         }
     }
 }

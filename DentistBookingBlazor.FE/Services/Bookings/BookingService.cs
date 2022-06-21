@@ -113,6 +113,12 @@ namespace DentistBookingBlazor.FE.Services.Bookings
             return result.IsSuccessStatusCode;
         }
 
+        public async Task<bool> UpdateBookingDetailStatus(BookingDetailStatusRequest request)
+        {
+            var result = await _httpClient.PutAsJsonAsync("/api/bookings/detail/status", request);
+            return result.IsSuccessStatusCode;
+        }
+
         public async Task<bool> UpdateBookingStatus(BookingStatusRequest request)
         {
             var result = await _httpClient.PutAsJsonAsync("/api/bookings/status", request);
