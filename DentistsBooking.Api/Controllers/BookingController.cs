@@ -133,6 +133,19 @@ namespace DentistsBooking.Api.Controllers
             BookingResponse result = await _bookingService.UpdateBookingStatus(request);
             return Ok(result);
         }
+
+        [HttpDelete]
+        [AllowAnonymous]
+        [Route("bookingId")]
+        public async Task<IActionResult> UpdateBookingStatus([FromRoute] int bookingId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            BookingResponse result = await _bookingService.DeleteBookingByUser(bookingId);
+            return Ok(result);
+        }
     }
 
 

@@ -14,6 +14,7 @@ namespace DentistBooking.ViewModels.System.Bookings
         public Guid UserId { get; set; }
         
         public UserDTO User { get; set; }
+        public DateTime CreateAt { get; set; }
         
         public List<BookingDtoDetail> Detail { get; set; }
     }

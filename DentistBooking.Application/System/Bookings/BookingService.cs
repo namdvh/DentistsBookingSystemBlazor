@@ -456,6 +456,7 @@ namespace DentistBooking.Application.System.Bookings
                 Total = booking.Total,
                 UserId = booking.UserId,
                 User = MapToDTO(booking.UserId),
+                CreateAt = booking.Created_at,
                 Detail = GetDetailFromBooking(booking.Id)
 
             };
@@ -691,6 +692,42 @@ namespace DentistBooking.Application.System.Bookings
                 response.Details = null;
                 response.Code = "200";
                 response.Message = "GetBookingDetail failed";
+
+                return response;
+            }
+        }
+
+        public async Task<BookingResponse> DeleteBookingByUser(string bookingId)
+        {
+            BookingResponse response = new BookingResponse();
+
+            try
+            {
+                Booking obj = _context.Bookings.Find(bookingId);
+                if (obj != null && DateTime.Now > obj.Created_at.AddSeconds(120))
+                {
+
+                     _context.Bookings.Remove(obj);
+
+                    response.Code = "200";
+                    response.Message = "Delete booking successfully";
+
+                    return response;
+                }
+                else
+                {
+                    response.Code = "200";
+                    response.Message = "Over limit time to delete booking!";
+
+                    return response;
+                }
+
+            }
+            catch (DbUpdateException)
+            {
+
+                response.Code = "200";
+                response.Message = "Delete booking failed";
 
                 return response;
             }

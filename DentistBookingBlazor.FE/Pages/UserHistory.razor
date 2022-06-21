@@ -1,0 +1,84 @@
+﻿@page "/userHistory"
+@using DentistBookingBlazor.FE.Components
+@using DentistBookingBlazor.FE.Services.Bookings
+@inject HttpClient _httpClient
+@inject IBookingService bookingService;
+
+<h3>User History</h3>
+
+@if (booking == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+
+
+    <div class="content">
+
+        <div class="container">
+            <h2 class="mb-5">Table #6</h2>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped custom-table">
+                    <thead>
+                        <tr>
+
+                             <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in booking)
+                        {
+
+                            <tr scope="row">
+                                <td>@item.Date </td>
+
+                                <td>@item.Total</td>
+                                @if (@item.Status == DentistBooking.Data.Enum.Status.PENDING)
+                                {
+                                    <td>PENDING</td>
+                                }
+                                else if(@item.Status == DentistBooking.Data.Enum.Status.CONFIRMED)
+                                {
+                                    <td>CONFIRMED</td>
+                                }else if(@item.Status == DentistBooking.Data.Enum.Status.DONE)
+                                {
+                                    <td>DONE</td>
+                                }
+                                else
+                                {
+                                <td>DECLINED</td>
+                                }
+                                <td>@item.User.FirstName + @item.User.LastName</td>
+                                <td>@item.User.Phone</td>
+                                <td>@*Cancle booking*@
+                                    @if(DateTime.Now < @item.CreateAt.AddSeconds(120))
+                                    {
+                                        <button class="btn btn-danger" @onclick="()=>OnDeleteBooking(item.Id)">Delete</button>
+                                    }
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <Pagination filter="paginationFilter" paginationDTO="paginationDTO" Spread="1" SelectedPage="SelectedPage"></Pagination>
+                    </tfoot>
+                </table>
+            </div>
+            
+
+        </div>
+
+    </div>
+}
