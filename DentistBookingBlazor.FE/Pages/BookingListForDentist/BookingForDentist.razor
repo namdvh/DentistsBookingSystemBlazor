@@ -23,10 +23,12 @@ else
                 <table class="table table-striped custom-table">
                     <thead>
                         <tr>
+                            <th scope="col">ID</th>
                             <th scope="col">Date</th>
                             <th scope="col">Total</th>
                             <th scope="col">Status</th>
                             <th scope="col">Action</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -34,6 +36,7 @@ else
                         {
 
                             <tr scope="row">
+                                <td>@item.Id </td>
                                 <td>@item.Date </td>
 
                                 <td>@item.Total</td>
@@ -54,7 +57,7 @@ else
                                 }
                                 <td>
                                     
-                                    <a href="/bookingDetail/@item.Id" class="btn btn-primary">Detail</a>
+                                    <a href="/bookingDetailDentist/@item.Id/@dentistID" class="btn btn-primary">Detail</a>
                                 </td>
 
                             </tr>

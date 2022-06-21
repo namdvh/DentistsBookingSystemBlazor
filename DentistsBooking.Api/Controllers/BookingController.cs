@@ -73,7 +73,7 @@ namespace DentistsBooking.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            BookingDetailResponse result = await _bookingService.GetDetailByDentistAndBooking(bookingId, dentistId);
+            BookingDetailResponse result = await _bookingService.GetDetailByDentistAndBooking(dentistId, bookingId);
             return Ok(result);
         }
 
