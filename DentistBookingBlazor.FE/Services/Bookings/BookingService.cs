@@ -78,6 +78,19 @@ namespace DentistBookingBlazor.FE.Services.Bookings
             return result;
         }
 
+        public async Task<BookingDetailResponse> GetDetailByDentistAndBooking(int dentistId, int bookingId)
+        {
+            var queryStringParam = new Dictionary<string, string>
+            {
+                ["dentistId"] = dentistId.ToString(),
+                ["bookingId"] = bookingId.ToString(),
+            };
+
+            var url = QueryHelpers.AddQueryString($"/api/bookings/detaildentist", queryStringParam);
+            var result = await _httpClient.GetFromJsonAsync<BookingDetailResponse>(url);
+            return result;
+        }
+
         public async Task<List<KeyTime>> GetPostListKeyTime(int clinicId, int serviceId, DateTime date)
         {
             var queryStringParam = new Dictionary<string, string>

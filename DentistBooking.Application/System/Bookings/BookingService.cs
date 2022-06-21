@@ -653,5 +653,47 @@ namespace DentistBooking.Application.System.Bookings
 
             return  response;
         }
+
+        public async Task<BookingDetailResponse> GetDetailByDentistAndBooking(int dentistId, int bookingId)
+        {
+            BookingDetailResponse response = new BookingDetailResponse();
+            List<BookingDetailDTO> listDto = new();
+
+            try
+            {
+                List<BookingDetail> details =
+                    await _context.BookingDetails.Where(g => g.BookingId.Equals(bookingId) && g.DentistId.Equals(dentistId)).ToListAsync();
+
+                if (details != null)
+                {
+                    foreach (var x in details)
+                    {
+                        listDto.Add(MapToBookingDetailDto(x));
+                    }
+
+                    response.Details = listDto;
+                    response.Code = "200";
+                    response.Message = "GetBookingDetail successfully";
+
+                    return response;
+                }
+                else
+                {
+                    response.Details = null;
+                    response.Code = "200";
+                    response.Message = "Can not find any booking detail of that booking";
+
+                    return response;
+                }
+            }
+            catch (DbUpdateException)
+            {
+                response.Details = null;
+                response.Code = "200";
+                response.Message = "GetBookingDetail failed";
+
+                return response;
+            }
+        }
     }
 }
