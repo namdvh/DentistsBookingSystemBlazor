@@ -1,0 +1,67 @@
+﻿@using DentistBookingBlazor.FE.Services.Bookings
+@using DentistBookingBlazor.FE.Components
+<h3>BookingDetailForDentist</h3>
+@inject HttpClient _httpClient
+@inject IBookingService bookingService;
+@page "/bookingDetailDentist/{BookingId}/{dentistId}"
+@if (detail == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+
+
+    <div class="content">
+
+        <div class="container">
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped custom-table">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">Time</th>
+                            <th scope="col">Service</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in detail)
+                        {
+
+                            <tr scope="row">
+                                <td>
+                                    @item.KeyTime
+                                </td>
+                                <td>@item.Services.ServiceName </td>
+                                <td>@item.Status</td>
+                                <td>
+                                     @if(@item.Status == DentistBooking.Data.Enum.Status.ACTIVE)
+                                    {
+                                        <button class="btn btn-danger" @onclick="()=>OnConfirm(item.Id,DentistBooking.Data.Enum.Status.CONFIRMED)">CONFIRM</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+                <p>
+                    @detail.First().Note
+                </p>
+            </div>
+            
+
+        </div>
+
+    </div>
+      <Confirmation 
+        ConfirmationMessage="Do you want to do this action?"
+                      ConfirmationTitle="Action"
+                      @ref="ActionConfirmation"
+                      ConfirmationChanged="OnConfirmAction"></Confirmation>
+}

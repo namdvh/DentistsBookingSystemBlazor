@@ -23,6 +23,7 @@ namespace DentistBookingBlazor.FE.Pages.BookingListForDentist
         PaginationFilter paginationFilter = new();
         private ListBookingDTOResponse response;
         public string dentistName { get; set; }
+        public string dentistID { get; set; }
         private PaginationDTO paginationDTO;
 
         private List<BookingDTO> booking;
@@ -39,6 +40,7 @@ namespace DentistBookingBlazor.FE.Pages.BookingListForDentist
             var tokenS = jsonToken as JwtSecurityToken;
             var userId = tokenS.Claims.First(claim => claim.Type == "UserId").Value;
             var dentist = await userService.GetUser(Guid.Parse(userId));
+            dentistID = dentist.DentistId.ToString();
             dentistName = dentist.FirstName;
             response = await BookingService.GetBookingListForDentist(paginationFilter, (int)dentist.DentistId);
             booking = (List<BookingDTO>)response.Content;

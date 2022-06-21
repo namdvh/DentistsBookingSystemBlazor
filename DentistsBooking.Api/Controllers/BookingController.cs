@@ -73,7 +73,7 @@ namespace DentistsBooking.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            BookingDetailResponse result = await _bookingService.GetDetailByDentistAndBooking(bookingId, dentistId);
+            BookingDetailResponse result = await _bookingService.GetDetailByDentistAndBooking(dentistId, bookingId);
             return Ok(result);
         }
 
@@ -92,7 +92,6 @@ namespace DentistsBooking.Api.Controllers
 
         [HttpGet("dentist/{dentistID}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [Authorize(Roles ="Docter")]
 
         public async Task<IActionResult> GetBookingListDentist([FromQuery] PaginationFilter filter, int dentistID)
         {
@@ -134,7 +133,6 @@ namespace DentistsBooking.Api.Controllers
             return Ok(result);
         }
         [HttpPut]
-        [AllowAnonymous]
         [Route("detail/status")]
         public async Task<IActionResult> UpdateBookingDetailStatus([FromBody] BookingDetailStatusRequest request)
         {
