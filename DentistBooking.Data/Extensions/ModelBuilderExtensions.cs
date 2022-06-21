@@ -290,7 +290,7 @@ namespace DentisBooking.Data.Extensions
                     {
                         Id = j,
                         DentistId = i,
-                        KeyTime = KeyTime._7_730,
+                        KeyTime = KeyTime._7h_7h30,
                         Note = "nhe nhang thoi nha bac si",
                         Status = Status.ACTIVE,
                         BookingId = i - 9,

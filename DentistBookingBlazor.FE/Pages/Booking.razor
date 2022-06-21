@@ -41,7 +41,7 @@ else
                         {
 
                             <tr scope="row">
-                                <td>@item.Date </td>
+                                <td>@item.Date.ToShortDateString() </td>
 
                                 <td>@item.Total</td>
                                 @if (@item.Status == DentistBooking.Data.Enum.Status.PENDING)
@@ -59,7 +59,7 @@ else
                                 {
                                 <td>DECLINED</td>
                                 }
-                                <td>@item.User.FirstName + @item.User.LastName</td>
+                                <td>@item.User.FirstName @item.User.LastName</td>
                                 <td>@item.User.Phone</td>
                                 <td>
                                     @if(@item.Status == DentistBooking.Data.Enum.Status.PENDING)
