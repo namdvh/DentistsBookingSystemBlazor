@@ -697,17 +697,18 @@ namespace DentistBooking.Application.System.Bookings
             }
         }
 
-        public async Task<BookingResponse> DeleteBookingByUser(string bookingId)
+        public async Task<BookingResponse> DeleteBookingByUser(int bookingId)
         {
             BookingResponse response = new BookingResponse();
 
             try
             {
                 Booking obj = _context.Bookings.Find(bookingId);
-                if (obj != null && DateTime.Now > obj.Created_at.AddSeconds(120))
+                if (obj != null && DateTime.Now < obj.Created_at.AddSeconds(120))
                 {
 
                      _context.Bookings.Remove(obj);
+                    _context.SaveChanges();
 
                     response.Code = "200";
                     response.Message = "Delete booking successfully";

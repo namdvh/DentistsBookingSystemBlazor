@@ -46,7 +46,7 @@ namespace DentistBookingBlazor.FE.Pages
         public async Task OnDeleteBooking(int bookingId)
         {
 
-                await BookingService
+                await BookingService.DeleteBookingByUser(bookingId);
                 await GetBookings();
 
 

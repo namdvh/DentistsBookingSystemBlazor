@@ -41,7 +41,7 @@ else
                         {
 
                             <tr scope="row">
-                                <td>@item.Date </td>
+                                <td>@item.Date.ToShortDateString() </td>
 
                                 <td>@item.Total</td>
                                 @if (@item.Status == DentistBooking.Data.Enum.Status.PENDING)

@@ -26,6 +26,12 @@ namespace DentistBookingBlazor.FE.Services.Bookings
             return rs.IsSuccessStatusCode;
         }
 
+        public async Task<bool> DeleteBookingByUser(int bookingId)
+        {
+            var result = await _httpClient.DeleteAsync($"/api/bookings/{bookingId}");
+            return result.IsSuccessStatusCode;
+        }
+
         public async Task<BookingDetailResponse> GetBookingDetail(int bookingId)
         {
             var queryStringParam = new Dictionary<string, string>

@@ -148,8 +148,8 @@ namespace DentistsBooking.Api.Controllers
 
         [HttpDelete]
         [AllowAnonymous]
-        [Route("bookingId")]
-        public async Task<IActionResult> UpdateBookingStatus([FromRoute] int bookingId)
+        [Route("{bookingId}")]
+        public async Task<IActionResult> DeleteBookingByUser([FromRoute] int bookingId)
         {
             if (!ModelState.IsValid)
             {
