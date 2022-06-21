@@ -64,6 +64,18 @@ namespace DentistsBooking.Api.Controllers
             BookingDetailResponse result = await _bookingService.GetBookingDetail(bookingId);
             return Ok(result);
         }
+        [HttpGet("detaildentist")]
+        [AllowAnonymous]
+
+        public async Task<IActionResult> GetBookingDetailForDentistbyBooking([FromQuery] int dentistId, int bookingId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            BookingDetailResponse result = await _bookingService.GetDetailByDentistAndBooking(bookingId, dentistId);
+            return Ok(result);
+        }
 
         [HttpGet("getUnavailableKeyTime")]
         [AllowAnonymous]

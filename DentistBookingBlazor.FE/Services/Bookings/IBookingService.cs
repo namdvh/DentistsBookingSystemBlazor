@@ -17,6 +17,10 @@ namespace DentistBookingBlazor.FE.Services.Bookings
         Task<BookingDetailResponse> GetBookingDetail(int bookingId);
         Task<ListBookingDTOResponse> GetBookingListForDentist(PaginationFilter filter,int dentistId);
         Task<ListBookingDTOResponse> GetBookingListForUser(PaginationFilter filter,Guid userId);
+        Task<BookingDetailResponse> GetDetailByDentistAndBooking(int dentistId, int bookingId);
+
+
+
 
 
     }
