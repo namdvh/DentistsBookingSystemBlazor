@@ -19,19 +19,24 @@ else
 
 
     <EditForm Model="service" OnValidSubmit="SubmitTask">
+        <DataAnnotationsValidator />
+
         <div class="form-group">
 
             <label for="Name">Name</label>
             <InputText class="form-control" @bind-Value="service.Name"></InputText>
-            <small id="nameHelp" class="form-text text-muted">Please enter service name here please.</small>
+            <ValidationMessage For="@(() => service.Name)" />
+            <small id="nameHelp" class="form-text text-muted">Please enter service name here.</small>
 
             <label for="Procedure">Procedure</label>
             <InputText class="form-control" @bind-Value="service.Procedure"></InputText>
-            <small id="procedureHelp" class="form-text text-muted">Please enter service procedure here please.</small>
+            <ValidationMessage For="@(() => service.Procedure)" />
+            <small id="procedureHelp" class="form-text text-muted">Please enter service procedure here.</small>
 
             <label for="Price">Price</label>
             <InputNumber class="form-control" @bind-Value="service.Price"></InputNumber>
-            <small id="priceHelp" class="form-text text-muted">Please enter service price here please.</small>
+            <ValidationMessage For="@(() => service.Price)" />
+            <small id="priceHelp" class="form-text text-muted">Please enter service price here.</small>
 
             <div class="form-group">
                 <label for="Discount">Discount</label>
@@ -76,10 +81,10 @@ else
     }
 
     private async Task GetDiscounts()
-        {
-            listDiscountResponse = await discountService.GetDiscountList(paginationFilter);
-            discounts = listDiscountResponse.Content as List<DiscountDTO>;
-        }
+    {
+        listDiscountResponse = await discountService.GetDiscountList(paginationFilter);
+        discounts = listDiscountResponse.Content as List<DiscountDTO>;
+    }
 
     private async void SubmitTask(EditContext context)
     {

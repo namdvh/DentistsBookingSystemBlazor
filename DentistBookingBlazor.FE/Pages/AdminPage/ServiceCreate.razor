@@ -7,22 +7,24 @@
 <h3>Service Create</h3>
 
 <EditForm Model="service" OnValidSubmit="SubmitTask">
+    <DataAnnotationsValidator />
+
     <div class="form-group">
-        <DataAnnotationsValidator />
 
         <label for="Name">Name</label>
         <InputText class="form-control" @bind-Value="service.Name"></InputText>
         <ValidationMessage For="@(() => service.Name)" />
+        <small id="nameHelp" class="form-text text-muted">Please enter service name here.</small>
 
         <label for="Procedure">Procedure</label>
         <InputText class="form-control" @bind-Value="service.Procedure"></InputText>
         <ValidationMessage For="@(() => service.Procedure)" />
-
+        <small id="procedureHelp" class="form-text text-muted">Please enter service procedure here.</small>
 
         <label for="Price">Price</label>
         <InputNumber class="form-control" @bind-Value="service.Price"></InputNumber>
         <ValidationMessage For="@(() => service.Price)" />
-
+        <small id="priceHelp" class="form-text text-muted">Please enter service price here.</small>
 
     </div>
 

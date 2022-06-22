@@ -12,7 +12,7 @@ namespace DentistBooking.ViewModels.System.Discounts
     {
         public int? Id { get; set; }
         [Required]
-
+        [RegularExpression(@"^\d*[a-zA-Z]{1,}\d*", ErrorMessage = "Title should not contain numbers")]
         public string Title { get; set; }
         [Required]
 
@@ -21,7 +21,7 @@ namespace DentistBooking.ViewModels.System.Discounts
 
         public DateTime EndDate { get; set; }
         [Required]
-
+        [RegularExpression(@"^\d*[a-zA-Z]{1,}\d*", ErrorMessage = "Description should not contain numbers")]
         public string Description { get; set; }
         public float? Percent { get; set; }
         [Required]

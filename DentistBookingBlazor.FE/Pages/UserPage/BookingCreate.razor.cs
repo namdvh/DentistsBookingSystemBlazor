@@ -27,7 +27,7 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
         [Inject]
         public IServiceService ServiceService { get; set; }
 
-        public string clinicId;
+        public string clinicId = "";
         public DateTime OrderDate = DateTime.Parse(DateTime.Now.ToShortDateString());
         public string MinDate = DateTime.Now.ToString("yyyy-MM-dd");
         public string MaxDate = DateTime.Now.AddMonths(1).ToString("yyyy-MM-dd");
@@ -44,14 +44,29 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
         private int ServiceId { get; set; }
 
         List<ClinicDTO> clinicList = new();
+        ClinicDTO chosenClinic { get; set; }
         List<ServiceDto> serviceList = new();
 
-        public CreateBookingRequest Cart { get; set; }
+        public CreateBookingRequest Cart = new();
 
 
         protected override async Task OnInitializedAsync()
         {
             await GetClinics();
+            Cart = await sessionStorage.GetItemAsync<CreateBookingRequest>("cart");
+            if(serviceList.Count == 0)
+            {
+                serviceList = await sessionStorage.GetItemAsync<List<ServiceDto>>("services");
+            }
+            if(clinicId.Equals(""))
+            {
+                chosenClinic = await sessionStorage.GetItemAsync<ClinicDTO>("clinic");
+                if(chosenClinic != null)
+                {
+                    clinicId = chosenClinic.Id.ToString();
+                }
+            }
+
 
         }
 
@@ -68,6 +83,10 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
             clinicId = e.Value.ToString();
             serviceResponse = await ServiceService.GetServiceListByClinic(int.Parse(clinicId));
             serviceList = serviceResponse.Content as List<ServiceDto>;
+            await sessionStorage.SetItemAsync("services", serviceList);
+            chosenClinic = await ClinicService.GetClinic(int.Parse(clinicId));
+            await sessionStorage.SetItemAsync("clinic", chosenClinic);
+
         }
 
         public async Task OnGetKeyTime(int serviceId)

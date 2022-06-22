@@ -5,13 +5,25 @@
 {
     <div class="form-group">
         <select class="form-control" @onchange="DoStuff">
-            <option>@InitialText</option>
-            @foreach (var items in clinicList)
+            @if (chosenClinic != null)
             {
-                <option value="@items.Id">@items.Name</option>
+                <option value="@chosenClinic.Id">@chosenClinic.Name</option>
+                @foreach (var items in clinicList)
+                {
+                    <option value="@items.Id">@items.Name</option>
+                }
             }
+            else
+            {
+                <option>@InitialText</option>
+                @foreach (var items in clinicList)
+                {
+                    <option value="@items.Id">@items.Name</option>
+                }
+            }
+
         </select>
-        <input type="date" min=@MinDate max=@MaxDate  @bind-value="OrderDate" />
+        <input type="date" min=@MinDate max=@MaxDate @bind-value="OrderDate" />
     </div>
 }
 else
@@ -42,26 +54,31 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in serviceList)
+                    @if (serviceList != null)
                     {
-                        @if (Cart == null || !Cart.ServiceIds.Contains(@item.Id))
+
+                        @foreach (var item in serviceList)
                         {
-                            <tr scope="row">
-                                <td>
-                                    @item.Id
-                                </td>
-                                <td>@item.ServiceName </td>
+                            @if (Cart == null || !Cart.ServiceIds.Contains(@item.Id))
+                            {
+                                <tr scope="row">
+                                    <td>
+                                        @item.Id
+                                    </td>
+                                    <td>@item.ServiceName </td>
 
-                                <td>@item.Procedure</td>
+                                    <td>@item.Procedure</td>
 
-                                <td>@item.Price</td>
-                                <td>
-                                    <button class="btn btn-danger" @onclick="()=>OnGetKeyTime(item.Id)">Choose</button>
-                                </td>
-                            </tr>
+                                    <td>@item.Price</td>
+                                    <td>
+                                        <button class="btn btn-danger" @onclick="()=>OnGetKeyTime(item.Id)">Choose</button>
+                                    </td>
+                                </tr>
+                            }
+
                         }
-
                     }
+
                 </tbody>
 
             </table>

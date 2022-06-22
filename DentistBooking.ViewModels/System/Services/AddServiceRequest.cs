@@ -12,8 +12,10 @@ namespace DentistBooking.ViewModels.System.Services
     {
         public Guid UserId { get; set; }
         [Required]
+        [RegularExpression(@"^\d*[a-zA-Z]{1,}\d*", ErrorMessage = "Name should not contain numbers")]
         public string Name { get; set; }
         [Required]
+        [RegularExpression(@"^\d*[a-zA-Z]{1,}\d*", ErrorMessage = "Procedure should not contain numbers")]
         public string Procedure { get; set; }
         public Status Status { get; set; }
         [Required]

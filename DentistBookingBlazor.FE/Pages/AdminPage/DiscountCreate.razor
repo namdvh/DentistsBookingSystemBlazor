@@ -14,32 +14,27 @@
         <label for="Title">Title</label>
         <InputText class="form-control" @bind-Value="discount.Title"></InputText>
         <ValidationMessage For="@(() => discount.Title)" />
+        <small id="titleHelp" class="form-text text-muted">Please enter discount title here.</small>
 
         <label for="Start Date">Start Date</label>
         <InputDate class="form-control" asp-for="@discount.StartDate" @bind-Value="discount.StartDate"></InputDate>
         <ValidationMessage For="@(() => discount.StartDate)" />
-
+        <small id="startdateHelp" class="form-text text-muted">Please enter clinic start date here.</small>
 
         <label for="End Date">End Date</label>
         <InputDate class="form-control" asp-for="@discount.EndDate" @bind-Value="discount.EndDate"></InputDate>
         <ValidationMessage For="@(() => discount.EndDate)" />
-
+        <small id="enddateHelp" class="form-text text-muted">Please enter discount end date here.</small>
 
         <label for="Description">Description</label>
         <InputText class="form-control" @bind-Value="discount.Description"></InputText>
         <ValidationMessage For="@(() => discount.Description)" />
-
+        <small id="descriptionHelp" class="form-text text-muted">Please enter discount description here.</small>
 
         <label for="Amount">Amount</label>
         <InputNumber class="form-control" asp-for="@discount.Amount" @bind-Value="discount.Amount"></InputNumber>
         <ValidationMessage For="@(() => discount.Amount)" />
-
-
-        <label for="Percent">Percent</label>
-        <InputNumber class="form-control" asp-for="@discount.Percent" @bind-Value="discount.Percent"></InputNumber>
-        <ValidationMessage For="@(() => discount.Percent)" />
-
-
+        <small id="amountHelp" class="form-text text-muted">Please enter discount amount here.</small>
 
     </div>
 
