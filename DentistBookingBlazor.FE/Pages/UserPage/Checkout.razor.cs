@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DentistBookingBlazor.FE.Pages
+namespace DentistBookingBlazor.FE.Pages.UserPage
 {
     public partial class Checkout
     {

@@ -1,4 +1,4 @@
-﻿namespace DentistBookingBlazor.FE.Pages
+﻿namespace DentistBookingBlazor.FE.Pages.AdminPage
 {
     public partial class EditDiscount
     {

@@ -15,6 +15,7 @@
         <div class="container">
             <div class="signup-content">
                 <EditForm Model="dentist" OnValidSubmit="SubmitDentist">
+                    <DataAnnotationsValidator />
                     <h2 class="form-title">Create account</h2>
                     <div class="form-group">
                         <InputText id="username" class="form-control" @bind-Value="dentist.UserName" placeholder="User name"></InputText>

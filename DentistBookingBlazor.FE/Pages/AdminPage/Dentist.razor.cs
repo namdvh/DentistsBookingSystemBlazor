@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DentistBookingBlazor.FE.Pages
+namespace DentistBookingBlazor.FE.Pages.AdminPage
 {
     public partial class Dentist
     {

@@ -8,19 +8,22 @@
 
 <EditForm Model="service" OnValidSubmit="SubmitTask">
     <div class="form-group">
+        <DataAnnotationsValidator />
 
         <label for="Name">Name</label>
         <InputText class="form-control" @bind-Value="service.Name"></InputText>
-        <small id="nameHelp" class="form-text text-muted">Please enter service name here please.</small>
-        
+        <ValidationMessage For="@(() => service.Name)" />
+
         <label for="Procedure">Procedure</label>
         <InputText class="form-control" @bind-Value="service.Procedure"></InputText>
-        <small id="procedureHelp" class="form-text text-muted">Please enter service procedure here please.</small>
-        
+        <ValidationMessage For="@(() => service.Procedure)" />
+
+
         <label for="Price">Price</label>
         <InputNumber class="form-control" @bind-Value="service.Price"></InputNumber>
-        <small id="priceHelp" class="form-text text-muted">Please enter service price here please.</small>
-        
+        <ValidationMessage For="@(() => service.Price)" />
+
+
     </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>

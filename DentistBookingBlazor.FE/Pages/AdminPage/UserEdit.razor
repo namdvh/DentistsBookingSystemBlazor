@@ -1,0 +1,100 @@
+﻿@page "/userUpdate/{UserId}"
+@using DentistBooking.ViewModels.System.Users
+@using DentistBookingBlazor.FE.Components
+@using DentistBooking.Blazor.Services.Users;
+@using DentistBooking.Data.Enum
+@inject IUserService userService;
+@inject NavigationManager NavigationManager;
+
+@if (user == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+    <h3>User Edit: @user.FirstName</h3>
+
+
+
+    <EditForm Model="user" OnValidSubmit="SubmitTask">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+
+            <label for="FirstName">FirstName</label>
+            <InputText class="form-control" @bind-Value="user.FirstName"></InputText>
+            <ValidationMessage For="@(() => user.FirstName)" />
+
+            <small id="firstNameHelp" class="form-text text-muted">Please enter user first name here .</small>
+
+            <label for="LastName">LastName</label>
+            <InputText class="form-control" @bind-Value="user.LastName"></InputText>
+            <ValidationMessage For="@(() => user.LastName)" />
+
+            <small id="lastNameHelp" class="form-text text-muted">Please enter user last name here .</small>
+
+            <label for="PhoneNumber">Phone</label>
+            <InputText class="form-control" @bind-Value="user.PhoneNumber"></InputText>
+            <ValidationMessage For="@(() => user.PhoneNumber)" />
+
+            <small id="phoneHelp" class="form-text text-muted">Please enter user phone here .</small>
+
+            <label for="Email">Email</label>
+            <InputText class="form-control" @bind-Value="user.Email"></InputText>
+            <ValidationMessage For="@(() => user.Email)" />
+
+            <small id="emailHelp" class="form-text text-muted">Please enter user email here .</small>
+
+            <label for="Gender">Gender</label>
+            <InputSelect class="form-control" @bind-Value="user.Gender">
+                <option>Select a gender</option>
+                @foreach (string item in Enum.GetNames(typeof(Gender)))
+                {
+                <option value="@item">@item</option>
+                }
+        </InputSelect>
+        <small id="genderHelp" class="form-text text-muted">Please enter user gender here .</small>
+
+        <label for="DOB">Birthday</label>
+
+        <InputDate class="form-control" asp-for="@user.DOB" @bind-Value="user.DOB"></InputDate>
+        <ValidationMessage For="@(() => user.DOB)" />
+
+        <small id="dobHelp" class="form-text text-muted">Please enter user birthday here .</small>
+
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</EditForm>
+}
+
+@code {
+    [Parameter]
+    public string UserId { get; set; }
+
+    private UpdateUserRequest user;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var userDto = await userService.GetUser(Guid.Parse(UserId));
+        user = new UpdateUserRequest();
+        user.UserId = Guid.Parse(UserId);
+        user.FirstName = userDto.FirstName;
+        user.LastName = userDto.LastName;
+        user.PhoneNumber = userDto.Phone;
+        user.Email = userDto.Email;
+        user.Gender = userDto.Gender;
+        user.DOB = userDto.DOB;
+
+    }
+
+    private async void SubmitTask(EditContext context)
+    {
+        var rs = await userService.UpdateUser(user);
+        if (rs)
+        {
+            NavigationManager.NavigateTo("/user");
+        }
+    }
+}

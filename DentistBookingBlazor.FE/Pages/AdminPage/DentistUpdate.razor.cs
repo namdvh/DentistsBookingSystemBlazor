@@ -1,6 +1,4 @@
-﻿
-
-using DentistBooking.ViewModels.Pagination;
+﻿using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Clinics;
 using DentistBooking.ViewModels.System.Dentists;
 using DentistBooking.ViewModels.System.Services;
@@ -8,31 +6,58 @@ using DentistBookingBlazor.FE.Services.Clinics;
 using DentistBookingBlazor.FE.Services.Dentists;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DentistBookingBlazor.FE.Pages
+namespace DentistBookingBlazor.FE.Pages.AdminPage
 {
-    public partial class DentistCreate
+    public partial class DentistUpdate
     {
+
+        [Parameter]
+        public string userID { get; set; }
 
         [Inject]
         private IDentistService DentistService { get; set; }
         [Inject]
         private IClinicService ClinicService { get; set; }
 
-        public AddDentistRequest dentist = new AddDentistRequest();
+        public UpdateDentistRequest dentistRequest = new UpdateDentistRequest();
         public PaginationFilter paginationFilter = new();
         private ListClinicResponse responseClinic;
         private ListServiceResponse responseService;
+        DentistDTO dto = new DentistDTO();
 
         public List<ClinicDTO> clinic = new();
         public List<ServiceDto> sevices = new();
+        public int selectedClinicId = new();
         public List<int> selectedServices = new();
+        public List<int> existedService = new();
 
         protected async override Task OnInitializedAsync()
         {
+            dto = await DentistService.GetDentist(Guid.Parse(userID));
             await GetClinic();
+            foreach (var item in dto.Services)
+            {
+                existedService.Add(item.Id);
+                selectedServices.Add(item.Id);
+            }
+            selectedClinicId = dto.ClinicID;
+            dentistRequest.ClinicId = dto.ClinicID;
+            dentistRequest.Email = dto.Email;
+            dentistRequest.Id = dto.DentistID;
+            dentistRequest.UserName = dto.UserName;
+            dentistRequest.Dob = dto.Dob;
+            dentistRequest.Status = dto.Status;
+            dentistRequest.PhoneNumber = dto.Phone;
+            dentistRequest.FirstName = dto.FirstName;
+            dentistRequest.LastName = dto.LastName;
+            dentistRequest.Gender = dto.Gender;
+            dentistRequest.Position = dto.Position;
+            dentistRequest.Description = dto.Description;
+            dentistRequest.UpdatedBy = Guid.Parse("d5a918c6-5ed4-43eb-bcdf-042594ae3357");
             await GetServices();
 
         }
@@ -67,13 +92,17 @@ namespace DentistBookingBlazor.FE.Pages
             }
         }
 
-        private async Task SubmitDentist(EditContext context)
+        private async Task UpdateDentist(EditContext context)
         {
 
 
-            dentist.ServiceId = selectedServices;
-            var rs = await dentisttService.CreateDentist(dentist);
-            NavigationManager.NavigateTo("/dentist");
+            dentistRequest.ServiceId = selectedServices;
+            dentistRequest.Id = dto.DentistID;
+            var rs = await DentistService.UpdateDentist(dentistRequest);
+            navigationManager.NavigateTo("/dentist");
         }
+
+
+
     }
 }

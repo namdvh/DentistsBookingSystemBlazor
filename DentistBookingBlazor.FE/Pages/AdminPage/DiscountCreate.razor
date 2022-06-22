@@ -7,31 +7,38 @@
 <h3>Discount Create</h3>
 
 <EditForm Model="discount" OnValidSubmit="SubmitTask">
+    <DataAnnotationsValidator />
+
     <div class="form-group">
 
         <label for="Title">Title</label>
         <InputText class="form-control" @bind-Value="discount.Title"></InputText>
-        <small id="titleHelp" class="form-text text-muted">Please enter discount title here please.</small>
+        <ValidationMessage For="@(() => discount.Title)" />
 
         <label for="Start Date">Start Date</label>
         <InputDate class="form-control" asp-for="@discount.StartDate" @bind-Value="discount.StartDate"></InputDate>
-        <small id="startdateHelp" class="form-text text-muted">Please enter clinic start date here please.</small>
+        <ValidationMessage For="@(() => discount.StartDate)" />
+
 
         <label for="End Date">End Date</label>
         <InputDate class="form-control" asp-for="@discount.EndDate" @bind-Value="discount.EndDate"></InputDate>
-        <small id="enddateHelp" class="form-text text-muted">Please enter discount end date here please.</small>
+        <ValidationMessage For="@(() => discount.EndDate)" />
+
 
         <label for="Description">Description</label>
         <InputText class="form-control" @bind-Value="discount.Description"></InputText>
-        <small id="descriptionHelp" class="form-text text-muted">Please enter discount description here please.</small>
+        <ValidationMessage For="@(() => discount.Description)" />
+
 
         <label for="Amount">Amount</label>
         <InputNumber class="form-control" asp-for="@discount.Amount" @bind-Value="discount.Amount"></InputNumber>
-        <small id="amountHelp" class="form-text text-muted">Please enter discount amount here please.</small>
+        <ValidationMessage For="@(() => discount.Amount)" />
+
 
         <label for="Percent">Percent</label>
         <InputNumber class="form-control" asp-for="@discount.Percent" @bind-Value="discount.Percent"></InputNumber>
-        <small id="percentHelp" class="form-text text-muted">Please enter discount percent here please.</small>
+        <ValidationMessage For="@(() => discount.Percent)" />
+
 
 
     </div>

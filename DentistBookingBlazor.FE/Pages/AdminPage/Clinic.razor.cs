@@ -8,11 +8,11 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace DentistBookingBlazor.FE.Pages
+namespace DentistBookingBlazor.FE.Pages.AdminPage
 {
     public partial class Clinic
     {
-        [Inject] 
+        [Inject]
         private IClinicService ClinicService { get; set; }
 
         protected Confirmation DeleteConfirmation { get; set; }
@@ -56,10 +56,10 @@ namespace DentistBookingBlazor.FE.Pages
             }
             else
             {
-                 await ClinicService.DeleteClinic(deleteId);
-                 await GetClinics();
+                await ClinicService.DeleteClinic(deleteId);
+                await GetClinics();
             }
-            
+
         }
 
         public async Task OnConfirmDeleteClinic(bool deleteConfirmed)
