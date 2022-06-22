@@ -1,0 +1,75 @@
+﻿@page "/clinicUpdate/{ClinicId}"
+@using DentistBooking.ViewModels.System.Clinics
+@using DentistBookingBlazor.FE.Services.Clinics
+@inject IClinicService clinicService;
+@inject NavigationManager NavigationManager;
+
+@if (clinic == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+    <h3>Clinic Edit: @clinic.Name</h3>
+
+
+
+    <EditForm Model="clinic" OnValidSubmit="SubmitTask">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+
+            <label for="Name">Name</label>
+            <InputText class="form-control" @bind-Value="clinic.Name"></InputText>
+            <small id="nameHelp" class="form-text text-muted">Please enter clinic name here please.</small>
+            <ValidationMessage For="@(() => clinic.Name)" />
+
+            <label for="Address">Address</label>
+            <InputText class="form-control" @bind-Value="clinic.Address"></InputText>
+            <small id="addressHelp" class="form-text text-muted">Please enter clinic address here please.</small>
+            <ValidationMessage For="@(() => clinic.Address)" />
+
+
+            <label for="Phone">Phone Number</label>
+            <InputText class="form-control" typeof="number" @bind-Value="clinic.Phone"></InputText>
+            <small id="phoneHelp" class="form-text text-muted">Please enter clinic phone number here please.</small>
+            <ValidationMessage For="@(() => clinic.Phone)" />
+
+
+            <label for="Description">Description</label>
+            <InputText class="form-control" @bind-Value="clinic.Description"></InputText>
+            <small id="descriptionHelp" class="form-text text-muted">Please enter clinic description here please.</small>
+            <ValidationMessage For="@(() => clinic.Description)" />
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public string ClinicId { get; set; }
+
+    private ClinicRequest clinic;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var clinicDTO = await clinicService.GetClinic(Int32.Parse(ClinicId));
+        clinic = new ClinicRequest();
+        clinic.Id = Int32.Parse(ClinicId);
+        clinic.Name = clinicDTO.Name;
+        clinic.Description = clinicDTO.Description;
+        clinic.Address = clinicDTO.Address;
+        clinic.Phone = clinicDTO.Phone;
+    }
+
+    private async void SubmitTask(EditContext context)
+    {
+        var rs = await clinicService.UpdateClinic(clinic);
+        if (rs)
+        {
+            NavigationManager.NavigateTo("/clinic");
+        }
+    }
+}

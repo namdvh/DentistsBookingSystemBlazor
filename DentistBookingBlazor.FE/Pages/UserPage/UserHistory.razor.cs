@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace DentistBookingBlazor.FE.Pages
+namespace DentistBookingBlazor.FE.Pages.UserPage
 {
     public partial class UserHistory
     {
@@ -46,8 +46,8 @@ namespace DentistBookingBlazor.FE.Pages
         public async Task OnDeleteBooking(int bookingId)
         {
 
-                await BookingService.DeleteBookingByUser(bookingId);
-                await GetBookings();
+            await BookingService.DeleteBookingByUser(bookingId);
+            await GetBookings();
 
 
         }

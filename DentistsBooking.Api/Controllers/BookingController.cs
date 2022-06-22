@@ -34,26 +34,24 @@ namespace DentistsBooking.Api.Controllers
             return Ok(result);
         }
         [HttpGet("getallbooking")]
-        [AllowAnonymous]
         public async Task<IActionResult> GetAllBooking([FromQuery] PaginationFilter filter)
         {
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize, filter._by, filter._order);
             ListBookingResponse result = await _bookingService.GetBookingList(validFilter);
             return Ok(result);
         }
-        
+
         [HttpGet]
         [Route("{userId}")]
-        public async Task<IActionResult> GetAllBookingForUser([FromQuery] PaginationFilter filter,[FromRoute] Guid userId)
+        public async Task<IActionResult> GetAllBookingForUser([FromQuery] PaginationFilter filter, [FromRoute] Guid userId)
         {
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize, filter._by, filter._order);
-            ListBookingResponse result = await _bookingService.GetBookingListForUser(validFilter,userId);
+            ListBookingResponse result = await _bookingService.GetBookingListForUser(validFilter, userId);
             return Ok(result);
         }
 
 
         [HttpGet("getbookingdetail")]
-        [AllowAnonymous]
 
         public async Task<IActionResult> GetBookingDetail([FromQuery] int bookingId)
         {
@@ -65,7 +63,6 @@ namespace DentistsBooking.Api.Controllers
             return Ok(result);
         }
         [HttpGet("detaildentist")]
-        [AllowAnonymous]
 
         public async Task<IActionResult> GetBookingDetailForDentistbyBooking([FromQuery] int dentistId, int bookingId)
         {
@@ -108,7 +105,6 @@ namespace DentistsBooking.Api.Controllers
         }
 
         [HttpPut]
-        [AllowAnonymous]
 
         public async Task<IActionResult> UpdateBooking([FromBody] BookingRequest request)
         {
@@ -121,7 +117,6 @@ namespace DentistsBooking.Api.Controllers
         }
 
         [HttpPut]
-        [AllowAnonymous]
         [Route("status")]
         public async Task<IActionResult> UpdateBookingStatus([FromBody] BookingStatusRequest request)
         {

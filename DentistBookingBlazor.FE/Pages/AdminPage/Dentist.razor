@@ -9,9 +9,9 @@
 
 
 <h3>Dentist</h3>
-<NotAuthorized>
+@*<NotAuthorized>
     @if (true) { NavigationManager.NavigateTo("Error"); }
-</NotAuthorized>
+</NotAuthorized>*@
 @if (dentist == null)
 {
     <div>Loading...</div>
@@ -21,9 +21,9 @@ else
 
     <div class="content">
         <div class="container">
-        <div class="col pt4">
-            <a href="/createDentist" class="btn btn-success">Create</a>
-        </div>
+            <div class="col pt4">
+                <a href="/createDentist" class="btn btn-success">Create</a>
+            </div>
 
 
             <div class="table-responsive">

@@ -13,7 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blazored.SessionStorage;
 
-namespace DentistBookingBlazor.FE.Pages
+namespace DentistBookingBlazor.FE.Pages.UserPage
 {
     public partial class BookingCreate
     {
@@ -105,7 +105,7 @@ namespace DentistBookingBlazor.FE.Pages
                     UserId = Guid.Parse("d5a918c6-5ed4-43eb-bcdf-042594ae2644"),
                     KeyTimes = listKeytime,
                     ServiceIds = serviceIds
-                    
+
                 };
                 await sessionStorage.SetItemAsync("cart", request);
 

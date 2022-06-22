@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace DentistBookingBlazor.FE.Pages
+namespace DentistBookingBlazor.FE.Pages.AdminPage
 {
     public partial class Booking
     {
@@ -23,7 +23,7 @@ namespace DentistBookingBlazor.FE.Pages
         private PaginationDTO paginationDTO;
         public BookingStatusRequest request { get; set; }
         protected Confirmation ActionConfirmation { get; set; }
-        public int ActionID{get;set; }
+        public int ActionID { get; set; }
         public Status Status { get; set; }
 
 
