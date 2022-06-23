@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
+using Blazored.Toast;
 using DentistBooking.Blazor.Services.Users;
 using DentistBookingBlazor.FE.Services.Bookings;
 using DentistBookingBlazor.FE.Services.Clinics;
@@ -26,6 +27,7 @@ namespace DentistBookingBlazor.FE
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazoredSessionStorage();
             builder.Services.AddAuthorizationCore();
+            builder.Services.AddBlazoredToast();
             builder.Services.AddTransient<IClinicService, ClinicService>();
             builder.Services.AddTransient<IDentistService, DentistService>();
             builder.Services.AddTransient<IDiscountService, DiscountService>();

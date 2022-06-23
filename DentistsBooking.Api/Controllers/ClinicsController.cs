@@ -1,6 +1,7 @@
 ﻿using DentistBooking.Application.System.Clinics;
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Clinics;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ namespace DentistsBooking.Api.Controllers
 {
     [Route("api/clinics")]
     [ApiController]
-    //[Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ClinicsController : ControllerBase
     {
         private readonly IClinicService _clinicService;

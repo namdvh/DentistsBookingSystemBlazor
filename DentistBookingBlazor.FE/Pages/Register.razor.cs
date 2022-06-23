@@ -1,4 +1,5 @@
-﻿using DentistBooking.Blazor.Services.Users;
+﻿using Blazored.Toast.Services;
+using DentistBooking.Blazor.Services.Users;
 using DentistBooking.ViewModels.System.Users;
 using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace DentistBookingBlazor.FE.Pages
         [Inject] private IUserService userService { get; set; }
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        [Inject]
+        public IToastService toast { get; set; }
         public bool ShowRegistrationErrors { get; set; }
         public IEnumerable<string> Message { get; set; }
 
@@ -23,9 +26,11 @@ namespace DentistBookingBlazor.FE.Pages
             {
                 ShowRegistrationErrors = true;
                 Message = result.Messages;
+                toast.ShowError($"An error occurred in progress. Please contact to administrator.", "Error");
             }
             else
             {
+                toast.ShowSuccess($"{registerRequest.UserName} has been created Successflly.", "Success");
                 NavigationManager.NavigateTo("/");
             }
         }

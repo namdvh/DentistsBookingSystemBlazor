@@ -1,9 +1,11 @@
 ﻿@page "/Login"
+@using Blazored.Toast.Services
 @using DentistBooking.Blazor.Services.Users
 @using DentistBooking.ViewModels.System.Users
 @inject NavigationManager NavigationManager;
 @inject HttpClient _httpClient
 @inject IUserService userService;
+@inject IToastService ToastService
 
 <section class="ftco-section">
     <div class="container">
@@ -37,7 +39,6 @@
 
 
 
-
 @code {
     public LoginRequest Model = new LoginRequest();
     public async Task HandleLogin()
@@ -46,10 +47,11 @@
         if (rs.Successful)
         {
             NavigationManager.NavigateTo("/");
+            ToastService.ShowSuccess("Login successfully.","Success");
         }
         else
         {
-            Console.WriteLine("fail");
+            ToastService.ShowError($"An error occurred in progress. Please contact to administrator.","Error");
         }
 
     }

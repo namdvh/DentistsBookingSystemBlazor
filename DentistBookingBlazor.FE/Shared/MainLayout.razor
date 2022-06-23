@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject IJSRuntime JSRuntime
+@using Blazored.Toast.Configuration
 @using Microsoft.AspNetCore.Components.Authorization;
 
 <head>
@@ -16,6 +17,8 @@
 </head>
 
 <link rel="stylesheet" href="./MainLayout.css" />
+<BlazoredToasts Position="ToastPosition.TopRight" Timeout="5" IconType="IconType.FontAwesome" ErrorIcon="fa fa-times"
+    InfoIcon="fa fa-info" SuccessIcon="fa fa-check" WarningIcon="fa fa-exclamation" />
 <div class="page" id="page" style="background: transparent">
     <div class="sidebar">
         <NavMenu />
