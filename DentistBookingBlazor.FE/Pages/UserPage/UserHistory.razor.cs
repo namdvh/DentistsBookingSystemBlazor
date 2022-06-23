@@ -1,4 +1,5 @@
 ﻿
+using Blazored.LocalStorage;
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Bookings;
 using DentistBookingBlazor.FE.Components;
@@ -6,6 +7,8 @@ using DentistBookingBlazor.FE.Services.Bookings;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -13,6 +16,9 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
 {
     public partial class UserHistory
     {
+        [Inject]
+        private ILocalStorageService ILocalStorageService { get; set; }
+
         [Inject]
         private IBookingService BookingService { get; set; }
 
@@ -30,7 +36,13 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
 
         private async Task GetBookings()
         {
-            response = await BookingService.GetBookingListForUser(paginationFilter, Guid.Parse("d5a918c6-5ed4-43eb-bcdf-042594ae2644"));
+            var savedToken = await ILocalStorageService.GetItemAsync<string>("authToken");
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(savedToken);
+            var tokenS = jsonToken as JwtSecurityToken;
+            var userId = tokenS.Claims.First(claim => claim.Type == "UserId").Value;
+
+            response = await BookingService.GetBookingListForUser(paginationFilter, Guid.Parse(userId));
             booking = (List<BookingDTO>)response.Content;
             paginationDTO = response.Pagination;
         }

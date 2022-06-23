@@ -3,9 +3,9 @@
 @using DentistBookingBlazor.FE.Services.Clinics
 @inject HttpClient _httpClient
 @inject IClinicService clinicService;
+@inject NavigationManager NavigationManager;
 
 <h3>Clinic</h3>
-
 @if (clinic == null)
 {
     <div>Loading...</div>

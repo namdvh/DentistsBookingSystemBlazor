@@ -12,12 +12,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blazored.SessionStorage;
+using Blazored.LocalStorage;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace DentistBookingBlazor.FE.Pages.UserPage
 {
     public partial class BookingCreate
     {
         [Parameter] public string InitialText { get; set; } = "Select clinic";
+
+        [Inject]
+        private ILocalStorageService ILocalStorageService { get; set; }
+
         [Inject]
         public ISessionStorageService sessionStorage { get; set; }
         [Inject]
@@ -54,14 +60,14 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
         {
             await GetClinics();
             Cart = await sessionStorage.GetItemAsync<CreateBookingRequest>("cart");
-            if(serviceList.Count == 0)
+            if (serviceList.Count == 0)
             {
                 serviceList = await sessionStorage.GetItemAsync<List<ServiceDto>>("services");
             }
-            if(clinicId.Equals(""))
+            if (clinicId.Equals(""))
             {
                 chosenClinic = await sessionStorage.GetItemAsync<ClinicDTO>("clinic");
-                if(chosenClinic != null)
+                if (chosenClinic != null)
                 {
                     clinicId = chosenClinic.Id.ToString();
                 }
@@ -104,6 +110,12 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
 
         public async Task AddKeyTime(int keytime)
         {
+            var savedToken = await ILocalStorageService.GetItemAsync<string>("authToken");
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(savedToken);
+            var tokenS = jsonToken as JwtSecurityToken;
+            var userId = tokenS.Claims.First(claim => claim.Type == "UserId").Value;
+
             var cart = await sessionStorage.GetItemAsync<CreateBookingRequest>("cart");
             if (cart != null)
             {
@@ -121,7 +133,7 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
                 {
                     ClinicId = int.Parse(clinicId),
                     Date = OrderDate,
-                    UserId = Guid.Parse("d5a918c6-5ed4-43eb-bcdf-042594ae2644"),
+                    UserId = Guid.Parse(userId),
                     KeyTimes = listKeytime,
                     ServiceIds = serviceIds
 
