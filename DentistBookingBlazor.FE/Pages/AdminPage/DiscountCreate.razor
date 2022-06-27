@@ -50,7 +50,7 @@
 
     [Inject]
     public NavigationManager NavigationManager { get; set; }
-    private async Task SubmitTask(EditContext context)
+    protected async override Task OnInitializedAsync()
     {
         var authenticationState = await authenticationStateTask;
 
@@ -58,6 +58,14 @@
         {
             NavigationManager.NavigateTo("/Error");
         }
+        if (!authenticationState.User.IsInRole("Admin"))
+        {
+            NavigationManager.NavigateTo("/Error");
+        }
+    }
+    private async Task SubmitTask(EditContext context)
+    {
+       
         var rs = await discountService.CreateDiscount(discount);
         if (rs)
         {

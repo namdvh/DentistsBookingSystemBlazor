@@ -3,9 +3,8 @@
 @using DentistBookingBlazor.FE.Components
 @using DentistBooking.Blazor.Services.Users;
 @using DentistBooking.Data.Enum
+@using Microsoft.AspNetCore.Components.Authorization
 @inject IUserService userService;
-@inject NavigationManager NavigationManager;
-
 @if (user == null)
 {
     <div>Loading...</div>
@@ -74,9 +73,24 @@ else
     public string UserId { get; set; }
 
     private UpdateUserRequest user;
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
+        var authenticationState = await authenticationStateTask;
+
+        if (!authenticationState.User.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/Error");
+        }
+        if (!authenticationState.User.IsInRole("Admin"))
+        {
+            NavigationManager.NavigateTo("/Error");
+        }
         var userDto = await userService.GetUser(Guid.Parse(UserId));
         user = new UpdateUserRequest();
         user.UserId = Guid.Parse(UserId);

@@ -6,6 +6,7 @@
 @inject IServiceService serviceService;
 @inject IDiscountService discountService;
 
+<Authorized Roles="Admin">
 <h3>Service</h3>
 
 @if (service == null)
@@ -105,3 +106,4 @@ else
               @ref="DeleteConfirmation"
               ConfirmationChanged="OnConfirmDeleteService"></Confirmation>
 }
+</Authorized>

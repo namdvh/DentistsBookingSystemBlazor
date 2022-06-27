@@ -48,6 +48,10 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
             {
                 NavigationManager.NavigateTo("/Error");
             }
+            if (!authenticationState.User.IsInRole("Admin"))
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
             dto = await DentistService.GetDentist(Guid.Parse(userID));
             await GetClinic();
             foreach (var item in dto.Services)
