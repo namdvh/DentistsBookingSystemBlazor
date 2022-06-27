@@ -65,6 +65,7 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
             request.Total = Total;
             await BookingService.CreateBooking(request);
             await sessionStorage.ClearAsync();
+            ToastService.ShowSuccess("Booking successfully.", "Success");
             NavManager.NavigateTo("/bookingCreate");
         }
 
@@ -87,6 +88,7 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
             {
                 await sessionStorage.SetItemAsync("cart", request);
             }
+            ToastService.ShowSuccess("Remove succesfully.", "Success");
         }
     }
 }

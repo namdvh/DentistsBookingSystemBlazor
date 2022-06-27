@@ -39,8 +39,8 @@ namespace DentistBookingBlazor.FE.Pages.BookingListForDentist
         }
 
         private async Task GetDetails()
-        {   
-            response = await BookingService.GetDetailByDentistAndBooking(int.Parse(dentistId),int.Parse(BookingId));
+        {
+            response = await BookingService.GetDetailByDentistAndBooking(int.Parse(dentistId), int.Parse(BookingId));
             detail = new();
             detail = (List<BookingDetailDTO>)response.Details;
         }
@@ -71,6 +71,7 @@ namespace DentistBookingBlazor.FE.Pages.BookingListForDentist
                 }
 
                 await BookingService.UpdateBookingDetailStatus(request);
+                ToastService.ShowSuccess("Update booking successfully.", "Success");
                 await GetDetails();
 
             }

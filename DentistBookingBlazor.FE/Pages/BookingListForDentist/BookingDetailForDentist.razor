@@ -3,6 +3,7 @@
 <h3>BookingDetailForDentist</h3>
 @inject HttpClient _httpClient
 @inject IBookingService bookingService;
+@inject IToastService ToastService
 @page "/bookingDetailDentist/{BookingId}/{dentistId}"
 @if (detail == null)
 {
@@ -40,7 +41,7 @@ else
                                 <td>@item.Services.ServiceName </td>
                                 <td>@item.Status</td>
                                 <td>
-                                     @if(@item.Status == DentistBooking.Data.Enum.Status.ACTIVE)
+                                    @if (@item.Status == DentistBooking.Data.Enum.Status.ACTIVE)
                                     {
                                         <button class="btn btn-danger" @onclick="()=>OnConfirm(item.Id,DentistBooking.Data.Enum.Status.CONFIRMED)">CONFIRM</button>
                                     }
@@ -54,14 +55,13 @@ else
                     @detail.First().Note
                 </p>
             </div>
-            
+
 
         </div>
 
     </div>
-      <Confirmation 
-        ConfirmationMessage="Do you want to do this action?"
-                      ConfirmationTitle="Action"
-                      @ref="ActionConfirmation"
-                      ConfirmationChanged="OnConfirmAction"></Confirmation>
+    <Confirmation ConfirmationMessage="Do you want to do this action?"
+              ConfirmationTitle="Action"
+              @ref="ActionConfirmation"
+              ConfirmationChanged="OnConfirmAction"></Confirmation>
 }
