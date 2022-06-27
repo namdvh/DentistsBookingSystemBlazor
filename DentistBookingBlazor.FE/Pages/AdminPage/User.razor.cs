@@ -4,6 +4,7 @@ using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Users;
 using DentistBookingBlazor.FE.Components;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -19,6 +20,11 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
         protected Confirmation DeleteConfirmation { get; set; }
 
         private string DeleteId { get; set; }
+        [CascadingParameter]
+        private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         private List<UserDTO> user;
         private ListUserResponse response;
@@ -29,6 +35,16 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
 
         protected override async Task OnInitializedAsync()
         {
+            var authenticationState = await authenticationStateTask;
+
+            if (!authenticationState.User.Identity.IsAuthenticated)
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
+            if (!authenticationState.User.IsInRole("Admin"))
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
             await GetUsers();
         }
 

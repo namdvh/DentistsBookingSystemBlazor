@@ -4,7 +4,6 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @inject IClinicService clinicService;
 <h3>Clinic Create</h3>
-<Authorized Roles="Admin">
     <EditForm Model="clinic" OnValidSubmit="SubmitTask">
         <DataAnnotationsValidator />
         <div class="form-group">
@@ -36,7 +35,6 @@
         <button type="submit" class="btn btn-primary">Submit</button>
 
     </EditForm>
-</Authorized>
 
 @code {
     [CascadingParameter]
@@ -45,15 +43,21 @@
     [Inject]
     public NavigationManager NavigationManager { get; set; }
     private ClinicRequest clinic = new ClinicRequest();
-
-    private async Task SubmitTask(EditContext context)
+    protected async override Task OnInitializedAsync()
     {
-        var authenticationState = await authenticationStateTask;
+       var authenticationState = await authenticationStateTask;
 
         if (!authenticationState.User.Identity.IsAuthenticated)
         {
             NavigationManager.NavigateTo("/Error");
         }
+        if (!authenticationState.User.IsInRole("Admin"))
+        {
+            NavigationManager.NavigateTo("/Error");
+        }
+    }
+    private async Task SubmitTask(EditContext context)
+    {
         var rs = await clinicService.CreateClinic(clinic);
         if (rs)
         {

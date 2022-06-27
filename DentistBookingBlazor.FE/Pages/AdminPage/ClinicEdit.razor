@@ -63,6 +63,10 @@ else
         {
             NavigationManager.NavigateTo("/Error");
         }
+        if (!authenticationState.User.IsInRole("Admin"))
+        {
+            NavigationManager.NavigateTo("/Error");
+        }
         var clinicDTO = await clinicService.GetClinic(Int32.Parse(ClinicId));
         clinic = new ClinicRequest();
         clinic.Id = Int32.Parse(ClinicId);

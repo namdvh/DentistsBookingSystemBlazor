@@ -7,7 +7,6 @@
 
 
 <h3>Dentist</h3>
-<Authorized Roles="Admin">
 @if (dentist == null)
 {
     <div>Loading...</div>
@@ -107,7 +106,6 @@ else
               @ref="DeleteConfirmation"
               ConfirmationChanged="OnConfirmDeleteDentist"></Confirmation>
 }
-</Authorized>
 
 @code {
     int i = 0;

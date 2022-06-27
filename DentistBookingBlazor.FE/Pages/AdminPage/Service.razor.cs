@@ -6,6 +6,7 @@ using DentistBookingBlazor.FE.Components;
 using DentistBookingBlazor.FE.Services.Discounts;
 using DentistBookingBlazor.FE.Services.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -22,6 +23,11 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
         protected Confirmation DeleteConfirmation { get; set; }
 
         private int DeleteId { get; set; }
+        [CascadingParameter]
+        private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         private List<ServiceDto> service;
         private List<DiscountDTO> discount;
@@ -34,6 +40,16 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
 
         protected override async Task OnInitializedAsync()
         {
+            var authenticationState = await authenticationStateTask;
+
+            if (!authenticationState.User.Identity.IsAuthenticated)
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
+            if (!authenticationState.User.IsInRole("Admin"))
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
             await GetServices();
             await GetDiscounts();
 

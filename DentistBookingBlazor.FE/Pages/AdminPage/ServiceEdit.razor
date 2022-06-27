@@ -4,10 +4,9 @@
 @using DentistBooking.ViewModels.System.Services
 @using DentistBookingBlazor.FE.Services.Services
 @using DentistBookingBlazor.FE.Services.Discounts
+@using Microsoft.AspNetCore.Components.Authorization
 @inject IServiceService serviceService;
 @inject IDiscountService discountService;
-@inject NavigationManager NavigationManager;
-
 @if (service == null)
 {
     <div>Loading...</div>
@@ -67,9 +66,23 @@ else
 
     public List<DiscountDTO> discounts = new();
     PaginationFilter paginationFilter = new();
+     [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
 
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
     protected async override Task OnInitializedAsync()
     {
+        var authenticationState = await authenticationStateTask;
+
+        if (!authenticationState.User.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/Error");
+        }
+        if (!authenticationState.User.IsInRole("Admin"))
+        {
+            NavigationManager.NavigateTo("/Error");
+        }
         var serviceDto = await serviceService.GetService(Int32.Parse(ServiceId));
         service = new ServiceRequest();
         service.Id = Int32.Parse(ServiceId);

@@ -1,9 +1,8 @@
 ﻿@page "/serviceCreate"
 @using DentistBooking.ViewModels.System.Services
 @using DentistBookingBlazor.FE.Services.Services
+@using Microsoft.AspNetCore.Components.Authorization
 @inject IServiceService serviceService;
-@inject NavigationManager NavigationManager;
-
 <h3>Service Create</h3>
 
 <EditForm Model="service" OnValidSubmit="SubmitTask">
@@ -34,9 +33,28 @@
 
 @code {
     private AddServiceRequest service = new AddServiceRequest();
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
 
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+       var authenticationState = await authenticationStateTask;
+
+        if (!authenticationState.User.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/Error");
+        }
+        if (!authenticationState.User.IsInRole("Admin"))
+        {
+            NavigationManager.NavigateTo("/Error");
+        }
+
+    }
     private async Task SubmitTask(EditContext context)
     {
+        
         var rs = await serviceService.CreateService(service);
         if (rs)
         {

@@ -3,6 +3,7 @@
 <h3>BookingDetailForDentist</h3>
 @inject HttpClient _httpClient
 @inject IBookingService bookingService;
+@inject IToastService ToastService
 @page "/bookingDetailDentist/{BookingId}/{dentistId}"
 
 @if (detail == null)

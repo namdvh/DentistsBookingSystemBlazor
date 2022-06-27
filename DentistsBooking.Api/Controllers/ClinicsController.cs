@@ -13,7 +13,6 @@ namespace DentistsBooking.Api.Controllers
     [Route("api/clinics")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize(Roles ="Admin")]
     public class ClinicsController : ControllerBase
     {
         private readonly IClinicService _clinicService;
@@ -29,7 +28,7 @@ namespace DentistsBooking.Api.Controllers
             ListClinicResponse result = await _clinicService.GetClinicList(validFilter);
             return Ok(result);
         }
-        
+
         [HttpGet]
         [Route("{clinicId}")]
         public async Task<IActionResult> GetClinic([FromRoute] int clinicId)

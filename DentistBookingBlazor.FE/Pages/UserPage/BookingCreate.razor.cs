@@ -139,6 +139,7 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
                 cart.ServiceIds.Add(ServiceId);
 
                 await sessionStorage.SetItemAsync("cart", cart);
+                ToastService.ShowSuccess("Add service successfully.", "Success");
 
             }
             else

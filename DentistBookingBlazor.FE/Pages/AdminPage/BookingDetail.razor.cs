@@ -33,6 +33,10 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
             {
                 NavigationManager.NavigateTo("/Error");
             }
+            if (!authenticationState.User.IsInRole("Admin"))
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
             await GetDetails();
         }
 
