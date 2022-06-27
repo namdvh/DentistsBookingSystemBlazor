@@ -3,15 +3,11 @@
 @using DentistBookingBlazor.FE.Services.Dentists
 @inject HttpClient _httpClient
 @inject IDentistService dentistService;
-@inject NavigationManager NavigationManager;
-
 
 
 
 <h3>Dentist</h3>
-@*<NotAuthorized>
-    @if (true) { NavigationManager.NavigateTo("Error"); }
-</NotAuthorized>*@
+<Authorized Roles="Admin">
 @if (dentist == null)
 {
     <div>Loading...</div>
@@ -111,6 +107,7 @@ else
               @ref="DeleteConfirmation"
               ConfirmationChanged="OnConfirmDeleteDentist"></Confirmation>
 }
+</Authorized>
 
 @code {
     int i = 0;

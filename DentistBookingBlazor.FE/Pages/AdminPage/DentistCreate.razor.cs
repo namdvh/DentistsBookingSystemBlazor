@@ -7,6 +7,7 @@ using DentistBooking.ViewModels.System.Services;
 using DentistBookingBlazor.FE.Services.Clinics;
 using DentistBookingBlazor.FE.Services.Dentists;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,6 +21,11 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
         private IDentistService DentistService { get; set; }
         [Inject]
         private IClinicService ClinicService { get; set; }
+        [CascadingParameter]
+        private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         public AddDentistRequest dentist = new AddDentistRequest();
         public PaginationFilter paginationFilter = new();
@@ -32,6 +38,12 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
 
         protected async override Task OnInitializedAsync()
         {
+            var authenticationState = await authenticationStateTask;
+
+            if (!authenticationState.User.Identity.IsAuthenticated)
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
             await GetClinic();
             await GetServices();
 

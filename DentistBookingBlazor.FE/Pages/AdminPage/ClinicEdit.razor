@@ -1,6 +1,7 @@
 ﻿@page "/clinicUpdate/{ClinicId}"
 @using DentistBooking.ViewModels.System.Clinics
 @using DentistBookingBlazor.FE.Services.Clinics
+@using Microsoft.AspNetCore.Components.Authorization
 @inject IClinicService clinicService;
 @inject NavigationManager NavigationManager;
 
@@ -50,11 +51,18 @@ else
 @code {
     [Parameter]
     public string ClinicId { get; set; }
-
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
     private ClinicRequest clinic;
 
     protected async override Task OnInitializedAsync()
     {
+        var authenticationState = await authenticationStateTask;
+
+        if (!authenticationState.User.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/Error");
+        }
         var clinicDTO = await clinicService.GetClinic(Int32.Parse(ClinicId));
         clinic = new ClinicRequest();
         clinic.Id = Int32.Parse(ClinicId);

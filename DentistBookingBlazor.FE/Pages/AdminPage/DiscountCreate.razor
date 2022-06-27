@@ -1,52 +1,63 @@
 ﻿@page "/discountCreate"
 @using DentistBooking.ViewModels.System.Discounts
 @using DentistBookingBlazor.FE.Services.Discounts
+@using Microsoft.AspNetCore.Components.Authorization
 @inject IDiscountService discountService;
-@inject NavigationManager NavigationManager;
 
 <h3>Discount Create</h3>
+<Authorized Roles="Admin">
+    <EditForm Model="discount" OnValidSubmit="SubmitTask">
+        <DataAnnotationsValidator />
 
-<EditForm Model="discount" OnValidSubmit="SubmitTask">
-    <DataAnnotationsValidator />
+        <div class="form-group">
 
-    <div class="form-group">
+            <label for="Title">Title</label>
+            <InputText class="form-control" @bind-Value="discount.Title"></InputText>
+            <ValidationMessage For="@(() => discount.Title)" />
+            <small id="titleHelp" class="form-text text-muted">Please enter discount title here.</small>
 
-        <label for="Title">Title</label>
-        <InputText class="form-control" @bind-Value="discount.Title"></InputText>
-        <ValidationMessage For="@(() => discount.Title)" />
-        <small id="titleHelp" class="form-text text-muted">Please enter discount title here.</small>
+            <label for="Start Date">Start Date</label>
+            <InputDate class="form-control" asp-for="@discount.StartDate" @bind-Value="discount.StartDate"></InputDate>
+            <ValidationMessage For="@(() => discount.StartDate)" />
+            <small id="startdateHelp" class="form-text text-muted">Please enter clinic start date here.</small>
 
-        <label for="Start Date">Start Date</label>
-        <InputDate class="form-control" asp-for="@discount.StartDate" @bind-Value="discount.StartDate"></InputDate>
-        <ValidationMessage For="@(() => discount.StartDate)" />
-        <small id="startdateHelp" class="form-text text-muted">Please enter clinic start date here.</small>
+            <label for="End Date">End Date</label>
+            <InputDate class="form-control" asp-for="@discount.EndDate" @bind-Value="discount.EndDate"></InputDate>
+            <ValidationMessage For="@(() => discount.EndDate)" />
+            <small id="enddateHelp" class="form-text text-muted">Please enter discount end date here.</small>
 
-        <label for="End Date">End Date</label>
-        <InputDate class="form-control" asp-for="@discount.EndDate" @bind-Value="discount.EndDate"></InputDate>
-        <ValidationMessage For="@(() => discount.EndDate)" />
-        <small id="enddateHelp" class="form-text text-muted">Please enter discount end date here.</small>
+            <label for="Description">Description</label>
+            <InputText class="form-control" @bind-Value="discount.Description"></InputText>
+            <ValidationMessage For="@(() => discount.Description)" />
+            <small id="descriptionHelp" class="form-text text-muted">Please enter discount description here.</small>
 
-        <label for="Description">Description</label>
-        <InputText class="form-control" @bind-Value="discount.Description"></InputText>
-        <ValidationMessage For="@(() => discount.Description)" />
-        <small id="descriptionHelp" class="form-text text-muted">Please enter discount description here.</small>
+            <label for="Amount">Amount</label>
+            <InputNumber class="form-control" asp-for="@discount.Amount" @bind-Value="discount.Amount"></InputNumber>
+            <ValidationMessage For="@(() => discount.Amount)" />
+            <small id="amountHelp" class="form-text text-muted">Please enter discount amount here.</small>
 
-        <label for="Amount">Amount</label>
-        <InputNumber class="form-control" asp-for="@discount.Amount" @bind-Value="discount.Amount"></InputNumber>
-        <ValidationMessage For="@(() => discount.Amount)" />
-        <small id="amountHelp" class="form-text text-muted">Please enter discount amount here.</small>
+        </div>
 
-    </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-
-</EditForm>
+    </EditForm>
+</Authorized>
 
 @code {
     private DiscountRequest discount = new DiscountRequest();
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
 
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
     private async Task SubmitTask(EditContext context)
     {
+        var authenticationState = await authenticationStateTask;
+
+        if (!authenticationState.User.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/Error");
+        }
         var rs = await discountService.CreateDiscount(discount);
         if (rs)
         {

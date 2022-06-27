@@ -5,6 +5,7 @@ using DentistBooking.ViewModels.System.Services;
 using DentistBookingBlazor.FE.Services.Clinics;
 using DentistBookingBlazor.FE.Services.Dentists;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,11 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
         private IDentistService DentistService { get; set; }
         [Inject]
         private IClinicService ClinicService { get; set; }
+        [CascadingParameter]
+        private Task<AuthenticationState> authenticationStateTask { get; set; }
 
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
         public UpdateDentistRequest dentistRequest = new UpdateDentistRequest();
         public PaginationFilter paginationFilter = new();
         private ListClinicResponse responseClinic;
@@ -37,6 +42,12 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
 
         protected async override Task OnInitializedAsync()
         {
+            var authenticationState = await authenticationStateTask;
+
+            if (!authenticationState.User.Identity.IsAuthenticated)
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
             dto = await DentistService.GetDentist(Guid.Parse(userID));
             await GetClinic();
             foreach (var item in dto.Services)
@@ -99,7 +110,7 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
             dentistRequest.ServiceId = selectedServices;
             dentistRequest.Id = dto.DentistID;
             var rs = await DentistService.UpdateDentist(dentistRequest);
-            navigationManager.NavigateTo("/dentist");
+            NavigationManager.NavigateTo("/dentist");
         }
 
 

@@ -6,54 +6,56 @@
 
 <h3>Booking Details</h3>
 
-@if (detail == null)
-{
-    <div>Loading...</div>
-}
-else
-{
+<Authorized Roles="Admin">
+    @if (detail == null)
+    {
+        <div>Loading...</div>
+    }
+    else
+    {
 
 
-    <div class="content">
+        <div class="content">
 
-        <div class="container">
-            <h2 class="mb-5">Table #6</h2>
+            <div class="container">
+                <h2 class="mb-5">Table #6</h2>
 
 
-            <div class="table-responsive">
+                <div class="table-responsive">
 
-                <table class="table table-striped custom-table">
-                    <thead>
-                        <tr>
+                    <table class="table table-striped custom-table">
+                        <thead>
+                            <tr>
 
-                            <th scope="col">Time</th>
-                            <th scope="col">Service</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in detail)
-                        {
-
-                            <tr scope="row">
-                                <td>
-                                    @item.KeyTime
-                                </td>
-                                <td>@item.Services.ServiceName </td>
-
+                                <th scope="col">Time</th>
+                                <th scope="col">Service</th>
                             </tr>
-                        }
-                    </tbody>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in detail)
+                            {
 
-                </table>
-                <p>
-                    @detail.First().Note
-                </p>
+                                <tr scope="row">
+                                    <td>
+                                        @item.KeyTime
+                                    </td>
+                                    <td>@item.Services.ServiceName </td>
+
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                    <p>
+                        @detail.First().Note
+                    </p>
+                </div>
+
+
             </div>
-            
 
         </div>
 
-    </div>
-
-}
+    }
+</Authorized>
 

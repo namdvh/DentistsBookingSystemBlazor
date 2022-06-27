@@ -3,11 +3,10 @@
 @using DentistBooking.ViewModels.System.Dentists
 @using DentistBookingBlazor.FE.Services.Dentists
 @inject IDentistService dentisttService;
-@inject NavigationManager NavigationManager;
 <h3>DentistCreate</h3>
 
 
-
+<Authorized Roles="Admin">
 <div class="main">
 
     <section class="signup">
@@ -104,20 +103,4 @@
     </section>
 
 </div>
-
-
-@code {
-
-
-    //{
-    //    var rs = await dentisttService.CreateDentist(dentist);
-    //    if (rs != null)
-    //    {
-    //        NavigationManager.NavigateTo("/dentist");
-    //    }
-    //}
-
-
-
-
-}
+</Authorized>

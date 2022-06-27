@@ -3,6 +3,7 @@ using DentistBooking.ViewModels.System.Dentists;
 using DentistBookingBlazor.FE.Components;
 using DentistBookingBlazor.FE.Services.Dentists;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,6 +19,11 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
         private DentistResponse response;
         private PaginationDTO paginationDTO;
         PaginationFilter paginationFilter = new();
+        [CascadingParameter]
+        private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         protected Confirmation DeleteConfirmation { get; set; }
 
@@ -26,6 +32,12 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
 
         protected override async Task OnInitializedAsync()
         {
+            var authenticationState = await authenticationStateTask;
+
+            if (!authenticationState.User.Identity.IsAuthenticated)
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
             await GetDentists();
         }
 

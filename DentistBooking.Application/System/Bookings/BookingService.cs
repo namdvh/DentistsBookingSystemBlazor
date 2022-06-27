@@ -3,14 +3,14 @@ using DentistBooking.Data.Entities;
 using DentistBooking.Data.Enum;
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Bookings;
+using DentistBooking.ViewModels.System.Dentists;
+using DentistBooking.ViewModels.System.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
-using DentistBooking.ViewModels.System.Dentists;
-using DentistBooking.ViewModels.System.Users;
 
 namespace DentistBooking.Application.System.Bookings
 {
@@ -40,7 +40,7 @@ namespace DentistBooking.Application.System.Bookings
                 _context.Bookings.Add(booking);
                 await _context.SaveChangesAsync();
 
-                
+
                 dynamic existedDetails = null;
 
                 for (int i = 0; i < request.ServiceIds.Count; i++)
@@ -65,7 +65,7 @@ namespace DentistBooking.Application.System.Bookings
                                 dentists.Remove(dentists[j]);
                             }
                         }
-  
+
                     }
 
 
@@ -104,23 +104,23 @@ namespace DentistBooking.Application.System.Bookings
 
         public async Task<BookingResponse> UpdateBookingDetailStatus(BookingDetailStatusRequest request)
         {
-            BookingResponse response=new();
+            BookingResponse response = new();
             try
             {
                 var detail = await _context.BookingDetails.FirstOrDefaultAsync(x => x.Id == request.bookingDetailID);
                 var bookingId = detail.BookingId;
                 var booking = await _context.Bookings.Where(x => x.Id == bookingId).FirstOrDefaultAsync();
-                
+
                 detail.Status = request.status;
-                var count = _context.BookingDetails.Where(x=>x.BookingId == bookingId && x.Status == Status.INACTIVE).Count();
-                if(count == 0)
+                var count = _context.BookingDetails.Where(x => x.BookingId == bookingId && x.Status == Status.INACTIVE).Count();
+                if (count == 0)
                 {
                     booking.Status = Status.DONE;
                 }
 
 
                 response.Code = "200";
-                response.Message="Update successfully"; 
+                response.Message = "Update successfully";
                 await _context.SaveChangesAsync();
                 return response;
 
@@ -136,7 +136,7 @@ namespace DentistBooking.Application.System.Bookings
                 };
             }
 
-            return  response;
+            return response;
         }
 
         public async Task<BookingResponse> DeleteBooking(string bookingId, Guid userId)
@@ -253,13 +253,13 @@ namespace DentistBooking.Application.System.Bookings
                 orderBy = "ascending";
             }
             var pagedData = await _context.Bookings
-                .Where(x=>x.UserId == userId)
+                .Where(x => x.UserId == userId)
                 .OrderBy(filter._by + " " + orderBy)
                 .Skip((filter.PageNumber - 1) * filter.PageSize)
                 .Take(filter.PageSize)
                 .ToListAsync();
 
-            var totalRecords = await _context.Bookings.Where(x=>x.UserId==userId).CountAsync();
+            var totalRecords = await _context.Bookings.Where(x => x.UserId == userId).CountAsync();
 
             if (!pagedData.Any())
             {
@@ -291,7 +291,7 @@ namespace DentistBooking.Application.System.Bookings
 
 
             return response;
-            
+
         }
 
         public async Task<BookingResponse> UpdateBooking(BookingRequest request)
@@ -401,7 +401,7 @@ namespace DentistBooking.Application.System.Bookings
             pagedData = await (from booking in _context.Bookings
                                join bookingDetail in _context.BookingDetails on booking.Id equals bookingDetail.BookingId
                                where bookingDetail.DentistId == dentistId
-                               select new { booking})
+                               select new { booking })
                 .OrderBy("booking." + "Date" + " " + orderBy)
                 .Distinct()
                 .Skip((filter.PageNumber - 1) * filter.PageSize)
@@ -412,8 +412,8 @@ namespace DentistBooking.Application.System.Bookings
 
             var totalRecords = await (from booking in _context.Bookings
                                       join bookingDetail in _context.BookingDetails on booking.Id equals bookingDetail.BookingId
-                                      where bookingDetail.DentistId == dentistId 
-                                      select new { booking}).Distinct().CountAsync();
+                                      where bookingDetail.DentistId == dentistId
+                                      select new { booking }).Distinct().CountAsync();
 
             if (pagedData == null)
             {
@@ -425,7 +425,7 @@ namespace DentistBooking.Application.System.Bookings
             {
                 foreach (var x in pagedData)
                 {
-                    listDto.Add(mapToBookingDto(x.booking,dentistId));
+                    listDto.Add(mapToBookingDto(x.booking, dentistId));
                 }
                 response.Content = listDto;
                 response.Message = "SUCCESS";
@@ -464,7 +464,7 @@ namespace DentistBooking.Application.System.Bookings
         }
 
 
-        private BookingDTO mapToBookingDto(Booking booking,int dentistId)
+        private BookingDTO mapToBookingDto(Booking booking, int dentistId)
         {
             BookingDTO bookingDto = new BookingDTO()
             {
@@ -474,7 +474,7 @@ namespace DentistBooking.Application.System.Bookings
                 Total = booking.Total,
                 UserId = booking.UserId,
                 User = MapToDTO(booking.UserId),
-                Detail = GetDetailFromBooking(booking.Id,dentistId)
+                Detail = GetDetailFromBooking(booking.Id, dentistId)
 
             };
             return bookingDto;
@@ -561,13 +561,13 @@ namespace DentistBooking.Application.System.Bookings
 
 
         }
-        
-        private List<BookingDtoDetail> GetDetailFromBooking(int bookingId,int dentistId)
+
+        private List<BookingDtoDetail> GetDetailFromBooking(int bookingId, int dentistId)
         {
             List<BookingDtoDetail> list = new();
 
 
-            var data = _context.BookingDetails.Where(x => x.BookingId == bookingId&&x.DentistId==dentistId).ToList();
+            var data = _context.BookingDetails.Where(x => x.BookingId == bookingId && x.DentistId == dentistId).ToList();
 
 
             foreach (var x in data)
@@ -579,7 +579,7 @@ namespace DentistBooking.Application.System.Bookings
                     {
                         DetailID = x.Id,
                         KeyTime = x.KeyTime,
-                    
+
                     };
                     list.Add(detail);
                 }
@@ -587,7 +587,7 @@ namespace DentistBooking.Application.System.Bookings
 
             return list;
         }
-        
+
         private List<BookingDtoDetail> GetDetailFromBooking(int bookingId)
         {
             List<BookingDtoDetail> list = new();
@@ -605,7 +605,7 @@ namespace DentistBooking.Application.System.Bookings
                     {
                         DetailID = x.Id,
                         KeyTime = x.KeyTime,
-                    
+
                     };
                     list.Add(detail);
                 }
@@ -616,7 +616,7 @@ namespace DentistBooking.Application.System.Bookings
 
         public async Task<BookingResponse> UpdateBookingStatus(BookingStatusRequest request)
         {
-            BookingResponse response=null;
+            BookingResponse response = null;
             try
             {
                 var booking = _context.Bookings.FirstOrDefault(x => x.Id == request.bookingID);
@@ -652,7 +652,7 @@ namespace DentistBooking.Application.System.Bookings
                 };
             }
 
-            return  response;
+            return response;
         }
 
         public async Task<BookingDetailResponse> GetDetailByDentistAndBooking(int dentistId, int bookingId)
@@ -707,7 +707,7 @@ namespace DentistBooking.Application.System.Bookings
                 if (obj != null && DateTime.Now < obj.Created_at.AddSeconds(120))
                 {
 
-                     _context.Bookings.Remove(obj);
+                    _context.Bookings.Remove(obj);
                     _context.SaveChanges();
 
                     response.Code = "200";

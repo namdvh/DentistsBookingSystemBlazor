@@ -1,12 +1,8 @@
 ﻿@page "/updateDentist/{userID}"
 @using DentistBooking.Data.Enum
-@inject NavigationManager navigationManager;
 <h3>DentistUpdate</h3>
 
-@code {
-
-}
-
+<Authorized Roles="Admin">
 <div class="main">
 
     <section class="signup">
@@ -114,3 +110,4 @@
     </section>
 
 </div>
+</Authorized>
