@@ -4,6 +4,7 @@ using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Bookings;
 using DentistBookingBlazor.FE.Services.Bookings;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -20,6 +21,11 @@ namespace DentistBookingBlazor.FE.Pages.BookingForUser
         private IBookingService BookingService { get; set; }
         [Inject]
         private IUserService userService { get; set; }
+        [CascadingParameter]
+        private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
         PaginationFilter paginationFilter = new();
         private ListBookingDTOResponse response;
         public string dentistName { get; set; }
@@ -28,6 +34,16 @@ namespace DentistBookingBlazor.FE.Pages.BookingForUser
         private List<BookingDTO> booking;
         protected override async Task OnInitializedAsync()
         {
+            var authenticationState = await authenticationStateTask;
+
+            if (!authenticationState.User.Identity.IsAuthenticated)
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
+            if (!authenticationState.User.IsInRole("User"))
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
             await GetBookingForUser();
         }
         private async Task GetBookingForUser()

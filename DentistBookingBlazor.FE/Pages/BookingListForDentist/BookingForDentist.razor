@@ -2,10 +2,11 @@
 @using DentistBookingBlazor.FE.Components
 @inject HttpClient _httpClient
 @inject IBookingService bookingService;
-@inject NavigationManager NavigationManager;
 
 @page "/bookingD"
+
 <h3>Booking For Dentist @dentistName</h3>
+
 @if (booking == null)
 {
     <div>Loading...</div>
@@ -74,4 +75,5 @@ else
 
     </div>
 }
+
 

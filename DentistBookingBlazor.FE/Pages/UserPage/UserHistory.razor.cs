@@ -5,6 +5,7 @@ using DentistBooking.ViewModels.System.Bookings;
 using DentistBookingBlazor.FE.Components;
 using DentistBookingBlazor.FE.Services.Bookings;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -21,6 +22,11 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
 
         [Inject]
         private IBookingService BookingService { get; set; }
+        [CascadingParameter]
+        private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         private List<BookingDTO> booking;
         private ListBookingDTOResponse response;
@@ -31,6 +37,16 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
 
         protected override async Task OnInitializedAsync()
         {
+            var authenticationState = await authenticationStateTask;
+
+            if (!authenticationState.User.Identity.IsAuthenticated)
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
+            if (!authenticationState.User.IsInRole("User"))
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
             await GetBookings();
         }
 

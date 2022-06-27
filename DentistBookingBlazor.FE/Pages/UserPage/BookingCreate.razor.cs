@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Blazored.SessionStorage;
 using Blazored.LocalStorage;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace DentistBookingBlazor.FE.Pages.UserPage
 {
@@ -32,6 +33,11 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
         public IBookingService BookingService { get; set; }
         [Inject]
         public IServiceService ServiceService { get; set; }
+        [CascadingParameter]
+        private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         public string clinicId = "";
         public DateTime OrderDate = DateTime.Parse(DateTime.Now.ToShortDateString());
@@ -58,6 +64,16 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
 
         protected override async Task OnInitializedAsync()
         {
+            var authenticationState = await authenticationStateTask;
+
+            if (!authenticationState.User.Identity.IsAuthenticated)
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
+            if (!authenticationState.User.IsInRole("User"))
+            {
+                NavigationManager.NavigateTo("/Error");
+            }
             await GetClinics();
             Cart = await sessionStorage.GetItemAsync<CreateBookingRequest>("cart");
             if (serviceList.Count == 0)

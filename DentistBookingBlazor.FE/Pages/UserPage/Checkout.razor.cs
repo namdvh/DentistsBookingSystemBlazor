@@ -5,6 +5,7 @@ using DentistBookingBlazor.FE.Services.Bookings;
 using DentistBookingBlazor.FE.Services.Discounts;
 using DentistBookingBlazor.FE.Services.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,9 +30,21 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
         public IDiscountService DiscountService { get; set; }
         [Inject]
         public IBookingService BookingService { get; set; }
+        [CascadingParameter]
+        private Task<AuthenticationState> authenticationStateTask { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
+            var authenticationState = await authenticationStateTask;
+
+            if (!authenticationState.User.Identity.IsAuthenticated)
+            {
+                NavManager.NavigateTo("/Error");
+            }
+            if (!authenticationState.User.IsInRole("User"))
+            {
+                NavManager.NavigateTo("/Error");
+            }
             await GetCart();
         }
 
