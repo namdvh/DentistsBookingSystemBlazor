@@ -2,57 +2,58 @@
 @using DentistBookingBlazor.FE.Components
 @using DentistBookingBlazor.FE.Services.Bookings
 @inject HttpClient _httpClient
+@inject IToastService ToastService
 @inject IBookingService bookingService;
 
 <h3>Booking Details</h3>
 
-    @if (detail == null)
-    {
-        <div>Loading...</div>
-    }
-    else
-    {
+@if (detail == null)
+{
+    <div>Loading...</div>
+}
+else
+{
 
 
-        <div class="content">
+    <div class="content">
 
-            <div class="container">
-                <h2 class="mb-5">Table #6</h2>
+        <div class="container">
+            <h2 class="mb-5">Table #6</h2>
 
 
-                <div class="table-responsive">
+            <div class="table-responsive">
 
-                    <table class="table table-striped custom-table">
-                        <thead>
-                            <tr>
+                <table class="table table-striped custom-table">
+                    <thead>
+                        <tr>
 
-                                <th scope="col">Time</th>
-                                <th scope="col">Service</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Service</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in detail)
+                        {
+
+                            <tr scope="row">
+                                <td>
+                                    @item.KeyTime
+                                </td>
+                                <td>@item.Services.ServiceName </td>
+
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in detail)
-                            {
+                        }
+                    </tbody>
 
-                                <tr scope="row">
-                                    <td>
-                                        @item.KeyTime
-                                    </td>
-                                    <td>@item.Services.ServiceName </td>
-
-                                </tr>
-                            }
-                        </tbody>
-
-                    </table>
-                    <p>
-                        @detail.First().Note
-                    </p>
-                </div>
-
-
+                </table>
+                <p>
+                    @detail.First().Note
+                </p>
             </div>
+
 
         </div>
 
-    }
+    </div>
+
+}

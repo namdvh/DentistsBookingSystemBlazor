@@ -2,6 +2,7 @@
 @using DentistBooking.ViewModels.System.Services
 @using DentistBookingBlazor.FE.Services.Services
 @using Microsoft.AspNetCore.Components.Authorization
+@inject IToastService ToastService
 @inject IServiceService serviceService;
 <h3>Service Create</h3>
 
@@ -40,7 +41,7 @@
     public NavigationManager NavigationManager { get; set; }
     protected async override Task OnInitializedAsync()
     {
-       var authenticationState = await authenticationStateTask;
+        var authenticationState = await authenticationStateTask;
 
         if (!authenticationState.User.Identity.IsAuthenticated)
         {
@@ -54,11 +55,17 @@
     }
     private async Task SubmitTask(EditContext context)
     {
-        
+
         var rs = await serviceService.CreateService(service);
         if (rs)
         {
+            ToastService.ShowSuccess("Create successfully", "Success");
             NavigationManager.NavigateTo("/service");
+        }
+        else
+        {
+            ToastService.ShowSuccess("Create failed", "Error");
+
         }
     }
 }

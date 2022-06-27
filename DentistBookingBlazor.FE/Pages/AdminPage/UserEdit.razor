@@ -4,6 +4,7 @@
 @using DentistBooking.Blazor.Services.Users;
 @using DentistBooking.Data.Enum
 @using Microsoft.AspNetCore.Components.Authorization
+@inject IToastService ToastService
 @inject IUserService userService;
 @if (user == null)
 {
@@ -108,7 +109,14 @@ else
         var rs = await userService.UpdateUser(user);
         if (rs)
         {
-            NavigationManager.NavigateTo("/user");
+            ToastService.ShowSuccess("Edit successfully", "Success");
+
         }
+        else
+        {
+            ToastService.ShowError("Edit failed", "Failed");
+
+        }
+        NavigationManager.NavigateTo("/user");
     }
 }

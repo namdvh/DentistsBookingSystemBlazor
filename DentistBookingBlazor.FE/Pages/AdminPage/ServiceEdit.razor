@@ -6,6 +6,7 @@
 @using DentistBookingBlazor.FE.Services.Discounts
 @using Microsoft.AspNetCore.Components.Authorization
 @inject IServiceService serviceService;
+@inject IToastService ToastService
 @inject IDiscountService discountService;
 @if (service == null)
 {
@@ -66,7 +67,7 @@ else
 
     public List<DiscountDTO> discounts = new();
     PaginationFilter paginationFilter = new();
-     [CascadingParameter]
+    [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
 
     [Inject]
@@ -104,7 +105,14 @@ else
         var rs = await serviceService.UpdateService(service);
         if (rs)
         {
+            ToastService.ShowSuccess("Edit successfully", "Success");
+
             NavigationManager.NavigateTo("/service");
+        }
+        else
+        {
+            ToastService.ShowError("Edit failed", "Failed");
+
         }
     }
 }

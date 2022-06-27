@@ -3,6 +3,7 @@
 @using DentistBookingBlazor.FE.Services.Clinics
 @using Microsoft.AspNetCore.Components.Authorization
 @inject IClinicService clinicService;
+@inject IToastService ToastService
 @inject NavigationManager NavigationManager;
 
 @if (clinic == null)
@@ -81,7 +82,12 @@ else
         var rs = await clinicService.UpdateClinic(clinic);
         if (rs)
         {
+            ToastService.ShowSuccess("Update successfully.", "Success");
             NavigationManager.NavigateTo("/clinic");
+        }
+        else
+        {
+            ToastService.ShowError("Update failed", "Failed");
         }
     }
 }

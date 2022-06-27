@@ -93,7 +93,9 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
                 }
 
                 await bookingService.UpdateBookingStatus(request);
+                ToastService.ShowSuccess("Update successfully.", "Success");
                 await GetBookings();
+
 
             }
         }

@@ -2,105 +2,117 @@
 @using DentistBookingBlazor.FE.Components
 @using DentistBookingBlazor.FE.Services.Discounts
 @inject HttpClient _httpClient
+@inject IToastService ToastService
 @inject IDiscountService discountService;
 
 <h3>Discount</h3>
 <Authorized Roles="Admin">
-@if (discount == null)
-{
-    <div>Loading...</div>
-}
-else
-{
+    @if (discount == null)
+    {
+        <div>Loading...</div>
+    }
+    else
+    {
 
 
-    <div class="content">
+        <div class="content">
 
-        <div class="container">
-            <div class="col pt4">
-                <a href="/discountCreate" class="btn btn-success">Create</a>
-            </div>
-            <h2 class="mb-5">Table #6</h2>
-
-
-            <div class="table-responsive">
-
-                <table class="table table-striped custom-table">
-                    <thead>
-                        <tr>
-
-                            <th scope="col">ID</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Start date</th>
-                            <th scope="col">End date</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Apply for all</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in discount)
-                        {
-
-                            <tr scope="row">
-                                <td>
-                                    @item.Id
-                                </td>
-                                <td>@item.Title </td>
-
-                                <td>@item.StartDate</td>
-                                <td>@item.EndDate</td>
-                                <td>@item.Description</td>
-                                @if (@item.status == 0)
-                                {
-                                    <td>ACTIVE</td>
-                                }
-                                else
-                                {
-                                    <td>INACTIVE</td>
-                                }
-                                <td>@item.Amount</td>
-                                <td>
-                                    @if(@item.ApplyForAll == false)
-                                    {
-                                    <button class="btn btn-dark" @onclick="()=>OnApply(item.Id)">Apply For All</button>
-                                        
-                                    }else{
-                                    <button class="btn btn-light"  @onclick="()=>OnApply(item.Id)">UnApply For All</button>
-                                    }
-                                    </td>
-                                <td>
-                                    <a href="/discountUpdate/@item.Id" class="btn btn-warning">Update</a>
-                                    @if(@item.status == 0)
-                                    {
-                                    <button class="btn btn-danger" @onclick="()=>OnDeleteDiscount(item.Id,1)">Delete</button>
-                                        
-                                    }else{
-                                    <button class="btn btn-primary" @onclick="()=>OnDeleteDiscount(item.Id,-1)">Active</button>
-                                    }
+            <div class="container">
+                <div class="col pt4">
+                    <a href="/discountCreate" class="btn btn-success">Create</a>
+                </div>
+                <h2 class="mb-5">Table #6</h2>
 
 
+                <div class="table-responsive">
 
-                                </td>
+                    <table class="table table-striped custom-table">
+                        <thead>
+                            <tr>
 
+                                <th scope="col">ID</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Start date</th>
+                                <th scope="col">End date</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Apply for all</th>
                             </tr>
-                        }
-                    </tbody>
-                    <tfoot>
-                        <Pagination filter="paginationFilter" paginationDTO="paginationDTO" Spread="1" SelectedPage="SelectedPage"></Pagination>
-                    </tfoot>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in discount)
+                            {
+
+                                <tr scope="row">
+                                    <td>
+                                        @item.Id
+                                    </td>
+                                    <td>@item.Title </td>
+
+                                    <td>@item.StartDate</td>
+                                    <td>@item.EndDate</td>
+                                    <td>@item.Description</td>
+                                    @if (@item.status == 0)
+                                    {
+                                        <td>ACTIVE</td>
+                                    }
+                                    else
+                                    {
+                                        <td>INACTIVE</td>
+                                    }
+                                    <td>@item.Amount</td>
+                                    <td>
+                                        @if (@item.ApplyForAll == false)
+                                        {
+                                            <button class="btn btn-dark" @onclick="()=>OnApply(item.Id)">Apply For All</button>
+
+
+                                        }}
+                                        else
+
+                                        {
+                                        <button class="btn btn-light" @onclick="()=>OnApply(item.Id)">UnApply For All</button>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a href="/discountUpdate/@item.Id" class="btn btn-warning">Update</a>
+                                        @if (@item.status == 0)
+                                        {
+                                            <button class="btn btn-danger" @onclick="()=>OnDeleteDiscount(item.Id,1)">Delete</button>
+
+
+                                        }}
+                                        else
+
+                                        {
+                                        <button class="btn btn-primary" @onclick="()=>OnDeleteDiscount(item.Id,-1)">Active</button>
+                                        }
+
+
+
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <Pagination filter="paginationFilter" paginationDTO="paginationDTO" Spread="1" SelectedPage="SelectedPage"></Pagination>
+                        </tfoot>
+                    </table>
+                </div>
+
+
+
+
             </div>
-            
 
         </div>
 
-    </div>
-    <Confirmation 
-        ConfirmationMessage="Are you sure you want to delete it?"
-                      ConfirmationTitle="Delete Discount"
-                      @ref="DeleteConfirmation"
-                      ConfirmationChanged="OnConfirmDeleteDiscount"></Confirmation>
-}
+        </div>
+        <Confirmation ConfirmationMessage="Are you sure you want to delete it?"
+                  ConfirmationTitle="Delete Discount"
+                  @ref="DeleteConfirmation"
+                  ConfirmationChanged="OnConfirmDeleteDiscount"></Confirmation>
+    }
 </Authorized>

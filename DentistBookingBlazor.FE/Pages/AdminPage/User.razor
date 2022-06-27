@@ -2,6 +2,7 @@
 @using DentistBookingBlazor.FE.Components
 @using DentistBooking.Blazor.Services.Users;
 @inject HttpClient _httpClient
+@inject IToastService ToastService
 @inject IUserService userService;
 
 <h3>User</h3>
@@ -12,7 +13,7 @@
 }
 else
 {
-    <div class="content" >
+    <div class="content">
 
         <div class="container">
             <h2 class="mb-5">Table #6</h2>
@@ -59,12 +60,14 @@ else
                                 }
                                 <td>
                                     <a href="/userUpdate/@item.Id" class="btn btn-warning">Update</a>
-                                    @if(@item.Status == 0)
+                                    @if (@item.Status == 0)
                                     {
-                                    <button class="btn btn-danger" @onclick="()=>OnDeleteUser(item.Id,1)">Delete</button>
-                                        
-                                    }else{
-                                    <button class="btn btn-primary" @onclick="()=>OnDeleteUser(item.Id,-1)">Active</button>
+                                        <button class="btn btn-danger" @onclick="()=>OnDeleteUser(item.Id,1)">Delete</button>
+
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-primary" @onclick="()=>OnDeleteUser(item.Id,-1)">Active</button>
                                     }
 
 
@@ -79,14 +82,13 @@ else
                     </tfoot>
                 </table>
             </div>
-            
+
 
         </div>
 
     </div>
-    <Confirmation 
-        ConfirmationMessage="Are you sure you want to delete it?"
-                      ConfirmationTitle="Delete User"
-                      @ref="DeleteConfirmation"
-                      ConfirmationChanged="OnConfirmDeleteUser"></Confirmation>
+    <Confirmation ConfirmationMessage="Are you sure you want to delete it?"
+              ConfirmationTitle="Delete User"
+              @ref="DeleteConfirmation"
+              ConfirmationChanged="OnConfirmDeleteUser"></Confirmation>
 }

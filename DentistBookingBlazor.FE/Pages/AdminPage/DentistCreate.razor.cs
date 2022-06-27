@@ -89,7 +89,15 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
 
             dentist.ServiceId = selectedServices;
             var rs = await dentisttService.CreateDentist(dentist);
-            NavigationManager.NavigateTo("/dentist");
+            if (rs)
+            {
+                ToastService.ShowSuccess("Create successfully.", "Success");
+                NavigationManager.NavigateTo("/dentist");
+            }
+            else
+            {
+                ToastService.ShowError("Create Failed.", "Failed");
+            }
         }
     }
 }

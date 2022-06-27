@@ -2,6 +2,7 @@
 @using DentistBooking.ViewModels.System.Discounts
 @using DentistBookingBlazor.FE.Services.Discounts
 @using Microsoft.AspNetCore.Components.Authorization
+@inject IToastService ToastService
 @inject IDiscountService discountService;
 
 <h3>Discount Create</h3>
@@ -65,11 +66,18 @@
     }
     private async Task SubmitTask(EditContext context)
     {
-       
+
         var rs = await discountService.CreateDiscount(discount);
+
         if (rs)
         {
+            ToastService.ShowSuccess("Create succesffuly", "Success");
             NavigationManager.NavigateTo("/discount");
+        }
+        else
+        {
+            ToastService.ShowError("Create failed", "Failed");
+
         }
     }
 }

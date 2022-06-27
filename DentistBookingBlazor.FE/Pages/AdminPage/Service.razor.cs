@@ -99,7 +99,18 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
         {
             if (deleteConfirmed)
             {
-                await ServiceService.DeleteService(DeleteId);
+                var rs = await ServiceService.DeleteService(DeleteId);
+
+                if (rs)
+                {
+                    ToastService.ShowSuccess("Delete succesffuly", "Success");
+                    NavigationManager.NavigateTo("/discount");
+                }
+                else
+                {
+                    ToastService.ShowError("Delete failed", "Failed");
+
+                }
                 await GetServices();
                 await GetDiscounts();
 

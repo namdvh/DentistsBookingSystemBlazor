@@ -114,7 +114,17 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
             dentistRequest.ServiceId = selectedServices;
             dentistRequest.Id = dto.DentistID;
             var rs = await DentistService.UpdateDentist(dentistRequest);
-            NavigationManager.NavigateTo("/dentist");
+
+            if (rs)
+            {
+                ToastService.ShowSuccess("Update successfully.", "Success");
+                NavigationManager.NavigateTo("/dentist");
+            }
+            else
+            {
+                ToastService.ShowError("Update Failed.", "Failed");
+            }
+
         }
 
 

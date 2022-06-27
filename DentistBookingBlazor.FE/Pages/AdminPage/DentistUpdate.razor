@@ -1,5 +1,6 @@
 ﻿@page "/updateDentist/{userID}"
 @using DentistBooking.Data.Enum
+@inject IToastService ToastService
 <h3>DentistUpdate</h3>
 
 <div class="main">
@@ -69,14 +70,14 @@
                             <option>Select a clinic</option>
                             @foreach (var items in clinic)
                             {
-                                if(items.Id == selectedClinicId)
+                                if (items.Id == selectedClinicId)
                                 {
                                     <option value="@items.Id" selected>@items.Name</option>
                                 }
                                 else
-                            {
-                                    <option value="@items.Id" >@items.Name</option>
-                                    
+                                {
+                                    <option value="@items.Id">@items.Name</option>
+
                                 }
                             }
                         </InputSelect>

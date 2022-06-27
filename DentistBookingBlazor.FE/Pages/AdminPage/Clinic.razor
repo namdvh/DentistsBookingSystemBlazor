@@ -2,95 +2,96 @@
 @using DentistBookingBlazor.FE.Components
 @using DentistBookingBlazor.FE.Services.Clinics
 @inject HttpClient _httpClient
+@inject IToastService ToastService
 @using Microsoft.AspNetCore.Components.Authorization;
 @inject IClinicService clinicService;
 
 
-        <h3>Clinic</h3>
-        @if (clinic == null)
-        {
-            <div>Loading...</div>
-        }
-        else
-        {
-            <div class="content">
+<h3>Clinic</h3>
+@if (clinic == null)
+{
+    <div>Loading...</div>
+}
+else
+{
+    <div class="content">
 
-                <div class="container">
-                    <div class="col pt4">
-                        <a href="/clinicCreate" class="btn btn-success">Create</a>
-                    </div>
-                    <h2 class="mb-5">Table #6</h2>
-
-
-                    <div class="table-responsive">
-
-                        <table class="table table-striped custom-table">
-                            <thead>
-                                <tr>
-
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Address</th>
-                                    <th scope="col">Phone</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in clinic)
-                                {
-
-                                    <tr scope="row">
-                                        <td>
-                                            @item.Id
-                                        </td>
-                                        <td>@item.Name </td>
-
-                                        <td>@item.Description</td>
-                                        <td>@item.Address</td>
-                                        <td>@item.Phone</td>
-                                        @if (@item.Status == 0)
-                                        {
-                                            <td>ACTIVE</td>
-                                        }
-                                        else
-                                        {
-                                            <td>INACTIVE</td>
-                                        }
-                                        <td>
-                                            <a href="/clinicUpdate/@item.Id" class="btn btn-warning">Update</a>
-                                            @if (@item.Status == 0)
-                                            {
-                                                <button class="btn btn-danger" @onclick="()=>OnDeleteClinic(item.Id,1)">Delete</button>
-
-                                            }
-                                            else
-                                            {
-                                                <button class="btn btn-primary" @onclick="()=>OnDeleteClinic(item.Id,-1)">Active</button>
-                                            }
-
-
-
-                                        </td>
-
-                                    </tr>
-                                }
-                            </tbody>
-                            <tfoot>
-                                <Pagination filter="paginationFilter" paginationDTO="paginationDTO" Spread="1" SelectedPage="SelectedPage"></Pagination>
-                            </tfoot>
-                        </table>
-                    </div>
-
-
-                </div>
-
+        <div class="container">
+            <div class="col pt4">
+                <a href="/clinicCreate" class="btn btn-success">Create</a>
             </div>
-            <Confirmation ConfirmationMessage="Are you sure you want to delete it?"
-                      ConfirmationTitle="Delete Clinic"
-                      @ref="DeleteConfirmation"
-                      ConfirmationChanged="OnConfirmDeleteClinic"></Confirmation>
-        }
+            <h2 class="mb-5">Table #6</h2>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped custom-table">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in clinic)
+                        {
+
+                            <tr scope="row">
+                                <td>
+                                    @item.Id
+                                </td>
+                                <td>@item.Name </td>
+
+                                <td>@item.Description</td>
+                                <td>@item.Address</td>
+                                <td>@item.Phone</td>
+                                @if (@item.Status == 0)
+                                {
+                                    <td>ACTIVE</td>
+                                }
+                                else
+                                {
+                                    <td>INACTIVE</td>
+                                }
+                                <td>
+                                    <a href="/clinicUpdate/@item.Id" class="btn btn-warning">Update</a>
+                                    @if (@item.Status == 0)
+                                    {
+                                        <button class="btn btn-danger" @onclick="()=>OnDeleteClinic(item.Id,1)">Delete</button>
+
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-primary" @onclick="()=>OnDeleteClinic(item.Id,-1)">Active</button>
+                                    }
+
+
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <Pagination filter="paginationFilter" paginationDTO="paginationDTO" Spread="1" SelectedPage="SelectedPage"></Pagination>
+                    </tfoot>
+                </table>
+            </div>
+
+
+        </div>
+
+    </div>
+    <Confirmation ConfirmationMessage="Are you sure you want to delete it?"
+              ConfirmationTitle="Delete Clinic"
+              @ref="DeleteConfirmation"
+              ConfirmationChanged="OnConfirmDeleteClinic"></Confirmation>
+}
 
 

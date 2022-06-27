@@ -2,39 +2,40 @@
 @using DentistBooking.ViewModels.System.Clinics
 @using DentistBookingBlazor.FE.Services.Clinics
 @using Microsoft.AspNetCore.Components.Authorization
+@inject IToastService ToastService
 @inject IClinicService clinicService;
 <h3>Clinic Create</h3>
-    <EditForm Model="clinic" OnValidSubmit="SubmitTask">
-        <DataAnnotationsValidator />
-        <div class="form-group">
+<EditForm Model="clinic" OnValidSubmit="SubmitTask">
+    <DataAnnotationsValidator />
+    <div class="form-group">
 
-            <label for="Name">Name</label>
-            <InputText class="form-control" @bind-Value="clinic.Name"></InputText>
-            <small id="nameHelp" class="form-text text-muted">Please enter clinic name here please.</small>
-            <ValidationMessage For="@(() => clinic.Name)" />
+        <label for="Name">Name</label>
+        <InputText class="form-control" @bind-Value="clinic.Name"></InputText>
+        <small id="nameHelp" class="form-text text-muted">Please enter clinic name here please.</small>
+        <ValidationMessage For="@(() => clinic.Name)" />
 
-            <label for="Address">Address</label>
-            <InputText class="form-control" @bind-Value="clinic.Address"></InputText>
-            <small id="addressHelp" class="form-text text-muted">Please enter clinic address here please.</small>
-            <ValidationMessage For="@(() => clinic.Address)" />
-
-
-            <label for="Phone">Phone Number</label>
-            <InputText class="form-control" typeof="number" @bind-Value="clinic.Phone"></InputText>
-            <small id="phoneHelp" class="form-text text-muted">Please enter clinic phone number here please.</small>
-            <ValidationMessage For="@(() => clinic.Phone)" />
+        <label for="Address">Address</label>
+        <InputText class="form-control" @bind-Value="clinic.Address"></InputText>
+        <small id="addressHelp" class="form-text text-muted">Please enter clinic address here please.</small>
+        <ValidationMessage For="@(() => clinic.Address)" />
 
 
-            <label for="Description">Description</label>
-            <InputText class="form-control" @bind-Value="clinic.Description"></InputText>
-            <small id="descriptionHelp" class="form-text text-muted">Please enter clinic description here please.</small>
-            <ValidationMessage For="@(() => clinic.Description)" />
+        <label for="Phone">Phone Number</label>
+        <InputText class="form-control" typeof="number" @bind-Value="clinic.Phone"></InputText>
+        <small id="phoneHelp" class="form-text text-muted">Please enter clinic phone number here please.</small>
+        <ValidationMessage For="@(() => clinic.Phone)" />
 
-        </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <label for="Description">Description</label>
+        <InputText class="form-control" @bind-Value="clinic.Description"></InputText>
+        <small id="descriptionHelp" class="form-text text-muted">Please enter clinic description here please.</small>
+        <ValidationMessage For="@(() => clinic.Description)" />
 
-    </EditForm>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</EditForm>
 
 @code {
     [CascadingParameter]
@@ -45,7 +46,7 @@
     private ClinicRequest clinic = new ClinicRequest();
     protected async override Task OnInitializedAsync()
     {
-       var authenticationState = await authenticationStateTask;
+        var authenticationState = await authenticationStateTask;
 
         if (!authenticationState.User.Identity.IsAuthenticated)
         {
@@ -59,6 +60,7 @@
     private async Task SubmitTask(EditContext context)
     {
         var rs = await clinicService.CreateClinic(clinic);
+        ToastService.ShowSuccess("Create successfully.", "Success");
         if (rs)
         {
             NavigationManager.NavigateTo("/clinic");
