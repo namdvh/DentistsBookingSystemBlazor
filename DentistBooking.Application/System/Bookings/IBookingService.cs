@@ -11,7 +11,7 @@ namespace DentistBooking.Application.System.Bookings
 {
     public interface IBookingService
     {
-        Task<BookingResponse> CreateBooking(CreateBookingRequest request);
+        BookingResponse CreateBooking(CreateBookingRequest request);
         Task<ListBookingResponse> GetBookingList(PaginationFilter filter);
         Task<ListBookingResponse> GetBookingListForUser(PaginationFilter filter,Guid userId);
         Task<BookingResponse> UpdateBooking(BookingRequest request);
@@ -23,7 +23,7 @@ namespace DentistBooking.Application.System.Bookings
         
         Task<ListBookingDTOResponse> GetBookingListForDentist(PaginationFilter filter, int dentistId);
 
-        Task<List<KeyTime>> GetPostListKeyTime(int clinicId, int serviceId, DateTime date);
+        List<KeyTime> GetPostListKeyTime(int clinicId, int serviceId, DateTime date);
         Task<BookingDetailResponse> GetDetailByDentistAndBooking(int dentistId, int bookingId);
 
 

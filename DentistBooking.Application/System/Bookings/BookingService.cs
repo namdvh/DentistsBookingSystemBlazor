@@ -23,7 +23,7 @@ namespace DentistBooking.Application.System.Bookings
             _context = context;
         }
 
-        public async Task<BookingResponse> CreateBooking(CreateBookingRequest request)
+        public BookingResponse CreateBooking(CreateBookingRequest request)
         {
             BookingResponse response = new BookingResponse();
             bool flag = false;
@@ -33,7 +33,7 @@ namespace DentistBooking.Application.System.Bookings
             {
                 foreach (var item in request.ServiceIds)
                 {
-                    postKeyTimes =  await GetPostListKeyTime(request.ClinicId, item, request.Date);
+                    postKeyTimes =  GetPostListKeyTime(request.ClinicId, item, request.Date);
                     if(postKeyTimes != null)
                     {
                         foreach (var kt in request.KeyTimes)
@@ -60,23 +60,23 @@ namespace DentistBooking.Application.System.Bookings
                 };
 
                 _context.Bookings.Add(booking);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
 
 
                 dynamic existedDetails = null;
 
                 for (int i = 0; i < request.ServiceIds.Count; i++)
                 {
-                    var dentists = await (from dentist in _context.Dentists
+                    var dentists = (from dentist in _context.Dentists
                                           where dentist.ClinicId == request.ClinicId
-                                          select dentist).ToListAsync();
+                                          select dentist).ToList();
 
-                    existedDetails = await (from t1 in _context.Bookings
+                    existedDetails = (from t1 in _context.Bookings
                                             join t2 in _context.BookingDetails
                                             on t1.Id equals t2.BookingId
                                             where t1.Date.Equals(request.Date)
                                             && t2.KeyTime == request.KeyTimes[i]
-                                            select t2).ToListAsync();
+                                            select t2).ToList();
 
                     foreach (var item in existedDetails)
                     {
@@ -104,7 +104,7 @@ namespace DentistBooking.Application.System.Bookings
 
                     };
                     _context.BookingDetails.Add(detail);
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
 
                 }
 
@@ -553,20 +553,20 @@ namespace DentistBooking.Application.System.Bookings
             return dto;
         }
 
-        public async Task<List<KeyTime>> GetPostListKeyTime(int clinicId, int serviceId, DateTime date)
+        public List<KeyTime> GetPostListKeyTime(int clinicId, int serviceId, DateTime date)
         {
             List<KeyTime> list = new();
 
-            var details = await (from t1 in _context.Bookings
+            var details =(from t1 in _context.Bookings
                                  join t2 in _context.BookingDetails
                                  on t1.Id equals t2.BookingId
                                  where t1.Date.Equals(date)
-                                 select t2).ToListAsync();
-            var dentists = await (from t1 in _context.Dentists
+                                 select t2).ToList();
+            var dentists =(from t1 in _context.Dentists
                                   join t2 in _context.Users
                                   on t1.Id equals t2.DentistId
                                   where t1.ClinicId == clinicId && t2.Status != Status.INACTIVE
-                                  select t1).ToListAsync();
+                                  select t1).ToList();
             int count = 0;
             foreach (var detail in details)
             {

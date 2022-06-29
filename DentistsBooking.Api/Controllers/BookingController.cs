@@ -24,13 +24,13 @@ namespace DentistsBooking.Api.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateBooking([FromBody] CreateBookingRequest request)
+        public IActionResult CreateBooking([FromBody] CreateBookingRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            BookingResponse result = await _bookingService.CreateBooking(request);
+            BookingResponse result =_bookingService.CreateBooking(request);
             if(result == null)
             {
                 return BadRequest();
@@ -81,13 +81,13 @@ namespace DentistsBooking.Api.Controllers
         [HttpGet("getUnavailableKeyTime")]
         [AllowAnonymous]
 
-        public async Task<IActionResult> GetBookingDetail([FromQuery] int clinicId, int serviceId, System.DateTime date)
+        public IActionResult GetBookingDetail([FromQuery] int clinicId, int serviceId, System.DateTime date)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            List<KeyTime> result = await _bookingService.GetPostListKeyTime(clinicId, serviceId, date);
+            List<KeyTime> result = _bookingService.GetPostListKeyTime(clinicId, serviceId, date);
             return Ok(result);
         }
 
