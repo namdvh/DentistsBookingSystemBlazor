@@ -114,7 +114,9 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
         public async Task OnGetKeyTime(int serviceId)
         {
             ServiceId = serviceId;
-            GetKeyTime.Show();
+            List<DentistBooking.Data.Enum.KeyTime> listKT =await BookingService.GetPostListKeyTime(int.Parse(clinicId), serviceId, OrderDate);
+
+            GetKeyTime.Show(listKT);
 
         }
 

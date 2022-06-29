@@ -2,6 +2,8 @@
 @using DentistBooking.Data.Enum
 @using DentistBooking.ViewModels.System.Bookings
 @using DentistBookingBlazor.FE.Services.Bookings
+
+@inject IToastService ToastService
 @if (ShowKeyTime)
 {
     <div class="modal fade show d-block" tabindex="-1" role="dialog">
@@ -65,19 +67,15 @@
     List<DentistBooking.Data.Enum.KeyTime> postKeyTime = new();
     List<DentistBooking.Data.Enum.KeyTime> unavailableKeyTime = new();
 
-    public async void Show()
+    public async void Show( List<DentistBooking.Data.Enum.KeyTime> listKT)
     {
         ShowKeyTime = true;
         var cart = await sessionStorage.GetItemAsync<CreateBookingRequest>("cart");
         if (cart != null)
         {
             postKeyTime = cart.KeyTimes;
-            for (int i = 0; i < cart.ServiceIds.Count; i++)
-            {
-                var result = await bookingService.GetPostListKeyTime(cart.ClinicId, cart.ServiceIds[i], cart.Date);
-                unavailableKeyTime.AddRange(result);
-            }
         }
+        unavailableKeyTime = listKT;
 
         StateHasChanged();
     }
@@ -99,6 +97,8 @@
 
     public void OnSubmit()
     {
+
         OnKeyTimeChange(int.Parse(Selected));
+        ToastService.ShowSuccess("Add successfully", "Success");
     }
 }
