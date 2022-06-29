@@ -26,28 +26,28 @@ namespace DentistBooking.Application.System.Bookings
         public BookingResponse CreateBooking(CreateBookingRequest request)
         {
             BookingResponse response = new BookingResponse();
-            bool flag = false;
-            List<KeyTime> postKeyTimes = new();
+            //bool flag = false;
+            //List<KeyTime> postKeyTimes = new();
 
             try
             {
-                foreach (var item in request.ServiceIds)
-                {
-                    postKeyTimes =  GetPostListKeyTime(request.ClinicId, item, request.Date);
-                    if(postKeyTimes != null)
-                    {
-                        foreach (var kt in request.KeyTimes)
-                        {
-                            if (postKeyTimes.Contains(kt))
-                            {
-                                flag = true;
-                            }
-                        }
-                    }
-                }
+                //foreach (var item in request.ServiceIds)
+                //{
+                //    postKeyTimes =  GetPostListKeyTime(request.ClinicId, item, request.Date);
+                //    if(postKeyTimes != null)
+                //    {
+                //        foreach (var kt in request.KeyTimes)
+                //        {
+                //            if (postKeyTimes.Contains(kt))
+                //            {
+                //                flag = true;
+                //            }
+                //        }
+                //    }
+                //}
 
-                if (!flag)
-                {
+                //if (!flag)
+                //{
 
 
                 Booking booking = new Booking()
@@ -90,34 +90,48 @@ namespace DentistBooking.Application.System.Bookings
 
                     }
 
-
-                    BookingDetail detail = new BookingDetail()
+                    if(dentists.Count() == 0)
                     {
-                        BookingId = booking.Id,
-                        DentistId = dentists[0].Id,
-                        Created_at = DateTime.Now,
-                        KeyTime = request.KeyTimes[i],
-                        Note = request.Note,
-                        Created_by = request.UserId,
-                        Status = Status.INACTIVE,
-                        ServiceId = request.ServiceIds[i]
+                        _context.Bookings.Remove(booking);
+                        _context.SaveChanges(true);
+                        return null;
+                    }
+                    else
+                    {
 
-                    };
-                    _context.BookingDetails.Add(detail);
-                    _context.SaveChanges();
+                        BookingDetail detail = new BookingDetail()
+                        {
+                            BookingId = booking.Id,
+                            DentistId = dentists[0].Id,
+                            Created_at = DateTime.Now,
+                            KeyTime = request.KeyTimes[i],
+                            Note = request.Note,
+                            Created_by = request.UserId,
+                            Status = Status.INACTIVE,
+                            ServiceId = request.ServiceIds[i]
 
+                        };
+                        _context.BookingDetails.Add(detail);
+                        _context.SaveChanges();
+
+                      
+
+                    }
+
+
+                    
                 }
-
-
                 response.Code = "200";
                 response.Message = "Booking successfully";
 
                 return response;
-                }
-                else
-                {
-                    return null;
-                }
+
+
+                //}
+                //else
+                //{
+                //    return null;
+                //}
 
 
             }
@@ -570,6 +584,7 @@ namespace DentistBooking.Application.System.Bookings
             int count = 0;
             foreach (var detail in details)
             {
+                count = 0;
                 foreach (var dentist in dentists)
                 {
                     if (detail.ServiceId == serviceId && detail.DentistId == dentist.Id)
