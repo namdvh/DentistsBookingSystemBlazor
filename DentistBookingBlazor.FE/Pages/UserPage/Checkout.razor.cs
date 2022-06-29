@@ -76,9 +76,16 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
         {
             request.Note = Note;
             request.Total = Total;
-            await BookingService.CreateBooking(request);
+            var rs = await BookingService.CreateBooking(request);
+            if (!rs)
+            {
+                ToastService.ShowError("Booking failed because all dentists are unavailabled, please try again!", "Error");
+            }
+            else
+            {
+                ToastService.ShowSuccess("Booking successfully.", "Success");
+            }
             await sessionStorage.ClearAsync();
-            ToastService.ShowSuccess("Booking successfully.", "Success");
             NavManager.NavigateTo("/bookingCreate");
         }
 

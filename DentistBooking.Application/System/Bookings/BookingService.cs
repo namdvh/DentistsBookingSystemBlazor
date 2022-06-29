@@ -26,8 +26,30 @@ namespace DentistBooking.Application.System.Bookings
         public async Task<BookingResponse> CreateBooking(CreateBookingRequest request)
         {
             BookingResponse response = new BookingResponse();
+            bool flag = false;
+            List<KeyTime> postKeyTimes = new();
+
             try
             {
+                foreach (var item in request.ServiceIds)
+                {
+                    postKeyTimes =  await GetPostListKeyTime(request.ClinicId, item, request.Date);
+                    if(postKeyTimes != null)
+                    {
+                        foreach (var kt in request.KeyTimes)
+                        {
+                            if (postKeyTimes.Contains(kt))
+                            {
+                                flag = true;
+                            }
+                        }
+                    }
+                }
+
+                if (!flag)
+                {
+
+
                 Booking booking = new Booking()
                 {
                     Status = Status.PENDING,
@@ -91,6 +113,12 @@ namespace DentistBooking.Application.System.Bookings
                 response.Message = "Booking successfully";
 
                 return response;
+                }
+                else
+                {
+                    return null;
+                }
+
 
             }
             catch (DbUpdateException)

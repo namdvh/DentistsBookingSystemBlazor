@@ -31,6 +31,10 @@ namespace DentistsBooking.Api.Controllers
                 return BadRequest(ModelState);
             }
             BookingResponse result = await _bookingService.CreateBooking(request);
+            if(result == null)
+            {
+                return BadRequest();
+            }
             return Ok(result);
         }
         [HttpGet("getallbooking")]

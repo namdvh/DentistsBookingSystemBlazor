@@ -22,7 +22,6 @@ namespace DentistBookingBlazor.FE.Services.Bookings
         public async Task<bool> CreateBooking(CreateBookingRequest request)
         {
             var rs = await _httpClient.PostAsJsonAsync("/api/bookings", request);
-
             return rs.IsSuccessStatusCode;
         }
 
