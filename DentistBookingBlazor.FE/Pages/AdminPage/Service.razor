@@ -8,11 +8,11 @@
 @inject IDiscountService discountService;
 
 <Authorized Roles="Admin">
-    <h3>Service</h3>
+    <h3 style="padding-left: 1.5rem">Service</h3>
 
     @if (service == null)
     {
-        <div>Loading...</div>
+        <div style="padding-left: 1.5rem">Loading...</div>
     }
     else
     {
@@ -20,11 +20,10 @@
 
         <div class="content">
 
-            <div class="container">
-                <div class="col pt4">
+            <div style="margin: 0 2rem;display: flex;flex-direction: column;gap: 1rem;">
+                <div class="col pt4" style="padding-left: 0">
                     <a href="/serviceCreate" class="btn btn-success">Create</a>
                 </div>
-                <h2 class="mb-5">Table #6</h2>
 
 
                 <div class="table-responsive">
