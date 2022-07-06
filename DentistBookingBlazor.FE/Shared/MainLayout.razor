@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="vie5wport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Free NGO Resonsive Website Tempalte | Smarteyeapps.com</title>
     <link rel="shortcut icon" href="assets/images/fav.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500&display=swap" rel="stylesheet">
@@ -14,24 +14,93 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+
+    <style>
+        .dropdown {
+            position: relative;
+            margin-left: 2rem;
+        }
+
+            .dropdown:hover .dropdown-list {
+                display: flex;
+            }
+
+        .dropdown-list {
+            padding: 0.5rem 0;
+            position: absolute;
+            inset: 0;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            min-width: 10rem;
+            background: white;
+            height: fit-content;
+            display: none;
+            flex-direction: column;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            transform: translateX(calc(-50% + 40px)) translateY(0.5rem);
+            border-radius: 12px;
+        }
+
+            .dropdown-list::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                top: -0.5rem;
+                width: 100%;
+                height: 0.5rem;
+            }
+
+            .dropdown-list::after {
+                content: ''; 
+                position: absolute;
+                top: 0;
+                left: 35%; 
+                margin-left: -15px;
+                margin-top: -15px; 
+                width: 0;
+                z-index: 1;
+                height: 0;
+                border-bottom: solid 15px #FFF;
+                border-left: solid 15px transparent;
+                border-right: solid 15px transparent;
+            }
+
+            .dropdown-list > * {
+                padding: 1rem;
+                display: block;
+                margin-left: 0 !important;
+            }
+
+                .dropdown-list > *:hover {
+                    background: #dedede;
+                    cursor: pointer;
+                }
+    </style>
 </head>
 
 <link rel="stylesheet" href="./MainLayout.css" />
 <BlazoredToasts Position="ToastPosition.TopRight" Timeout="5" IconType="IconType.FontAwesome" ErrorIcon="fa fa-times"
-    InfoIcon="fa fa-info" SuccessIcon="fa fa-check" WarningIcon="fa fa-exclamation" />
+                InfoIcon="fa fa-info" SuccessIcon="fa fa-check" WarningIcon="fa fa-exclamation" />
 <div class="page" id="page" style="background: transparent">
     <div class="sidebar">
         <NavMenu />
     </div>
 
-   <div class="main">
+    <div class="main">
         <div class="top-row px-4">
             <AuthorizeView>
                 <Authorized>
                     Hello, @context.User.Identity.Name
                     <a href="/Logout">Logout</a>
                     <a href="/Register">Register</a>
-
+                    <div class="dropdown">
+                        <span>dropdown</span>
+                        <div class="dropdown-list">
+                            <a href="/Logout">Logout</a>
+                            <a href="/Register">Register</a>
+                        </div>
+                    </div>
                 </Authorized>
                 <NotAuthorized>
                     <a href="/Register">Register</a>
