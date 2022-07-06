@@ -68,15 +68,15 @@ namespace DentistBooking.Application.System.Bookings
                 for (int i = 0; i < request.ServiceIds.Count; i++)
                 {
                     var dentists = (from dentist in _context.Dentists
-                                          where dentist.ClinicId == request.ClinicId
-                                          select dentist).ToList();
+                                    where dentist.ClinicId == request.ClinicId
+                                    select dentist).ToList();
 
                     existedDetails = (from t1 in _context.Bookings
-                                            join t2 in _context.BookingDetails
-                                            on t1.Id equals t2.BookingId
-                                            where t1.Date.Equals(request.Date)
-                                            && t2.KeyTime == request.KeyTimes[i]
-                                            select t2).ToList();
+                                      join t2 in _context.BookingDetails
+                                      on t1.Id equals t2.BookingId
+                                      where t1.Date.Equals(request.Date)
+                                      && t2.KeyTime == request.KeyTimes[i]
+                                      select t2).ToList();
 
                     foreach (var item in existedDetails)
                     {
@@ -90,7 +90,7 @@ namespace DentistBooking.Application.System.Bookings
 
                     }
 
-                    if(dentists.Count() == 0)
+                    if (dentists.Count() == 0)
                     {
                         _context.Bookings.Remove(booking);
                         _context.SaveChanges(true);
@@ -114,12 +114,12 @@ namespace DentistBooking.Application.System.Bookings
                         _context.BookingDetails.Add(detail);
                         _context.SaveChanges();
 
-                      
+
 
                     }
 
 
-                    
+
                 }
                 response.Code = "200";
                 response.Message = "Booking successfully";
@@ -442,7 +442,7 @@ namespace DentistBooking.Application.System.Bookings
 
             pagedData = await (from booking in _context.Bookings
                                join bookingDetail in _context.BookingDetails on booking.Id equals bookingDetail.BookingId
-                               where bookingDetail.DentistId == dentistId
+                               where bookingDetail.DentistId == dentistId && booking.Status == Status.CONFIRMED
                                select new { booking })
                 .OrderBy("booking." + "Date" + " " + orderBy)
                 .Distinct()
@@ -454,7 +454,7 @@ namespace DentistBooking.Application.System.Bookings
 
             var totalRecords = await (from booking in _context.Bookings
                                       join bookingDetail in _context.BookingDetails on booking.Id equals bookingDetail.BookingId
-                                      where bookingDetail.DentistId == dentistId
+                                      where bookingDetail.DentistId == dentistId && booking.Status == Status.CONFIRMED
                                       select new { booking }).Distinct().CountAsync();
 
             if (pagedData == null)
@@ -571,16 +571,16 @@ namespace DentistBooking.Application.System.Bookings
         {
             List<KeyTime> list = new();
 
-            var details =(from t1 in _context.Bookings
-                                 join t2 in _context.BookingDetails
-                                 on t1.Id equals t2.BookingId
-                                 where t1.Date.Equals(date)
-                                 select t2).ToList();
-            var dentists =(from t1 in _context.Dentists
-                                  join t2 in _context.Users
-                                  on t1.Id equals t2.DentistId
-                                  where t1.ClinicId == clinicId && t2.Status != Status.INACTIVE
-                                  select t1).ToList();
+            var details = (from t1 in _context.Bookings
+                           join t2 in _context.BookingDetails
+                           on t1.Id equals t2.BookingId
+                           where t1.Date.Equals(date)
+                           select t2).ToList();
+            var dentists = (from t1 in _context.Dentists
+                            join t2 in _context.Users
+                            on t1.Id equals t2.DentistId
+                            where t1.ClinicId == clinicId && t2.Status != Status.INACTIVE
+                            select t1).ToList();
             int count = 0;
             foreach (var detail in details)
             {
