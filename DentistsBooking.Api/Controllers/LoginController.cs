@@ -67,7 +67,7 @@ namespace DentistsBooking.Api.Controllers
             claims.AddRange(userClaims);
             foreach (var userRole in userRoles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, userRole));
+                claims.Add(new Claim("Role", userRole));
                 var role = await _roleManager.FindByNameAsync(userRole);
                 if (role != null)
                 {

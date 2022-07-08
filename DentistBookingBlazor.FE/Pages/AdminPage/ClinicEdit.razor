@@ -1,10 +1,13 @@
 ﻿@page "/clinicUpdate/{ClinicId}"
+@using Blazored.LocalStorage
 @using DentistBooking.ViewModels.System.Clinics
 @using DentistBookingBlazor.FE.Services.Clinics
 @using Microsoft.AspNetCore.Components.Authorization
+@using System.IdentityModel.Tokens.Jwt
 @inject IClinicService clinicService;
 @inject IToastService ToastService
 @inject NavigationManager NavigationManager;
+@inject ILocalStorageService ILocalStorageService;
 
 @if (clinic == null)
 {
@@ -64,7 +67,12 @@ else
         {
             NavigationManager.NavigateTo("/Error");
         }
-        if (!authenticationState.User.IsInRole("Admin"))
+        var savedToken = await ILocalStorageService.GetItemAsync<string>("authToken");
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadToken(savedToken);
+        var tokenS = jsonToken as JwtSecurityToken;
+        var role = tokenS.Claims.First(claim => claim.Type == "Role").Value;
+        if (!role.Equals("Admin"))
         {
             NavigationManager.NavigateTo("/Error");
         }
