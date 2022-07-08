@@ -5,20 +5,17 @@
 @inject IToastService ToastService
 @inject IUserService userService;
 
-<h3>User</h3>
+<h3 style="padding-left: 1.5rem">User</h3>
 
 @if (user == null)
 {
-    <div>Loading...</div>
+    <div style="padding-left: 1.5rem">Loading...</div>
 }
 else
 {
     <div class="content">
 
-        <div class="container">
-            <h2 class="mb-5">Table #6</h2>
-
-
+        <div style="margin: 0 2rem;display: flex;flex-direction: column;gap: 1rem;">
             <div class="table-responsive">
 
                 <table class="table table-striped custom-table">

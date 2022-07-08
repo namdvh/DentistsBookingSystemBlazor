@@ -1,4 +1,5 @@
 ﻿
+using Blazored.LocalStorage;
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Discounts;
 using DentistBookingBlazor.FE.Components;
@@ -6,6 +7,8 @@ using DentistBookingBlazor.FE.Services.Discounts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -31,6 +34,8 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        [Inject]
+        private ILocalStorageService ILocalStorageService { get; set; }
         protected override async Task OnInitializedAsync()
         {
             var authenticationState = await authenticationStateTask;
@@ -39,7 +44,12 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
             {
                 NavigationManager.NavigateTo("/Error");
             }
-            if (!authenticationState.User.IsInRole("Admin"))
+            var savedToken = await ILocalStorageService.GetItemAsync<string>("authToken");
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(savedToken);
+            var tokenS = jsonToken as JwtSecurityToken;
+            var role = tokenS.Claims.First(claim => claim.Type == "Role").Value;
+            if (!role.Equals("Admin"))
             {
                 NavigationManager.NavigateTo("/Error");
             }

@@ -1,9 +1,11 @@
 ﻿@page "/userUpdate/{UserId}"
+@using Blazored.LocalStorage
 @using DentistBooking.ViewModels.System.Users
 @using DentistBookingBlazor.FE.Components
 @using DentistBooking.Blazor.Services.Users;
 @using DentistBooking.Data.Enum
 @using Microsoft.AspNetCore.Components.Authorization
+@using System.IdentityModel.Tokens.Jwt
 @inject IToastService ToastService
 @inject IUserService userService;
 @if (user == null)
@@ -79,6 +81,8 @@ else
 
     [Inject]
     public NavigationManager NavigationManager { get; set; }
+    [Inject]
+    private ILocalStorageService ILocalStorageService { get; set; }
 
     protected async override Task OnInitializedAsync()
     {
@@ -88,7 +92,12 @@ else
         {
             NavigationManager.NavigateTo("/Error");
         }
-        if (!authenticationState.User.IsInRole("Admin"))
+        var savedToken = await ILocalStorageService.GetItemAsync<string>("authToken");
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadToken(savedToken);
+        var tokenS = jsonToken as JwtSecurityToken;
+        var role = tokenS.Claims.First(claim => claim.Type == "Role").Value;
+        if (!role.Equals("Admin"))
         {
             NavigationManager.NavigateTo("/Error");
         }

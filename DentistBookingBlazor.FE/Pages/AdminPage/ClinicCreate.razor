@@ -1,9 +1,12 @@
 ﻿@page "/clinicCreate"
+@using Blazored.LocalStorage
 @using DentistBooking.ViewModels.System.Clinics
 @using DentistBookingBlazor.FE.Services.Clinics
 @using Microsoft.AspNetCore.Components.Authorization
+@using System.IdentityModel.Tokens.Jwt
 @inject IToastService ToastService
 @inject IClinicService clinicService;
+@inject ILocalStorageService ILocalStorageService;
 <h3>Clinic Create</h3>
 <EditForm Model="clinic" OnValidSubmit="SubmitTask">
     <DataAnnotationsValidator />
@@ -52,7 +55,12 @@
         {
             NavigationManager.NavigateTo("/Error");
         }
-        if (!authenticationState.User.IsInRole("Admin"))
+        var savedToken = await ILocalStorageService.GetItemAsync<string>("authToken");
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadToken(savedToken);
+        var tokenS = jsonToken as JwtSecurityToken;
+        var role = tokenS.Claims.First(claim => claim.Type == "Role").Value;
+        if (!role.Equals("Admin"))
         {
             NavigationManager.NavigateTo("/Error");
         }

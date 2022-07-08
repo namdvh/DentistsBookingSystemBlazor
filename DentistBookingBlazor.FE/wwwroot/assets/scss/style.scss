@@ -87,14 +87,6 @@ header{
 //Slider Starts Here
 
 .slider {
-    padding-top: 80px;
-    border-top: 1px solid #CCC;
-    @media screen and (max-width: 767px) {
-        padding-top: 81x;
-    }
-     @media screen and (max-width: 575px) {
-        padding-top: 101px;
-    }
   .carousel-caption {
     bottom: 190px;
     @media screen and (max-width: 930px) {

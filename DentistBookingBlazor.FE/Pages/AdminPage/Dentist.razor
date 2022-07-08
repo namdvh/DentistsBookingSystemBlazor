@@ -7,17 +7,17 @@
 
 
 
-<h3>Dentist</h3>
+<h3 style="padding-left: 1.5rem">Dentist</h3>
 @if (dentist == null)
 {
-    <div>Loading...</div>
+    <div style="padding-left: 1.5rem">Loading...</div>
 }
 else
 {
 
     <div class="content">
-        <div class="container">
-            <div class="col pt4">
+        <div style="margin: 0 2rem;display: flex;flex-direction: column;gap: 1rem;">
+            <div class="col" style="padding-left: 0">
                 <a href="/createDentist" class="btn btn-success">Create</a>
             </div>
 
@@ -109,7 +109,6 @@ else
 }
 
 @code {
-    int i = 0;
 }
 
 
