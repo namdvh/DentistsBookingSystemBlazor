@@ -9,13 +9,13 @@ namespace DentistBooking.ViewModels.System.Clinics
     {
         public int? Id { get; set; }
         [Required]
-        [RegularExpression(@"^\d*[a-zA-Z]{1,}\d*", ErrorMessage = "Name should not contain numbers")]
+        [RegularExpression(@"^(?:(?! )[^0-9]*[^ 0-9])?$", ErrorMessage = "Name should not contain numbers")]
         public string Name { get; set; }
         [Required]
-        [RegularExpression(@"^\d*[a-zA-Z]{1,}\d*", ErrorMessage = "Description should not contain numbers")]
+        [RegularExpression(@"^(?:(?! )[^0-9]*[^ 0-9])?$", ErrorMessage = "Description should not contain numbers")]
         public string Description { get; set; }
         [Required]
-        [RegularExpression(@"^\d*[a-zA-Z]{1,}\d*", ErrorMessage = "Address should not contain numbers")]
+        [RegularExpression(@"^(?:(?! )[^0-9]*[^ 0-9])?$", ErrorMessage = "Address should not contain numbers")]
         public string Address { get; set; }
         [Required]
 

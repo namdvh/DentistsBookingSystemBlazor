@@ -353,7 +353,7 @@ namespace DentistBooking.Application.System.Dentists
 
 
                 DentistDTO dto = new();
-                dto.Description = data.dentistAttribute?.Description;
+                dto.Description = data.dentistAttribute?.Description is null ? "":data.dentistAttribute?.Description;
                 dto.Email = data.user.Email;
                 dto.Gender = data.user.Gender;
                 dto.Id = data.user.Id;
