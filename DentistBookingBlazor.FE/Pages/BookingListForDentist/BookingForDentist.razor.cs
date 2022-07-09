@@ -42,7 +42,12 @@ namespace DentistBookingBlazor.FE.Pages.BookingListForDentist
             {
                 NavigationManager.NavigateTo("/Error");
             }
-            if (!authenticationState.User.IsInRole("Docter"))
+            var savedToken = await ILocalStorageService.GetItemAsync<string>("authToken");
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(savedToken);
+            var tokenS = jsonToken as JwtSecurityToken;
+            var role = tokenS.Claims.First(claim => claim.Type == "Role").Value;
+            if (!role.Equals("Docter"))
             {
                 NavigationManager.NavigateTo("/Error");
             }
