@@ -276,7 +276,6 @@ namespace DentistBooking.Application.System.Discounts
                 Description = discount.Description,
                 Title = discount.Title,
                 Amount = (decimal)discount.Amount,
-                Percent = (float)discount.Percent,
                 ApplyForAll = discount.ApplyForAll,
                 StartDate = discount.StartDate,
                 EndDate = discount.EndDate,
