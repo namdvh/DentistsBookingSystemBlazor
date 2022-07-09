@@ -63,11 +63,11 @@ else
                                 {
                                     <td>INACTIVE</td>
                                 }
-                                @if (@item.Position == 0)
+                                @if (@item.Position == DentistBooking.Data.Enum.Position.HEAD)
                                 {
                                     <td>HEAD</td>
                                 }
-                                else if (@item.Position.ToString().Equals(1.ToString()))
+                                else if (@item.Position == DentistBooking.Data.Enum.Position.DENTIST)
                                 {
                                     <td>DENTIST</td>
                                 }

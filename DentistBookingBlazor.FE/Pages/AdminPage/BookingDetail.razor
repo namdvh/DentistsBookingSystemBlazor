@@ -29,6 +29,7 @@ else
 
                             <th scope="col">Time</th>
                             <th scope="col">Service</th>
+                            <th scope="col">Note</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,15 +41,12 @@ else
                                     @item.KeyTime
                                 </td>
                                 <td>@item.Services.ServiceName </td>
-
+                                <td>@item.Note </td>
                             </tr>
                         }
                     </tbody>
 
                 </table>
-                <p>
-                    @detail.First().Note
-                </p>
             </div>
 
 
