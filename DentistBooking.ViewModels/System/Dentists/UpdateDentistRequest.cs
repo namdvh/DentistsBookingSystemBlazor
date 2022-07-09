@@ -18,10 +18,10 @@ namespace DentistBooking.ViewModels.System.Dentists
         [Required]
 
         public string? PhoneNumber { get; set; }
-        [RegularExpression(@"^\d*[a-zA-Z]{1,}\d*", ErrorMessage = "FirstName should not contain numbers")]
+        [RegularExpression(@"^(?:(?! )[^0-9]*[^ 0-9])?$", ErrorMessage = "FirstName should not contain numbers")]
 
         public string? FirstName { get; set; }
-        [RegularExpression(@"^\d*[a-zA-Z]{1,}\d*", ErrorMessage = "FirstName should not contain numbers")]
+        [RegularExpression(@"^(?:(?! )[^0-9]*[^ 0-9])?$", ErrorMessage = "FirstName should not contain numbers")]
 
         [Required]
 
@@ -31,7 +31,7 @@ namespace DentistBooking.ViewModels.System.Dentists
         public Status? Status { get; set; }
         public Position? Position { get; set; }
         [Required]
-        [RegularExpression(@"^\d*[a-zA-Z]{1,}\d*", ErrorMessage = "Desciption should not contain numbers")]
+        [RegularExpression(@"^(?:(?! )[^0-9]*[^ 0-9])?$", ErrorMessage = "Desciption should not contain numbers")]
 
         public string? Description { get; set; }
         public int ClinicId { get; set; }
