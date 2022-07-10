@@ -28,7 +28,7 @@
                         <thead>
                             <tr>
 
-                                <th scope="col">ID</th>
+                                @*<th scope="col">ID</th>*@
                                 <th scope="col">Title</th>
                                 <th scope="col">Start date</th>
                                 <th scope="col">End date</th>
@@ -43,9 +43,9 @@
                             {
 
                                 <tr scope="row">
-                                    <td>
-                                        @item.Id
-                                    </td>
+                                    @* <td>
+                            @item.Id
+                            </td>*@
                                     <td>@item.Title </td>
 
                                     <td>@item.StartDate</td>
@@ -70,7 +70,7 @@
                                         else
 
                                         {
-                                        <button class="btn btn-light" @onclick="()=>OnApply(item.Id)">UnApply For All</button>
+                                            <button class="btn btn-light" @onclick="()=>OnApply(item.Id)">UnApply For All</button>
                                         }
                                     </td>
                                     <td>
@@ -84,7 +84,7 @@
                                         else
 
                                         {
-                                        <button class="btn btn-primary" @onclick="()=>OnDeleteDiscount(item.Id,-1)">Active</button>
+                                            <button class="btn btn-primary" @onclick="()=>OnDeleteDiscount(item.Id,-1)">Active</button>
                                         }
 
 
