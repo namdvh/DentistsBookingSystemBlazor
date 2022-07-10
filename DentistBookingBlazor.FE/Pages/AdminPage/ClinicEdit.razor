@@ -15,11 +15,11 @@
 }
 else
 {
-    <h3>Clinic Edit: @clinic.Name</h3>
+    <h3 style="text-align:center; margin:2rem 0">Clinic Edit: @clinic.Name</h3>
 
 
 
-    <EditForm Model="clinic" OnValidSubmit="SubmitTask">
+    <EditForm Model="clinic" OnValidSubmit="SubmitTask" style="max-width: 60%; margin: 0 auto">
         <DataAnnotationsValidator />
         <div class="form-group">
 
