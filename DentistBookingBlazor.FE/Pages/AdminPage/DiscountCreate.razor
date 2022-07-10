@@ -7,9 +7,9 @@
 @inject IToastService ToastService
 @inject IDiscountService discountService;
 
-<h3>Discount Create</h3>
+<h3 style="text-align:center; margin:2rem 0">Discount Create</h3>
 <Authorized Roles="Admin">
-    <EditForm Model="discount" OnValidSubmit="SubmitTask">
+    <EditForm Model="discount" OnValidSubmit="SubmitTask" style="max-width: 60%; margin: 0 auto">
         <DataAnnotationsValidator />
 
         <div class="form-group">

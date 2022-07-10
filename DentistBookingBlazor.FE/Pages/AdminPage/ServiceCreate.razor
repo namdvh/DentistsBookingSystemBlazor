@@ -6,9 +6,9 @@
 @using System.IdentityModel.Tokens.Jwt
 @inject IToastService ToastService
 @inject IServiceService serviceService;
-<h3>Service Create</h3>
+<h3 style="text-align:center; margin:2rem 0">Service Create</h3>
 
-<EditForm Model="service" OnValidSubmit="SubmitTask">
+<EditForm Model="service" OnValidSubmit="SubmitTask" style="max-width: 60%; margin: 0 auto">
     <DataAnnotationsValidator />
 
     <div class="form-group">

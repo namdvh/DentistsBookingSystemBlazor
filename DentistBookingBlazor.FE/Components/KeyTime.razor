@@ -8,36 +8,42 @@
 {
     <div class="modal fade show d-block" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content" style="min-width: 506px;">
                 <div class="modal-header" style="justify-content: center">
                     <h5 class="modal-title">@KeyTimeTitle</h5>
                 </div>
                 <div class="modal-body">
                     @KeyTimeMessage
                 </div>
-                <div>
-                    <form style="display: flex;flex-wrap: wrap;gap: 2rem;">
+                <div style="margin-bottom: 1rem">
+                    <form style="display: flex; flex-direction:column; gap:2rem">
 
-                        @foreach (var item in @KeyTimeList)
-                        {
-
-                            if (!postKeyTime.Contains(@item) && !unavailableKeyTime.Contains(@item))
+                        <div style="display: flex;flex-wrap: wrap;gap: 2rem; padding: 0 1rem">
+                            @foreach (var item in @KeyTimeList)
                             {
-                                var value = (int)@item;
-                                <input id="@item" type="radio" value="@value" name="keytime" @onchange="SelectionChanged">
-                                <label for="@item">@item</label>
-                                <br />
-    
+
+                                if (!postKeyTime.Contains(@item) && !unavailableKeyTime.Contains(@item))
+                                {
+                                    var value = (int)@item;
+                                    var label = @item.ToString().Replace('_', '-').Remove(0, 1);
+                                    <div class="keytime_select" style="background:#FFF8AE; flex:1; display:flex; align-items:center; justify-content:center;gap:0.5rem; padding:0.75rem 0.5rem; border-radius:0.6rem; min-width:136px; max-width:136px">
+                                        <input id="@item" type="radio" value="@value" name="keytime" @onchange="SelectionChanged">
+                                        <label for="@item" style="margin-bottom: 0; letter-spacing: 0.1rem; cursor: pointer">@label</label>
+                                    </div>
+
+                                }
+
                             }
+                        </div>
+                        <div style="display: flex; gap:2rem; padding: 0 1rem">
+                            <input type="submit" @onclick="@OnSubmit" style="padding:6px 12px; border:none; background:#51be78; color: white">
 
-                        }
-                        <input type="submit" @onclick="@OnSubmit" style="display: block; width: fit-content; margin: 0 auto">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                @onclick="() => Close()">
+                                Cancel
+                            </button>
+                        </div>
                     </form>
-
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                        @onclick="() => Close()">
-                        Cancel
-                    </button>
 
                 </div>
             </div>
@@ -67,7 +73,7 @@
     List<DentistBooking.Data.Enum.KeyTime> postKeyTime = new();
     List<DentistBooking.Data.Enum.KeyTime> unavailableKeyTime = new();
 
-    public async void Show( List<DentistBooking.Data.Enum.KeyTime> listKT)
+    public async void Show(List<DentistBooking.Data.Enum.KeyTime> listKT)
     {
         ShowKeyTime = true;
         var cart = await sessionStorage.GetItemAsync<CreateBookingRequest>("cart");
@@ -93,6 +99,12 @@
     public void SelectionChanged(ChangeEventArgs args)
     {
         Selected = args.Value.ToString();
+    }
+
+    public void HandleClick(EventArgs args)
+    {
+        Console.WriteLine(args);
+        //args.style.outline = '3px solid #33b0e3';
     }
 
     public void OnSubmit()

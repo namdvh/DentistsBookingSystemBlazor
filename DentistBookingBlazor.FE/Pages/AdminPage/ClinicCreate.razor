@@ -7,8 +7,8 @@
 @inject IToastService ToastService
 @inject IClinicService clinicService;
 @inject ILocalStorageService ILocalStorageService;
-<h3>Clinic Create</h3>
-<EditForm Model="clinic" OnValidSubmit="SubmitTask">
+<h3 style="text-align:center; margin:2rem 0">Clinic Create</h3>
+<EditForm Model="clinic" OnValidSubmit="SubmitTask" style="max-width: 60%; margin: 0 auto">
     <DataAnnotationsValidator />
     <div class="form-group">
 

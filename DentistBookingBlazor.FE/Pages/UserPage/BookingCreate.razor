@@ -2,11 +2,11 @@
 @inject IToastService ToastService
 
 
-<h3>Booking</h3>
+<h3 style="margin:2rem">Booking</h3>
 
 @if (Cart == null)
 {
-    <div class="form-group">
+    <div class="form-group" style="margin: 0 2rem">
         <select class="form-control" @onchange="DoStuff">
             @if (chosenClinic != null)
             {

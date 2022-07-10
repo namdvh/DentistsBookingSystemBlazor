@@ -14,11 +14,11 @@
 }
 else
 {
-    <h3>User Edit: @user.FirstName</h3>
+    <h3 style="text-align:center; margin:2rem 0">User Edit: @user.FirstName</h3>
 
 
 
-    <EditForm Model="user" OnValidSubmit="SubmitTask">
+    <EditForm Model="user" OnValidSubmit="SubmitTask" style="max-width: 60%; margin: 0 auto">
         <DataAnnotationsValidator />
         <div class="form-group">
 
