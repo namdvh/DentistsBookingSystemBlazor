@@ -1,5 +1,6 @@
 ﻿
 using Blazored.LocalStorage;
+using DentistBooking.Data.Enum;
 using DentistBooking.ViewModels.Pagination;
 using DentistBooking.ViewModels.System.Bookings;
 using DentistBookingBlazor.FE.Components;
@@ -31,6 +32,8 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
 
         [Parameter]
         public string BookingId { get; set; }
+
+        public Status BookingStatus { get; set; }
         protected override async Task OnInitializedAsync()
         {
             var authenticationState = await authenticationStateTask;
@@ -55,6 +58,7 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
         {
             response = await BookingService.GetBookingDetail(int.Parse(BookingId));
             detail = (List<BookingDetailDTO>)response.Details;
+            BookingStatus = detail.First().BookingStatus;
         }
 
     }

@@ -11,7 +11,7 @@
 {
     <div>Loading...</div>
 }
-else
+else if (BookingStatus != DentistBooking.Data.Enum.Status.DECLINED)
 {
 
 
@@ -44,6 +44,48 @@ else
                                 <td>@item.Services.ServiceName </td>
                                 <td>@item.Note </td>
                                 <td>@item.DentistName </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+
+        </div>
+
+    </div>
+
+}
+else
+{
+    <div class="content">
+
+        <div class="container">
+            <h2 class="mb-5">Table #6</h2>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped custom-table">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">Time</th>
+                            <th scope="col">Service</th>
+                            <th scope="col">Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in detail)
+                        {
+
+                            <tr scope="row">
+                                <td>
+                                    @item.KeyTime
+                                </td>
+                                <td>@item.Services.ServiceName </td>
+                                <td>@item.Note </td>
                             </tr>
                         }
                     </tbody>
