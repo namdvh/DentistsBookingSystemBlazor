@@ -12,6 +12,7 @@ namespace DentistBooking.ViewModels.System.Bookings
         public KeyTime KeyTime { get; set; }
         public string? Note { get; set; }
         public string DentistName { get; set; }
+        public Status BookingStatus { get; set; }
 
         public Status Status { get; set; }
         public DentistServiceDto Services { get; set; }
