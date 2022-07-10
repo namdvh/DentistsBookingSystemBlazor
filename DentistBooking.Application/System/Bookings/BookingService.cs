@@ -523,12 +523,16 @@ namespace DentistBooking.Application.System.Bookings
         }
         private BookingDetailDTO MapToBookingDetailDto(BookingDetail bookingDetail)
         {
+            var dentistName = _context.Users.Where(x => x.DentistId == bookingDetail.DentistId).FirstOrDefault();
+
+
             var detailDto = new BookingDetailDTO()
             {
                 Id = bookingDetail.Id,
                 Note = bookingDetail.Note,
                 Services = GetService(bookingDetail.ServiceId),
                 Status = bookingDetail.Status,
+                DentistName = dentistName.FirstName + " " + dentistName.LastName,
                 KeyTime = bookingDetail.KeyTime
 
             };
