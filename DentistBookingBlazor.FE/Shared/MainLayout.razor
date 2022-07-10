@@ -1,4 +1,4 @@
-﻿@inherits LayoutComponentBase
+﻿add navbar@inherits LayoutComponentBase
 @inject IJSRuntime JSRuntime
 @using Blazored.Toast.Configuration
 @using Microsoft.AspNetCore.Components.Authorization;
@@ -18,6 +18,7 @@
     <style>
         .dropdown {
             position: relative;
+            margin-left:1rem;
         }
 
             .dropdown:hover .dropdown-list {
@@ -103,7 +104,7 @@
                         </div>
                     </div>
                      <div class="dropdown">
-                        Booking
+                         Booking
                         <div class="dropdown-list">
                             <a href="/bookingCreate">Create Booking</a>
                             <a href="/bookingfUser">Booking Detail</a>
