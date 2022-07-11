@@ -14,80 +14,80 @@
 }
 else
 {
-     <Authorized Roles="Admin">
-    <div class="content">
+    <Authorized Roles="Admin">
+        <div class="content">
 
-        <div style="margin: 0 2rem;display: flex;flex-direction: column;gap: 1rem;">
-            <div class="col pt4" style="padding-left: 0">
-                <a href="/bookingCreate" class="btn btn-success">Create</a>
-            </div>
+            <div style="margin: 0 2rem;display: flex;flex-direction: column;gap: 1rem;">
+                <div class="col pt4" style="padding-left: 0">
+                    <a href="/bookingCreate" class="btn btn-success">Create</a>
+                </div>
 
 
-            <div class="table-responsive">
+                <div class="table-responsive">
 
-                <table class="table table-striped custom-table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Date</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">User Name</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in booking)
-                        {
+                    <table class="table table-striped custom-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">User Name</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in booking)
+                            {
 
-                            <tr scope="row">
-                                <td>@item.Date.ToShortDateString() </td>
+                                <tr scope="row">
+                                    <td>@item.Date.ToShortDateString() </td>
 
-                                <td>@item.Total</td>
-                                @if (@item.Status == DentistBooking.Data.Enum.Status.PENDING)
-                                {
-                                    <td>PENDING</td>
-                                }
-                                else if (@item.Status == DentistBooking.Data.Enum.Status.CONFIRMED)
-                                {
-                                    <td>CONFIRMED</td>
-                                }
-                                else if (@item.Status == DentistBooking.Data.Enum.Status.DONE)
-                                {
-                                    <td>DONE</td>
-                                }
-                                else
-                                {
-                                    <td>DECLINED</td>
-                                }
-                                <td>@item.User.FirstName @item.User.LastName</td>
-                                <td>@item.User.Phone</td>
-                                <td>
+                                    <td>@item.Total</td>
                                     @if (@item.Status == DentistBooking.Data.Enum.Status.PENDING)
                                     {
-                                        <button class="btn btn-danger" @onclick="()=>OnConfirm(item.Id,DentistBooking.Data.Enum.Status.CONFIRMED)">CONFIRM</button>
-                                        <button class="btn btn-danger" @onclick="()=>OnConfirm(item.Id,DentistBooking.Data.Enum.Status.DECLINED)">DECLINE</button>
+                                        <td>PENDING</td>
                                     }
+                                    else if (@item.Status == DentistBooking.Data.Enum.Status.CONFIRMED)
+                                    {
+                                        <td>CONFIRMED</td>
+                                    }
+                                    else if (@item.Status == DentistBooking.Data.Enum.Status.DONE)
+                                    {
+                                        <td>DONE</td>
+                                    }
+                                    else
+                                    {
+                                        <td>DECLINED</td>
+                                    }
+                                    <td>@item.User.FirstName @item.User.LastName</td>
+                                    <td>@item.User.Phone</td>
+                                    <td>
+                                        @if (@item.Status == DentistBooking.Data.Enum.Status.PENDING)
+                                        {
+                                            <button class="btn btn-success" @onclick="()=>OnConfirm(item.Id,DentistBooking.Data.Enum.Status.CONFIRMED)">CONFIRM</button>
+                                            <button class="btn btn-danger" @onclick="()=>OnConfirm(item.Id,DentistBooking.Data.Enum.Status.DECLINED)">DECLINE</button>
+                                        }
 
-                                    <a href="/bookingDetail/@item.Id" class="btn btn-primary">Detail</a>
-                                </td>
+                                        <a href="/bookingDetail/@item.Id" class="btn btn-primary">Detail</a>
+                                    </td>
 
-                            </tr>
-                        }
-                    </tbody>
-                    <tfoot>
-                        <Pagination filter="paginationFilter" paginationDTO="paginationDTO" Spread="1" SelectedPage="SelectedPage"></Pagination>
-                    </tfoot>
-                </table>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <Pagination filter="paginationFilter" paginationDTO="paginationDTO" Spread="1" SelectedPage="SelectedPage"></Pagination>
+                        </tfoot>
+                    </table>
+                </div>
+
+
             </div>
 
-
         </div>
-
-    </div>
-    <Confirmation ConfirmationMessage="Do you want to do this action?"
-              ConfirmationTitle="Action"
-              @ref="ActionConfirmation"
-              ConfirmationChanged="OnConfirmAction"></Confirmation>
-</Authorized>
+        <Confirmation ConfirmationMessage="Do you want to do this action?"
+                  ConfirmationTitle="Action"
+                  @ref="ActionConfirmation"
+                  ConfirmationChanged="OnConfirmAction"></Confirmation>
+    </Authorized>
 }
