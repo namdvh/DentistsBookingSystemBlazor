@@ -42,15 +42,6 @@ namespace DentistBookingBlazor.FE.Pages.AdminPage
             {
                 NavigationManager.NavigateTo("/Error");
             }
-            var savedToken = await ILocalStorageService.GetItemAsync<string>("authToken");
-            var handler = new JwtSecurityTokenHandler();
-            var jsonToken = handler.ReadToken(savedToken);
-            var tokenS = jsonToken as JwtSecurityToken;
-            var role = tokenS.Claims.First(claim => claim.Type == "Role").Value;
-            if (!role.Equals("Admin"))
-            {
-                NavigationManager.NavigateTo("/Error");
-            }
             await GetDetails();
         }
 

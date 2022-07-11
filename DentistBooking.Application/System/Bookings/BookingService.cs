@@ -154,6 +154,7 @@ namespace DentistBooking.Application.System.Bookings
                 var booking = await _context.Bookings.Where(x => x.Id == bookingId).FirstOrDefaultAsync();
 
                 detail.Status = request.status;
+                _context.SaveChanges();
                 var count = _context.BookingDetails.Where(x => x.BookingId == bookingId && x.Status == Status.INACTIVE).Count();
                 if (count == 0)
                 {

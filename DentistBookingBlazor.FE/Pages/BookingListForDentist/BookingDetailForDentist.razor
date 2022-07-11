@@ -42,7 +42,7 @@ else
                                     <td>@item.Services.ServiceName </td>
                                     <td>@item.Status</td>
                                     <td>
-                                        @if (@item.Status == DentistBooking.Data.Enum.Status.ACTIVE)
+                                        @if (@item.Status == DentistBooking.Data.Enum.Status.INACTIVE)
                                         {
                                             <button class="btn btn-danger" @onclick="()=>OnConfirm(item.Id,DentistBooking.Data.Enum.Status.CONFIRMED)">CONFIRM</button>
                                         }
