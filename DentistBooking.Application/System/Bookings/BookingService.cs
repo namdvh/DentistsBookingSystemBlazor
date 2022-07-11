@@ -68,7 +68,9 @@ namespace DentistBooking.Application.System.Bookings
                 for (int i = 0; i < request.ServiceIds.Count; i++)
                 {
                     var dentists = (from dentist in _context.Dentists
-                                    where dentist.ClinicId == request.ClinicId
+                                    join user in _context.Users
+                                    on dentist.Id equals user.DentistId
+                                    where dentist.ClinicId == request.ClinicId && user.Status != Status.INACTIVE
                                     select dentist).ToList();
 
                     existedDetails = (from t1 in _context.Bookings
