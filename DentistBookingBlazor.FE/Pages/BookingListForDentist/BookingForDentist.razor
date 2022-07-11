@@ -5,7 +5,7 @@
 
 @page "/bookingD"
 
-<h3>Booking For Dentist @dentistName</h3>
+<h3>Booking For Dentist</h3>
 
 @if (booking == null)
 {
@@ -29,7 +29,7 @@ else
                             <th scope="col">Total</th>
                             <th scope="col">Status</th>
                             <th scope="col">Action</th>
-                            
+
                         </tr>
                     </thead>
                     <tbody>
@@ -45,19 +45,20 @@ else
                                 {
                                     <td>PENDING</td>
                                 }
-                                else if(@item.Status == DentistBooking.Data.Enum.Status.CONFIRMED)
+                                else if (@item.Status == DentistBooking.Data.Enum.Status.CONFIRMED)
                                 {
                                     <td>CONFIRMED</td>
-                                }else if(@item.Status == DentistBooking.Data.Enum.Status.DONE)
+                                }
+                                else if (@item.Status == DentistBooking.Data.Enum.Status.DONE)
                                 {
                                     <td>DONE</td>
                                 }
                                 else
                                 {
-                                <td>DECLINED</td>
+                                    <td>DECLINED</td>
                                 }
                                 <td>
-                                    
+
                                     <a href="/bookingDetailDentist/@item.Id/@dentistID" class="btn btn-primary">Detail</a>
                                 </td>
 
@@ -69,7 +70,7 @@ else
                     </tfoot>
                 </table>
             </div>
-            
+
 
         </div>
 
