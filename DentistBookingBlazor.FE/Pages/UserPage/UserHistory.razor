@@ -18,7 +18,6 @@ else
     <div class="content">
 
         <div class="container">
-            <h2 class="mb-5">Table #6</h2>
 
 
             <div class="table-responsive">
@@ -27,7 +26,7 @@ else
                     <thead>
                         <tr>
 
-                             <tr>
+                        <tr>
                             <th scope="col">Date</th>
                             <th scope="col">Total</th>
                             <th scope="col">Status</th>
@@ -49,26 +48,29 @@ else
                                 {
                                     <td>PENDING</td>
                                 }
-                                else if(@item.Status == DentistBooking.Data.Enum.Status.CONFIRMED)
+                                else if (@item.Status == DentistBooking.Data.Enum.Status.CONFIRMED)
                                 {
                                     <td>CONFIRMED</td>
-                                }else if(@item.Status == DentistBooking.Data.Enum.Status.DONE)
+                                }
+                                else if (@item.Status == DentistBooking.Data.Enum.Status.DONE)
                                 {
                                     <td>DONE</td>
                                 }
                                 else
                                 {
-                                <td>DECLINED</td>
+                                    <td>DECLINED</td>
                                 }
-                                <td>@item.User.FirstName + @item.User.LastName</td>
+                                <td>@item.User.FirstName @item.User.LastName</td>
                                 <td>@item.User.Phone</td>
-                                <td>@*Cancle booking*@
-                                    @if(DateTime.Now < @item.CreateAt.AddSeconds(120))
+                                <td>
+                                    @*Cancle booking*@
+                                    @if (DateTime.Now < @item.CreateAt.AddSeconds(120))
                                     {
                                         <button class="btn btn-danger" @onclick="()=>OnDeleteBooking(item.Id)">Delete</button>
                                     }
-                                </td>
+                                    <a href="/bookingDetail/@item.Id" class="btn btn-primary">Detail</a>
 
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -77,7 +79,7 @@ else
                     </tfoot>
                 </table>
             </div>
-            
+
 
         </div>
 
