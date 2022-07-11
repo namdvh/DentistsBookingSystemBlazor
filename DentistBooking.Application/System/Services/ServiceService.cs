@@ -268,10 +268,11 @@ namespace DentistBooking.Application.System.Services
             try
             {
                 var data = await (from service in _context.Services
-                        join serviceDentist in _context.ServiceDentists on service.Id equals serviceDentist.ServiceId
-                        join dentist in _context.Dentists on serviceDentist.DentistId equals dentist.Id
-                        where dentist.ClinicId == clinicId
-                                select service).Distinct()
+                                  join serviceDentist in _context.ServiceDentists on service.Id equals serviceDentist.ServiceId
+                                  join dentist in _context.Dentists on serviceDentist.DentistId equals dentist.Id
+                                  join user in _context.Users on dentist.Id equals user.DentistId
+                                  where dentist.ClinicId == clinicId && user.Status != Data.Enum.Status.INACTIVE
+                                  select service).Distinct()
                     .ToListAsync();
 
 
@@ -286,7 +287,7 @@ namespace DentistBooking.Application.System.Services
             }
             catch (Exception e)
             {
-                
+
             }
 
             response.Content = dtoList;
