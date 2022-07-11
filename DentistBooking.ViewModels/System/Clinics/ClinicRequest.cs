@@ -15,7 +15,6 @@ namespace DentistBooking.ViewModels.System.Clinics
         [RegularExpression(@"^(?:(?! )[^0-9]*[^ 0-9])?$", ErrorMessage = "Description should not contain numbers")]
         public string Description { get; set; }
         [Required]
-        [RegularExpression(@"[A-Za-z0-9 _,]", ErrorMessage = "Address should not contain special character")]
         public string Address { get; set; }
         [Required]
 
