@@ -65,6 +65,13 @@ namespace DentistBookingBlazor.FE.Pages.UserPage
 
             response = await BookingService.GetBookingListForUser(paginationFilter, Guid.Parse(userId));
             booking = (List<BookingDTO>)response.Content;
+            foreach (var item in booking)
+            {
+                if(item.Status == DentistBooking.Data.Enum.Status.DECLINED)
+                {
+                    toastService.ShowError("You have a booking which was declined by administrator", "Error");
+                }
+            }
             paginationDTO = response.Pagination;
         }
 

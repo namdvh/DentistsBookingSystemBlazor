@@ -78,6 +78,7 @@ namespace DentistBooking.Application.System.Bookings
                                       on t1.Id equals t2.BookingId
                                       where t1.Date.Equals(request.Date)
                                       && t2.KeyTime == request.KeyTimes[i]
+                                      && t1.Status != Status.DECLINED
                                       select t2).ToList();
 
                     foreach (var item in existedDetails)
@@ -583,6 +584,7 @@ namespace DentistBooking.Application.System.Bookings
                            join t2 in _context.BookingDetails
                            on t1.Id equals t2.BookingId
                            where t1.Date.Equals(date)
+                           && t1.Status != Status.DECLINED
                            select t2).ToList();
             var dentists = (from t1 in _context.Dentists
                             join t2 in _context.Users
@@ -673,26 +675,14 @@ namespace DentistBooking.Application.System.Bookings
                 var booking = _context.Bookings.FirstOrDefault(x => x.Id == request.bookingID);
                 if (booking != null)
                 {
-                    if (request.status == Status.DECLINED)
-                    {
-                        _context.Bookings.Remove(booking);
-                    }
-                    else
-                    {
-                        booking.Status = request.status;
 
-                    }
-
+                    booking.Status = request.status;
                     response = new()
-                        {
+                    {
 
-                            Code = "200",
-                            Message = "Update status succesfull"
-                        };
-                    
-
-                   
-
+                        Code = "200",
+                        Message = "Update status succesfull"
+                    };
                     await _context.SaveChangesAsync();
                 }
                 else
