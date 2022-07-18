@@ -12,7 +12,7 @@ namespace DentistsBooking.Api.Controllers
 {
     [Route("api/clinics")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ClinicsController : ControllerBase
     {
         private readonly IClinicService _clinicService;

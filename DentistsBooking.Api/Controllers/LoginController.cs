@@ -56,6 +56,14 @@ namespace DentistsBooking.Api.Controllers
                     Error = "Username and password are invalid."
                 });
             }
+            if (user.Status==Status.INACTIVE)
+            {
+                return BadRequest(new LoginResponse
+                {
+                    Successful = false,
+                    Error = "Account are inactive."
+                });
+            }
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, request.UserName),

@@ -15,7 +15,7 @@ namespace DentistBooking.Data.DataContext
 {
     public class DentistDBContext : IdentityDbContext<User, Role, Guid>
     {
-        public DentistDBContext(DbContextOptions options) : base(options)
+        public DentistDBContext(DbContextOptions<DentistDBContext> options) : base(options)
         {
         }
 
