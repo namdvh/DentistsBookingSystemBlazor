@@ -673,13 +673,25 @@ namespace DentistBooking.Application.System.Bookings
                 var booking = _context.Bookings.FirstOrDefault(x => x.Id == request.bookingID);
                 if (booking != null)
                 {
-                    booking.Status = request.status;
-                    response = new()
+                    if (request.status == Status.DECLINED)
                     {
+                        _context.Bookings.Remove(booking);
+                    }
+                    else
+                    {
+                        booking.Status = request.status;
 
-                        Code = "200",
-                        Message = "Update status succesfull"
-                    };
+                    }
+
+                    response = new()
+                        {
+
+                            Code = "200",
+                            Message = "Update status succesfull"
+                        };
+                    
+
+                   
 
                     await _context.SaveChangesAsync();
                 }
